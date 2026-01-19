@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI COLOR LAB | 퍼스널 컬러 정밀 진단</title>
+    <style>
+        body { background-color: #000; color: #fff; font-family: 'Pretendard', sans-serif; text-align: center; padding: 50px 20px; }
+        .container { max-width: 500px; margin: 0 auto; border: 1px solid #333; padding: 40px; border-radius: 20px; background: #111; }
+        h1 { font-weight: 200; letter-spacing: 5px; margin-bottom: 40px; }
+        input { width: 100%; padding: 15px; margin: 10px 0; background: #222; border: 1px solid #444; color: #fff; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: #fff; color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: 0.3s; }
+        button:hover { background: #ccc; }
+        #result { margin-top: 30px; font-size: 1.2rem; line-height: 1.6; }
+        .footer { margin-top: 50px; font-size: 0.8rem; color: #666; line-height: 1.8; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>AI COLOR LAB</h1>
+    <p>측정기에서 확인된 수치를 입력하세요</p>
+    
+    <input type="number" id="L_val" placeholder="L* (밝기) 값 입력">
+    <input type="number" id="a_val" placeholder="a* (붉은기) 값 입력">
+    <input type="number" id="b_val" placeholder="b* (노란기) 값 입력">
+    
+    <button onclick="diagnose()">AI 정밀 분석 시작</button>
+
+    <div id="result"></div>
+</div>
+
+<div class="footer">
+    AI COLOR RESEARCH CENTER<br>
+    서울특별시 강남구 테헤란로32길 33 (해오름주택) B1<br>
+    © 2026 AI COLOR LAB. All rights reserved.
+</div>
+
+<script>
+    function diagnose() {
+        const L = parseFloat(document.getElementById('L_val').value);
+        const a = parseFloat(document.getElementById('a_val').value);
+        const b = parseFloat(document.getElementById('b_val').value);
+        const resDiv = document.getElementById('result');
+
+        if(isNaN(L) || isNaN(a) || isNaN(b)) {
+            resDiv.innerHTML = "수치를 정확히 입력해주세요.";
+            return;
+        }
+
+        // 간단 판별 로직
+        let tone = "";
+        const isWarm = b > (a * 0.8);
+        const isBright = L > 65;
+
+        if (isWarm) {
+            tone = isBright ? "봄 웜 (Spring Warm)" : "가을 웜 (Autumn Warm)";
+        } else {
+            tone = isBright ? "여름 쿨 (Summer Cool)" : "겨울 쿨 (Winter Cool)";
+        }
+
+        resDiv.innerHTML = `<span style="color:#aaa">분석 결과:</span><br><strong>${tone}</strong><br><br><small>Claude AI가 상세 리포트를 생성 중입니다...</small>`;
+    }
+</script>
+
+</body>
+</html>
