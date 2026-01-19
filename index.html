@@ -4,222 +4,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI COLOR LAB | 퍼스널 컬러 정밀 진단</title>
-    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@100;400;700;900&display=swap" rel="stylesheet">
     <style>
-        body { 
-            background-color: #000; 
-            color: #fff; 
-            font-family: 'Pretendard', sans-serif; 
-            text-align: center; 
-            padding: 50px 20px; 
-            margin: 0;
-            overflow-x: hidden; /* 가로 스크롤 방지 */
-        }
-        .container { 
-            max-width: 500px; 
-            margin: 0 auto; 
-            border: 1px solid #333; 
-            padding: 40px; 
-            border-radius: 20px; 
-            background: #111; 
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-            transition: all 0.5s ease-in-out;
-        }
-        h1 { 
-            font-weight: 200; 
-            letter-spacing: 5px; 
-            margin-bottom: 40px; 
-            font-size: 2.2rem;
-        }
-        input { 
-            width: 100%; 
-            padding: 15px; 
-            margin: 10px 0; 
-            background: #222; 
-            border: 1px solid #444; 
-            color: #fff; 
-            border-radius: 8px; 
-            box-sizing: border-box; 
-            font-size: 1rem;
-        }
-        button { 
-            width: 100%; 
-            padding: 15px; 
-            background: #fff; 
-            color: #000; 
-            border: none; 
-            border-radius: 8px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            margin-top: 20px; 
-            transition: all 0.3s ease; 
-            font-size: 1.1rem;
-        }
-        button:hover { 
-            background: #ccc; 
-            transform: translateY(-2px); 
-            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
-        }
-
+        body { background-color: #000; color: #fff; font-family: 'Pretendard', sans-serif; text-align: center; padding: 50px 20px; margin: 0; }
+        .container { max-width: 500px; margin: 0 auto; border: 1px solid #333; padding: 40px; border-radius: 20px; background: #111; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
+        h1 { font-weight: 200; letter-spacing: 5px; margin-bottom: 30px; }
+        input { width: 100%; padding: 15px; margin: 10px 0; background: #222; border: 1px solid #444; color: #fff; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: #fff; color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 20px; font-size: 1.1rem; }
+        
         /* 로딩 애니메이션 */
-        #loading-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.9);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
-        }
-        #loading-overlay.show {
-            opacity: 1;
-            visibility: visible;
-        }
-        .spinner {
-            border: 8px solid #333;
-            border-top: 8px solid #fff;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        #loading-message {
-            margin-top: 20px;
-            font-size: 1.2rem;
-            color: #eee;
-        }
-        .progress-bar {
-            width: 80%;
-            height: 8px;
-            background-color: #333;
-            border-radius: 4px;
-            margin-top: 20px;
-            overflow: hidden;
-        }
-        .progress-bar-fill {
-            height: 100%;
-            width: 0%;
-            background-color: #FF3548; /* 진행 바 색상 */
-            border-radius: 4px;
-            transition: width 0.3s ease;
-        }
+        #loading { display: none; margin: 20px 0; }
+        .spinner { border: 4px solid #333; border-top: 4px solid #FF3548; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-
-        /* 결과창 스타일 */
-        #result { 
-            margin-top: 50px; 
-            padding: 30px; 
-            border-radius: 15px; 
-            background: #1a1a1a; 
-            box-shadow: 0 0 25px rgba(255, 53, 72, 0.3); /* 은은한 광채 */
-            display: none; 
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        #result.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .color-circle { 
-            width: 100px; 
-            height: 100px; 
-            border-radius: 50%; 
-            margin: 0 auto 25px; 
-            border: 3px solid #eee; 
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-            transition: background-color 1s ease-out; /* 색상 전환 애니메이션 */
-        }
-        #analysis-text h2 {
-            font-size: 2.5rem;
-            font-weight: 900;
-            color: #FF3548; /* 결과 강조 색상 */
-            margin-bottom: 15px;
-            text-shadow: 0 0 10px rgba(255, 53, 72, 0.5);
-        }
-        #analysis-text p {
-            font-size: 1.1rem;
-            color: #bbb;
-            line-height: 1.6;
-            margin-bottom: 25px;
-        }
-        #analysis-text small {
-            font-size: 0.9rem;
-            color: #888;
-            display: block;
-            margin-top: 15px;
-        }
-        .recommend-btn { 
-            display: block; 
-            width: 80%; /* 버튼 너비 조정 */
-            margin: 25px auto 0;
-            padding: 16px; 
-            background: linear-gradient(45deg, #FF3548, #FF6F61); /* 그라데이션 버튼 */
-            color: #fff; 
-            text-decoration: none; 
-            border: none;
-            border-radius: 10px; 
-            font-weight: bold; 
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 20px rgba(255, 53, 72, 0.4);
-        }
-        .recommend-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(255, 53, 72, 0.6);
-        }
-
-        .footer { 
-            margin-top: 80px; 
-            font-size: 0.8rem; 
-            color: #666; 
-            line-height: 1.8; 
-            border-top: 1px solid #222;
-            padding-top: 30px;
-        }
+        /* 결과 영역 */
+        #result { display: none; margin-top: 40px; padding: 30px; border-radius: 15px; background: #1a1a1a; border: 1px solid #FF3548; }
+        .color-circle { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 20px; border: 3px solid #fff; }
+        h2 { font-size: 2rem; color: #FF3548; margin: 10px 0; }
+        
+        /* 드레이핑 영역 */
+        #draping-section { margin-top: 30px; border-top: 1px solid #333; padding-top: 20px; }
+        #preview-container { position: relative; width: 100%; max-width: 250px; margin: 20px auto; border-radius: 10px; overflow: hidden; border: 2px solid #444; }
+        #user-photo { width: 100%; display: block; background: #222; }
+        .draping-bar { position: absolute; bottom: 0; left: 0; width: 100%; height: 35%; mix-blend-mode: multiply; opacity: 0.8; }
+        .upload-label { display: inline-block; padding: 10px 20px; background: #444; border-radius: 5px; cursor: pointer; font-size: 0.8rem; margin-top: 10px; }
+        
+        .recommend-btn { display: block; width: 100%; padding: 15px; margin-top: 25px; background: linear-gradient(45deg, #FF3548, #FF6F61); color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; }
+        .footer { margin-top: 50px; font-size: 0.8rem; color: #666; }
     </style>
 </head>
 <body>
 
-<div id="loading-overlay">
-    <div class="spinner"></div>
-    <div id="loading-message">AI가 고객님의 피부를 정밀 분석 중입니다...</div>
-    <div class="progress-bar"><div class="progress-bar-fill" id="progressBarFill"></div></div>
-</div>
-
 <div class="container">
     <h1>AI COLOR LAB</h1>
-    <p>측정기에서 확인된 L*a*b* 수치를 입력하세요</p>
+    <p style="color:#888; font-size:0.9rem;">측측기(3nh)에서 측정된 수치를 입력하세요</p>
     
-    <input type="number" id="L_val" placeholder="L* (밝기) 값 입력 (0-100)">
-    <input type="number" id="a_val" placeholder="a* (붉은기) 값 입력 (-128 ~ 127)">
-    <input type="number" id="b_val" placeholder="b* (노란기) 값 입력 (-128 ~ 127)">
+    <input type="number" id="L_val" placeholder="L* (밝기) 입력">
+    <input type="number" id="a_val" placeholder="a* (붉은기) 입력">
+    <input type="number" id="b_val" placeholder="b* (노란기) 입력">
     
-    <button onclick="diagnose()">AI 정밀 분석 시작</button>
+    <button onclick="startAnalysis()">AI 정밀 분석 시작</button>
+
+    <div id="loading">
+        <div class="spinner"></div>
+        <p>AI가 피부 속성과 이미지를 매칭 중...</p>
+    </div>
 
     <div id="result">
         <div id="skin-preview" class="color-circle"></div>
         <div id="analysis-text"></div>
-        <a id="shop-link" href="#" class="recommend-btn" target="_blank">나의 베스트 컬러 아이템 보러가기 ✨</a>
+
+        <div id="draping-section">
+            <p style="font-size:0.8rem;">📸 얼굴 사진을 올려 가상 드레이핑을 확인하세요</p>
+            <input type="file" id="photo-input" accept="image/*" onchange="loadPhoto(event)" style="display:none;">
+            <label class="upload-label" for="photo-input">사진 선택하기</label>
+            
+            <div id="preview-container">
+                <img id="user-photo" src="" alt="얼굴 사진을 기다리는 중...">
+                <div id="color-overlay" class="draping-bar"></div>
+            </div>
+        </div>
+
+        <a id="shop-link" href="#" class="recommend-btn" target="_blank">나의 베스트 컬러 아이템 쇼핑하기</a>
     </div>
 </div>
 
 <div class="footer">
     AI COLOR RESEARCH CENTER<br>
-    서울 강남구 테헤란로32길 33 (해오름주택) B1<br>
     © 2026 AI COLOR LAB. All rights reserved.
 </div>
 
 <script>
-    // 1. Lab을 RGB로 변환하는 핵심 함수 (이전과 동일)
+    // 1. Lab -> RGB 변환 (시각화용)
     function labToRgb(l, a, b) {
         let y = (l + 16) / 116;
         let x = a / 500 + y;
@@ -236,108 +92,59 @@
         return `rgb(${clip(r)}, ${clip(g)}, ${clip(bl)})`;
     }
 
-    // 2. 확장된 정밀 진단 알고리즘 (8가지 톤)
-    function getPersonalColor(l, a, b) {
-        let season = "진단 불가";
-        let description = "정확한 수치 입력이 필요합니다.";
-        let shopQuery = "퍼스널컬러 추천"; // 기본 검색어
-
-        // 한국인 평균 L: 64~66, a: 13~15, b: 17~19 기준
-        // 수치 구간은 통상적인 퍼스널 컬러 컨설팅 기준을 참고하여 설정 (조정 가능)
-        
-        const isWarm = b > (a * 0.85); // 노란기 b와 붉은기 a의 상대적 비율로 웜/쿨 판단 강화
-        const isBright = l > 67; // 밝기 기준 상향
-        const isMuted = (a < 10 && b < 10) || (a > 20 && b > 20); // 채도가 낮거나 너무 높으면 뮤트 경향
-        const isClear = (a > 15 && b > 15 && l < 65); // 고채도 저명도 = 스트롱/브라이트
-
-        if (isWarm) {
-            if (isBright) {
-                if (b > 22 && l > 70) { season = "봄 웜 라이트 (Spring Warm Light)"; description = "생기 넘치는 복숭아빛 피부의 소유자로, 밝고 화사한 컬러가 잘 어울립니다."; shopQuery = "봄웜라이트 립스틱"; }
-                else if (isClear) { season = "봄 웜 브라이트 (Spring Warm Bright)"; description = "선명하고 깨끗한 피부 톤으로, 생동감 있는 고채도 컬러가 매력적입니다."; shopQuery = "봄웜브라이트 메이크업"; }
-                else { season = "봄 웜 트루 (Spring Warm True)"; description = "따뜻하고 부드러운 이미지의 전형적인 봄 웜톤입니다."; shopQuery = "봄웜 파운데이션"; }
-            } else { // 가을 웜
-                if (isMuted && l < 60) { season = "가을 웜 뮤트 (Autumn Warm Mute)"; description = "차분하고 분위기 있는 피부 톤으로, 그윽한 저채도 컬러가 세련미를 더합니다."; shopQuery = "가을웜뮤트 블러셔"; }
-                else if (b > 20 && l < 65) { season = "가을 웜 딥 (Autumn Warm Deep)"; description = "깊고 그윽한 분위기의 피부 톤으로, 고급스러운 중채도 컬러가 잘 어울립니다."; shopQuery = "가을웜딥 섀도우"; }
-                else { season = "가을 웜 트루 (Autumn Warm True)"; description = "깊고 고혹적인 분위기의 전형적인 가을 웜톤입니다."; shopQuery = "가을웜 파운데이션"; }
-            }
-        } else { // 쿨톤
-            if (isBright) {
-                if (a < 12 && l > 68) { season = "여름 쿨 라이트 (Summer Cool Light)"; description = "청량하고 투명한 이미지로, 파스텔 톤의 밝고 시원한 컬러가 잘 어울립니다."; shopQuery = "여름쿨라이트 립스틱"; }
-                else if (isClear) { season = "여름 쿨 브라이트 (Summer Cool Bright)"; description = "선명하고 깨끗한 피부 톤으로, 생동감 있는 고채도 컬러가 매력적입니다."; shopQuery = "여름쿨브라이트 메이크업"; }
-                else { season = "여름 쿨 트루 (Summer Cool True)"; description = "시원하고 우아한 분위기의 전형적인 여름 쿨톤입니다."; shopQuery = "여름쿨 파운데이션"; }
-            } else { // 겨울 쿨
-                if (a < 10 && l < 60) { season = "겨울 쿨 딥 (Winter Cool Deep)"; description = "고혹적이고 시크한 분위기로, 강렬한 고채도 컬러가 매력적입니다."; shopQuery = "겨울쿨딥 립스틱"; }
-                else if (l < 58) { season = "겨울 쿨 브라이트 (Winter Cool Bright)"; description = "선명하고 드라마틱한 피부 톤으로, 깨끗한 무채색과 고채도 컬러가 대비를 이룹니다."; shopQuery = "겨울쿨브라이트 섀도우"; }
-                else { season = "겨울 쿨 트루 (Winter Cool True)"; description = "시크하고 카리스마 있는 전형적인 겨울 쿨톤입니다."; shopQuery = "겨울쿨 파운데이션"; }
-            }
-        }
-
-        return { season, description, shopQuery };
+    // 2. 사진 업로드 함수
+    function loadPhoto(event) {
+        const reader = new FileReader();
+        reader.onload = function() {
+            document.getElementById('user-photo').src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
     }
 
-    // 분석 실행 함수
-    async function diagnose() {
+    // 3. 분석 메인 함수
+    async function startAnalysis() {
         const L = parseFloat(document.getElementById('L_val').value);
         const a = parseFloat(document.getElementById('a_val').value);
         const b = parseFloat(document.getElementById('b_val').value);
-        const resDiv = document.getElementById('result');
-        const textDiv = document.getElementById('analysis-text');
-        const previewDiv = document.getElementById('skin-preview');
-        const shopLink = document.getElementById('shop-link');
-        const loadingOverlay = document.getElementById('loading-overlay');
-        const progressBarFill = document.getElementById('progressBarFill');
 
-        if(isNaN(L) || isNaN(a) || isNaN(b) || L < 0 || L > 100 || a < -128 || a > 127 || b < -128 || b > 127) {
-            alert("L*a*b* 수치를 정확히 범위에 맞춰 입력해주세요.");
-            return;
+        if(isNaN(L) || isNaN(a) || isNaN(b)) {
+            alert("수치를 입력해주세요."); return;
         }
 
-        // 로딩 오버레이 표시 및 진행 바 애니메이션
-        loadingOverlay.classList.add('show');
-        progressBarFill.style.width = '0%';
-        await new Promise(resolve => setTimeout(resolve, 100)); // 애니메이션 시작 전 약간의 딜레이
-        
-        // 가짜 로딩 진행
-        let progress = 0;
-        const progressInterval = setInterval(() => {
-            progress += Math.random() * 10 + 5; // 랜덤하게 진행
-            if (progress >= 100) {
-                progress = 100;
-                clearInterval(progressInterval);
-            }
-            progressBarFill.style.width = `${progress}%`;
-        }, 150);
+        document.getElementById('loading').style.display = "block";
+        document.getElementById('result').style.display = "none";
 
-        await new Promise(resolve => setTimeout(resolve, 2500)); // 최소 2.5초 대기 (AI 분석 체감)
+        // 2초 분석 애니메이션
+        await new Promise(res => setTimeout(res, 2000));
 
-        // 로딩 완료 후 오버레이 숨김
-        clearInterval(progressInterval);
-        progressBarFill.style.width = '100%';
-        loadingOverlay.classList.remove('show');
+        document.getElementById('loading').style.display = "none";
+        document.getElementById('result').style.display = "block";
 
-        // 3. 진단 실행
-        const { season, description, shopQuery } = getPersonalColor(L, a, b);
-        const skinColor = labToRgb(L, a, b);
+        // 진단 로직
+        let type = "";
+        let drapingColor = "";
+        let searchQuery = "";
 
-        // 결과창 업데이트 및 애니메이션
-        previewDiv.style.backgroundColor = skinColor; // 부드러운 색상 전환
-        textDiv.innerHTML = `
-            <small style="color:#aaa; font-weight:lighter;">AI가 분석한 당신의 컬러는</small>
-            <h2>${season}</h2>
-            <p>${description}</p>
-            <small>L*: ${L.toFixed(1)} | a*: ${a.toFixed(1)} | b*: ${b.toFixed(1)}</small>
-        `;
+        const isWarm = b > 17.5; // 노란기 기준
+        if (isWarm) {
+            type = L > 65 ? "봄 웜 트루 (Spring True)" : "가을 웜 뮤트 (Autumn Mute)";
+            drapingColor = L > 65 ? "#FF7F50" : "#D2691E"; // 코랄 vs 브라운
+            searchQuery = type + " 립스틱";
+        } else {
+            type = L > 65 ? "여름 쿨 라이트 (Summer Light)" : "겨울 쿨 브라이트 (Winter Bright)";
+            drapingColor = L > 65 ? "#FFB6C1" : "#800020"; // 핑크 vs 버건디
+            searchQuery = type + " 메이크업";
+        }
 
-        shopLink.href = `https://www.oliveyoung.co.kr/store/search/getSearchMain.do?query=${encodeURIComponent(shopQuery)}`;
-        
-        resDiv.style.display = "block";
-        setTimeout(() => { // 결과창 부드럽게 나타나기
-            resDiv.classList.add('show');
-            window.scrollTo({ top: resDiv.offsetTop - 20, behavior: 'smooth' });
-        }, 50); // 약간의 딜레이 후 애니메이션 시작
+        // 화면 업데이트
+        document.getElementById('skin-preview').style.backgroundColor = labToRgb(L, a, b);
+        document.getElementById('analysis-text').innerHTML = `<h2>${type}</h2><p>측색 수치 기반 최적의 컬러입니다.</p>`;
+        document.getElementById('color-overlay').style.backgroundColor = drapingColor;
+        document.getElementById('shop-link').href = `https://www.oliveyoung.co.kr/store/search/getSearchMain.do?query=${encodeURIComponent(searchQuery)}`;
+
+        window.scrollTo({ top: document.getElementById('result').offsetTop, behavior: 'smooth' });
     }
 </script>
 
 </body>
 </html>
-
