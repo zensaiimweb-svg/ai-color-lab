@@ -189,6 +189,22 @@
         .color-input.blue { border-color: #cce5ff; }
         .color-input.blue:focus { border-color: #2196f3; }
 
+        .color-input.lightness { border-color: #e0e0e0; }
+        .color-input.lightness:focus { border-color: #757575; }
+
+        .color-input.a-axis { border-color: #ffcdd2; }
+        .color-input.a-axis:focus { border-color: #e57373; }
+
+        .color-input.b-axis { border-color: #fff9c4; }
+        .color-input.b-axis:focus { border-color: #ffd54f; }
+
+        .input-hint {
+            font-size: 0.75rem;
+            color: var(--color-slate);
+            margin-top: 0.3rem;
+            text-align: center;
+        }
+
         .color-preview {
             width: 100%;
             height: 120px;
@@ -483,7 +499,7 @@
             <div class="input-section">
                 <div class="input-group">
                     <label class="input-label">3개 부위를 모두 측정해주세요</label>
-                    <p class="input-sublabel">각 부위를 측정하여 입력하면 자동으로 평균값이 계산됩니다</p>
+                    <p class="input-sublabel">각 부위를 측정하여 입력하면 자동으로 평균값이 계산됩니다 (LAB 색공간)</p>
                 </div>
 
                 <!-- Forehead Measurement -->
@@ -495,42 +511,48 @@
                     
                     <div class="color-input-grid">
                         <div class="color-input-wrapper">
-                            <label class="color-label">R (Red)</label>
+                            <label class="color-label">L (명도)</label>
                             <input 
                                 type="number" 
-                                class="color-input red" 
-                                id="forehead_r"
+                                class="color-input lightness" 
+                                id="forehead_l"
                                 min="0" 
-                                max="255" 
+                                max="100" 
+                                step="0.1"
                                 placeholder="0"
                                 oninput="updateAverages()"
                             >
+                            <p class="input-hint">0-100</p>
                         </div>
                         
                         <div class="color-input-wrapper">
-                            <label class="color-label">G (Green)</label>
+                            <label class="color-label">A (초록↔빨강)</label>
                             <input 
                                 type="number" 
-                                class="color-input green" 
-                                id="forehead_g"
-                                min="0" 
-                                max="255" 
+                                class="color-input a-axis" 
+                                id="forehead_a"
+                                min="-128" 
+                                max="127" 
+                                step="0.1"
                                 placeholder="0"
                                 oninput="updateAverages()"
                             >
+                            <p class="input-hint">-128 ~ 127</p>
                         </div>
                         
                         <div class="color-input-wrapper">
-                            <label class="color-label">B (Blue)</label>
+                            <label class="color-label">B (파랑↔노랑)</label>
                             <input 
                                 type="number" 
-                                class="color-input blue" 
+                                class="color-input b-axis" 
                                 id="forehead_b"
-                                min="0" 
-                                max="255" 
+                                min="-128" 
+                                max="127" 
+                                step="0.1"
                                 placeholder="0"
                                 oninput="updateAverages()"
                             >
+                            <p class="input-hint">-128 ~ 127</p>
                         </div>
                     </div>
 
@@ -548,42 +570,48 @@
                     
                     <div class="color-input-grid">
                         <div class="color-input-wrapper">
-                            <label class="color-label">R (Red)</label>
+                            <label class="color-label">L (명도)</label>
                             <input 
                                 type="number" 
-                                class="color-input red" 
-                                id="cheek_r"
+                                class="color-input lightness" 
+                                id="cheek_l"
                                 min="0" 
-                                max="255" 
+                                max="100" 
+                                step="0.1"
                                 placeholder="0"
                                 oninput="updateAverages()"
                             >
+                            <p class="input-hint">0-100</p>
                         </div>
                         
                         <div class="color-input-wrapper">
-                            <label class="color-label">G (Green)</label>
+                            <label class="color-label">A (초록↔빨강)</label>
                             <input 
                                 type="number" 
-                                class="color-input green" 
-                                id="cheek_g"
-                                min="0" 
-                                max="255" 
+                                class="color-input a-axis" 
+                                id="cheek_a"
+                                min="-128" 
+                                max="127" 
+                                step="0.1"
                                 placeholder="0"
                                 oninput="updateAverages()"
                             >
+                            <p class="input-hint">-128 ~ 127</p>
                         </div>
                         
                         <div class="color-input-wrapper">
-                            <label class="color-label">B (Blue)</label>
+                            <label class="color-label">B (파랑↔노랑)</label>
                             <input 
                                 type="number" 
-                                class="color-input blue" 
+                                class="color-input b-axis" 
                                 id="cheek_b"
-                                min="0" 
-                                max="255" 
+                                min="-128" 
+                                max="127" 
+                                step="0.1"
                                 placeholder="0"
                                 oninput="updateAverages()"
                             >
+                            <p class="input-hint">-128 ~ 127</p>
                         </div>
                     </div>
 
@@ -601,42 +629,48 @@
                     
                     <div class="color-input-grid">
                         <div class="color-input-wrapper">
-                            <label class="color-label">R (Red)</label>
+                            <label class="color-label">L (명도)</label>
                             <input 
                                 type="number" 
-                                class="color-input red" 
-                                id="jawline_r"
+                                class="color-input lightness" 
+                                id="jawline_l"
                                 min="0" 
-                                max="255" 
+                                max="100" 
+                                step="0.1"
                                 placeholder="0"
                                 oninput="updateAverages()"
                             >
+                            <p class="input-hint">0-100</p>
                         </div>
                         
                         <div class="color-input-wrapper">
-                            <label class="color-label">G (Green)</label>
+                            <label class="color-label">A (초록↔빨강)</label>
                             <input 
                                 type="number" 
-                                class="color-input green" 
-                                id="jawline_g"
-                                min="0" 
-                                max="255" 
+                                class="color-input a-axis" 
+                                id="jawline_a"
+                                min="-128" 
+                                max="127" 
+                                step="0.1"
                                 placeholder="0"
                                 oninput="updateAverages()"
                             >
+                            <p class="input-hint">-128 ~ 127</p>
                         </div>
                         
                         <div class="color-input-wrapper">
-                            <label class="color-label">B (Blue)</label>
+                            <label class="color-label">B (파랑↔노랑)</label>
                             <input 
                                 type="number" 
-                                class="color-input blue" 
+                                class="color-input b-axis" 
                                 id="jawline_b"
-                                min="0" 
-                                max="255" 
+                                min="-128" 
+                                max="127" 
+                                step="0.1"
                                 placeholder="0"
                                 oninput="updateAverages()"
                             >
+                            <p class="input-hint">-128 ~ 127</p>
                         </div>
                     </div>
 
@@ -652,7 +686,7 @@
                         평균 피부톤
                     </h3>
                     <div class="average-values" id="averageValues">
-                        R: - / G: - / B: -
+                        L: - / A: - / B: -
                     </div>
                     <div class="color-preview" id="colorPreview">
                         3개 부위를 모두 측정하면 평균값이 표시됩니다
@@ -678,58 +712,89 @@
 
     <script>
         let measurementData = {
-            forehead: { r: null, g: null, b: null },
-            cheek: { r: null, g: null, b: null },
-            jawline: { r: null, g: null, b: null },
-            average: { r: null, g: null, b: null }
+            forehead: { l: null, a: null, b: null },
+            cheek: { l: null, a: null, b: null },
+            jawline: { l: null, a: null, b: null },
+            average: { l: null, a: null, b: null }
         };
 
+        // LAB to RGB conversion for preview
+        function labToRgb(l, a, b) {
+            // LAB to XYZ
+            let y = (l + 16) / 116;
+            let x = a / 500 + y;
+            let z = y - b / 200;
+
+            x = 0.95047 * ((x * x * x > 0.008856) ? x * x * x : (x - 16/116) / 7.787);
+            y = 1.00000 * ((y * y * y > 0.008856) ? y * y * y : (y - 16/116) / 7.787);
+            z = 1.08883 * ((z * z * z > 0.008856) ? z * z * z : (z - 16/116) / 7.787);
+
+            // XYZ to RGB
+            let r = x *  3.2406 + y * -1.5372 + z * -0.4986;
+            let g = x * -0.9689 + y *  1.8758 + z *  0.0415;
+            let bl = x *  0.0557 + y * -0.2040 + z *  1.0570;
+
+            r = (r > 0.0031308) ? (1.055 * Math.pow(r, 1/2.4) - 0.055) : 12.92 * r;
+            g = (g > 0.0031308) ? (1.055 * Math.pow(g, 1/2.4) - 0.055) : 12.92 * g;
+            bl = (bl > 0.0031308) ? (1.055 * Math.pow(bl, 1/2.4) - 0.055) : 12.92 * bl;
+
+            return {
+                r: Math.max(0, Math.min(255, Math.round(r * 255))),
+                g: Math.max(0, Math.min(255, Math.round(g * 255))),
+                b: Math.max(0, Math.min(255, Math.round(bl * 255)))
+            };
+        }
+
         function updateAverages() {
-            // Get all values
-            const forehead_r = parseInt(document.getElementById('forehead_r').value) || 0;
-            const forehead_g = parseInt(document.getElementById('forehead_g').value) || 0;
-            const forehead_b = parseInt(document.getElementById('forehead_b').value) || 0;
+            // Get all LAB values
+            const forehead_l = parseFloat(document.getElementById('forehead_l').value) || 0;
+            const forehead_a = parseFloat(document.getElementById('forehead_a').value) || 0;
+            const forehead_b = parseFloat(document.getElementById('forehead_b').value) || 0;
 
-            const cheek_r = parseInt(document.getElementById('cheek_r').value) || 0;
-            const cheek_g = parseInt(document.getElementById('cheek_g').value) || 0;
-            const cheek_b = parseInt(document.getElementById('cheek_b').value) || 0;
+            const cheek_l = parseFloat(document.getElementById('cheek_l').value) || 0;
+            const cheek_a = parseFloat(document.getElementById('cheek_a').value) || 0;
+            const cheek_b = parseFloat(document.getElementById('cheek_b').value) || 0;
 
-            const jawline_r = parseInt(document.getElementById('jawline_r').value) || 0;
-            const jawline_g = parseInt(document.getElementById('jawline_g').value) || 0;
-            const jawline_b = parseInt(document.getElementById('jawline_b').value) || 0;
+            const jawline_l = parseFloat(document.getElementById('jawline_l').value) || 0;
+            const jawline_a = parseFloat(document.getElementById('jawline_a').value) || 0;
+            const jawline_b = parseFloat(document.getElementById('jawline_b').value) || 0;
 
             // Update mini previews
-            updateMiniPreview('forehead', forehead_r, forehead_g, forehead_b);
-            updateMiniPreview('cheek', cheek_r, cheek_g, cheek_b);
-            updateMiniPreview('jawline', jawline_r, jawline_g, jawline_b);
+            updateMiniPreview('forehead', forehead_l, forehead_a, forehead_b);
+            updateMiniPreview('cheek', cheek_l, cheek_a, cheek_b);
+            updateMiniPreview('jawline', jawline_l, jawline_a, jawline_b);
 
             // Save individual measurements
-            measurementData.forehead = { r: forehead_r, g: forehead_g, b: forehead_b };
-            measurementData.cheek = { r: cheek_r, g: cheek_g, b: cheek_b };
-            measurementData.jawline = { r: jawline_r, g: jawline_g, b: jawline_b };
+            measurementData.forehead = { l: forehead_l, a: forehead_a, b: forehead_b };
+            measurementData.cheek = { l: cheek_l, a: cheek_a, b: cheek_b };
+            measurementData.jawline = { l: jawline_l, a: jawline_a, b: jawline_b };
 
             // Check if all areas are measured
             const allMeasured = 
-                forehead_r > 0 && forehead_g > 0 && forehead_b > 0 &&
-                cheek_r > 0 && cheek_g > 0 && cheek_b > 0 &&
-                jawline_r > 0 && jawline_g > 0 && jawline_b > 0;
+                forehead_l > 0 && cheek_l > 0 && jawline_l > 0;
 
             if (allMeasured) {
                 // Calculate averages
-                const avg_r = Math.round((forehead_r + cheek_r + jawline_r) / 3);
-                const avg_g = Math.round((forehead_g + cheek_g + jawline_g) / 3);
-                const avg_b = Math.round((forehead_b + cheek_b + jawline_b) / 3);
+                const avg_l = ((forehead_l + cheek_l + jawline_l) / 3).toFixed(2);
+                const avg_a = ((forehead_a + cheek_a + jawline_a) / 3).toFixed(2);
+                const avg_b = ((forehead_b + cheek_b + jawline_b) / 3).toFixed(2);
 
-                measurementData.average = { r: avg_r, g: avg_g, b: avg_b };
+                measurementData.average = { 
+                    l: parseFloat(avg_l), 
+                    a: parseFloat(avg_a), 
+                    b: parseFloat(avg_b) 
+                };
 
                 // Update display
                 document.getElementById('averageValues').textContent = 
-                    `R: ${avg_r} / G: ${avg_g} / B: ${avg_b}`;
+                    `L: ${avg_l} / A: ${avg_a} / B: ${avg_b}`;
 
+                // Convert to RGB for preview
+                const rgb = labToRgb(parseFloat(avg_l), parseFloat(avg_a), parseFloat(avg_b));
                 const preview = document.getElementById('colorPreview');
-                preview.style.backgroundColor = `rgb(${avg_r}, ${avg_g}, ${avg_b})`;
-                preview.textContent = `평균 피부톤: RGB(${avg_r}, ${avg_g}, ${avg_b})`;
-                preview.style.color = (avg_r + avg_g + avg_b) / 3 > 128 ? '#333' : '#fff';
+                preview.style.backgroundColor = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+                preview.textContent = `평균 피부톤: LAB(${avg_l}, ${avg_a}, ${avg_b})`;
+                preview.style.color = parseFloat(avg_l) > 50 ? '#333' : '#fff';
                 preview.style.fontWeight = '600';
                 preview.style.fontSize = '1.1rem';
 
@@ -737,7 +802,7 @@
                 document.getElementById('nextBtn').disabled = false;
             } else {
                 // Reset average display
-                document.getElementById('averageValues').textContent = 'R: - / G: - / B: -';
+                document.getElementById('averageValues').textContent = 'L: - / A: - / B: -';
                 const preview = document.getElementById('colorPreview');
                 preview.style.backgroundColor = 'transparent';
                 preview.textContent = '3개 부위를 모두 측정하면 평균값이 표시됩니다';
@@ -750,13 +815,14 @@
             }
         }
 
-        function updateMiniPreview(area, r, g, b) {
+        function updateMiniPreview(area, l, a, b) {
             const preview = document.getElementById(`preview_${area}`);
             
-            if (r > 0 || g > 0 || b > 0) {
-                preview.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
-                preview.textContent = `RGB(${r}, ${g}, ${b})`;
-                preview.style.color = (r + g + b) / 3 > 128 ? '#333' : '#fff';
+            if (l > 0) {
+                const rgb = labToRgb(l, a, b);
+                preview.style.backgroundColor = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+                preview.textContent = `LAB(${l.toFixed(1)}, ${a.toFixed(1)}, ${b.toFixed(1)})`;
+                preview.style.color = l > 50 ? '#333' : '#fff';
                 preview.style.fontWeight = '500';
             } else {
                 preview.style.backgroundColor = 'transparent';
@@ -788,22 +854,22 @@
                 
                 // Restore forehead values
                 if (data.forehead) {
-                    document.getElementById('forehead_r').value = data.forehead.r || '';
-                    document.getElementById('forehead_g').value = data.forehead.g || '';
+                    document.getElementById('forehead_l').value = data.forehead.l || '';
+                    document.getElementById('forehead_a').value = data.forehead.a || '';
                     document.getElementById('forehead_b').value = data.forehead.b || '';
                 }
                 
                 // Restore cheek values
                 if (data.cheek) {
-                    document.getElementById('cheek_r').value = data.cheek.r || '';
-                    document.getElementById('cheek_g').value = data.cheek.g || '';
+                    document.getElementById('cheek_l').value = data.cheek.l || '';
+                    document.getElementById('cheek_a').value = data.cheek.a || '';
                     document.getElementById('cheek_b').value = data.cheek.b || '';
                 }
                 
                 // Restore jawline values
                 if (data.jawline) {
-                    document.getElementById('jawline_r').value = data.jawline.r || '';
-                    document.getElementById('jawline_g').value = data.jawline.g || '';
+                    document.getElementById('jawline_l').value = data.jawline.l || '';
+                    document.getElementById('jawline_a').value = data.jawline.a || '';
                     document.getElementById('jawline_b').value = data.jawline.b || '';
                 }
                 
