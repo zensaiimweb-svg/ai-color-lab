@@ -25,7 +25,7 @@
         .progress-fill {
             height: 100%;
             background: linear-gradient(90deg, var(--color-accent), var(--color-accent-light));
-            width: 20%;
+            width: 25%;
             transition: width 0.5s ease;
         }
 
@@ -317,7 +317,7 @@
                 <div class="progress-fill" id="progressFill"></div>
             </div>
 
-            <p class="step-number">Step 1 of 5</p>
+            <p class="step-number">Step 1 of 4</p>
 
             <!-- Question 1: Style Preference -->
             <div id="question1" class="question-section">
@@ -446,8 +446,8 @@
                 
                 // Update progress
                 currentStep = 2;
-                document.querySelector('.step-number').textContent = 'Step 2 of 5';
-                document.getElementById('progressFill').style.width = '40%';
+                document.querySelector('.step-number').textContent = 'Step 2 of 4';
+                document.getElementById('progressFill').style.width = '50%';
                 
                 // Show back button, disable next button
                 document.getElementById('backBtn').style.display = 'block';
@@ -474,8 +474,8 @@
                 
                 // Update progress
                 currentStep = 1;
-                document.querySelector('.step-number').textContent = 'Step 1 of 5';
-                document.getElementById('progressFill').style.width = '20%';
+                document.querySelector('.step-number').textContent = 'Step 1 of 4';
+                document.getElementById('progressFill').style.width = '25%';
                 
                 // Hide back button
                 document.getElementById('backBtn').style.display = 'none';
