@@ -25,7 +25,7 @@
         .progress-fill {
             height: 100%;
             background: linear-gradient(90deg, var(--color-accent), var(--color-accent-light));
-            width: 40%;
+            width: 50%;
             transition: width 0.5s ease;
         }
 
@@ -456,7 +456,7 @@
                 <div class="progress-fill" id="progressFill"></div>
             </div>
 
-            <p class="step-number">Step 2 of 5</p>
+            <p class="step-number">Step 2 of 4</p>
 
             <h2 class="question-title">측색기로 피부톤을 측정해주세요</h2>
             <p class="instruction-text">
@@ -773,8 +773,7 @@
             localStorage.setItem('personalColorData', JSON.stringify(savedData));
             
             // Move to next step
-            alert(`측색기 값이 저장되었습니다!\n평균 피부톤: RGB(${measurementData.average.r}, ${measurementData.average.g}, ${measurementData.average.b})\n\n다음 단계: 천 가져다 대기`);
-            // window.location.href = 'step3-fabric.html';
+            window.location.href = 'pcolor3.html';
         }
 
         function goBack() {
