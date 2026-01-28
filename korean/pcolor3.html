@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE COVE - 최종 선택</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Additional styles for final selection page */
+        .diagnosis-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: var(--color-sand);
+            border-radius: 2px;
+            margin-bottom: 3rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-accent), var(--color-accent-light));
+            width: 75%;
+            transition: width 0.5s ease;
+        }
+
+        .step-number {
+            font-family: var(--font-body);
+            font-size: 0.875rem;
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--color-accent);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .question-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .instruction-text {
+            text-align: center;
+            color: var(--color-slate);
+            font-size: 1rem;
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+
+        .season-selection {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .season-card {
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            border: 4px solid var(--color-sand);
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            text-align: center;
+        }
+
+        .season-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+        }
+
+        .season-card.selected {
+            border-width: 5px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .season-card.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--color-black);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            animation: checkPop 0.3s ease-out;
+        }
+
+        .season-card.spring {
+            border-color: #FFB6C1;
+        }
+
+        .season-card.spring.selected {
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.1) 0%, white 100%);
+        }
+
+        .season-card.summer {
+            border-color: #B0C4DE;
+        }
+
+        .season-card.summer.selected {
+            background: linear-gradient(135deg, rgba(176, 196, 222, 0.1) 0%, white 100%);
+        }
+
+        .season-card.autumn {
+            border-color: #D2691E;
+        }
+
+        .season-card.autumn.selected {
+            background: linear-gradient(135deg, rgba(210, 105, 30, 0.1) 0%, white 100%);
+        }
+
+        .season-card.winter {
+            border-color: #4682B4;
+        }
+
+        .season-card.winter.selected {
+            background: linear-gradient(135deg, rgba(70, 130, 180, 0.1) 0%, white 100%);
+        }
+
+        .season-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .season-name {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--color-black);
+            margin-bottom: 0.5rem;
+        }
+
+        .season-type {
+            font-size: 1rem;
+            color: var(--color-slate);
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .season-description {
+            font-size: 0.95rem;
+            color: var(--color-slate);
+            line-height: 1.7;
+        }
+
+        .analysis-section {
+            background: linear-gradient(135deg, rgba(157, 139, 124, 0.08) 0%, white 100%);
+            padding: 3rem;
+            border-radius: 12px;
+            border: 4px solid var(--color-accent);
+            margin-bottom: 3rem;
+        }
+
+        .analysis-title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--color-black);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .analysis-item {
+            text-align: center;
+        }
+
+        .analysis-label {
+            font-size: 0.85rem;
+            color: var(--color-slate);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .analysis-value {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--color-black);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 3rem;
+        }
+
+        .btn {
+            padding: 1.2rem 3rem;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-charcoal);
+            border: 2px solid var(--color-sand);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--color-accent);
+            background: var(--color-sand);
+        }
+
+        .btn-primary {
+            background: var(--color-black);
+            color: var(--color-cream);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: var(--color-accent);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .btn-primary:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes checkPop {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            .diagnosis-container {
+                padding: 2rem 1.5rem;
+            }
+
+            .season-selection {
+                grid-template-columns: 1fr;
+            }
+
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero-section" style="min-height: auto; padding: 2rem;">
+        <div class="diagnosis-container">
+            <!-- Progress Bar -->
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+
+            <p class="step-number">Step 3 of 4</p>
+
+            <h2 class="question-title">최종 퍼스널 컬러를 선택해주세요</h2>
+            <p class="instruction-text">
+                측색기 결과와 드레이핑 테스트를 바탕으로<br>
+                가장 잘 어울린다고 생각하는 계절을 선택해주세요
+            </p>
+
+            <!-- Season Selection -->
+            <div class="season-selection">
+                <div class="season-card spring" onclick="selectSeason(this, 'spring')">
+                    <span class="season-icon">🌸</span>
+                    <h3 class="season-name">봄 웜톤</h3>
+                    <p class="season-type">Spring Warm</p>
+                    <p class="season-description">
+                        밝고 화사한 따뜻한 톤<br>
+                        피치, 코랄, 아이보리
+                    </p>
+                </div>
+
+                <div class="season-card summer" onclick="selectSeason(this, 'summer')">
+                    <span class="season-icon">🌊</span>
+                    <h3 class="season-name">여름 쿨톤</h3>
+                    <p class="season-type">Summer Cool</p>
+                    <p class="season-description">
+                        부드럽고 우아한 시원한 톤<br>
+                        라벤더, 민트, 소프트 핑크
+                    </p>
+                </div>
+
+                <div class="season-card autumn" onclick="selectSeason(this, 'autumn')">
+                    <span class="season-icon">🍁</span>
+                    <h3 class="season-name">가을 웜톤</h3>
+                    <p class="season-type">Autumn Warm</p>
+                    <p class="season-description">
+                        깊고 풍성한 따뜻한 톤<br>
+                        테라코타, 올리브, 머스타드
+                    </p>
+                </div>
+
+                <div class="season-card winter" onclick="selectSeason(this, 'winter')">
+                    <span class="season-icon">❄️</span>
+                    <h3 class="season-name">겨울 쿨톤</h3>
+                    <p class="season-type">Winter Cool</p>
+                    <p class="season-description">
+                        선명하고 강렬한 시원한 톤<br>
+                        로얄 블루, 퓨어 화이트, 블랙
+                    </p>
+                </div>
+            </div>
+
+            <!-- Analysis Summary -->
+            <div class="analysis-section" id="analysisSection" style="display: none;">
+                <h3 class="analysis-title">진단 데이터 요약</h3>
+                
+                <div class="analysis-grid">
+                    <div class="analysis-item">
+                        <p class="analysis-label">선호 스타일</p>
+                        <p class="analysis-value" id="styleValue">-</p>
+                    </div>
+                    <div class="analysis-item">
+                        <p class="analysis-label">예상 퍼컬</p>
+                        <p class="analysis-value" id="expectedValue">-</p>
+                    </div>
+                    <div class="analysis-item">
+                        <p class="analysis-label">평균 피부톤</p>
+                        <p class="analysis-value" id="rgbValue">-</p>
+                    </div>
+                    <div class="analysis-item">
+                        <p class="analysis-label">웜톤 평가</p>
+                        <p class="analysis-value" id="warmRatingValue">-</p>
+                    </div>
+                    <div class="analysis-item">
+                        <p class="analysis-label">쿨톤 평가</p>
+                        <p class="analysis-value" id="coolRatingValue">-</p>
+                    </div>
+                    <div class="analysis-item">
+                        <p class="analysis-label">최종 선택</p>
+                        <p class="analysis-value" id="finalChoice">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="button-group">
+                <button class="btn btn-secondary" onclick="goBack()">
+                    <span>이전</span>
+                </button>
+                <button class="btn btn-primary" id="nextBtn" onclick="generateResult()" disabled>
+                    <span>결과 보기</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        let finalSelection = null;
+
+        function selectSeason(element, season) {
+            // Remove selected from all cards
+            document.querySelectorAll('.season-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selected to clicked card
+            element.classList.add('selected');
+            
+            // Save selection
+            finalSelection = season;
+            
+            // Show analysis
+            showAnalysis();
+            
+            // Enable next button
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function showAnalysis() {
+            const analysisSection = document.getElementById('analysisSection');
+            analysisSection.style.display = 'block';
+            
+            // Load all saved data
+            const savedData = JSON.parse(localStorage.getItem('personalColorData') || '{}');
+            
+            // Style preference
+            const styleNames = {
+                'elegant': '우아한',
+                'casual': '캐주얼',
+                'modern': '모던',
+                'unique': '개성있는'
+            };
+            document.getElementById('styleValue').textContent = 
+                styleNames[savedData.style] || '-';
+            
+            // Expected color
+            const expectedNames = {
+                'spring': '봄 웜톤',
+                'summer': '여름 쿨톤',
+                'autumn': '가을 웜톤',
+                'winter': '겨울 쿨톤',
+                'unsure': '잘 모름'
+            };
+            document.getElementById('expectedValue').textContent = 
+                expectedNames[savedData.expected] || '-';
+            
+            // RGB average
+            if (savedData.colorimeter && savedData.colorimeter.average) {
+                const rgb = savedData.colorimeter.average;
+                document.getElementById('rgbValue').textContent = 
+                    `RGB(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+            }
+            
+            // Draping ratings
+            if (savedData.draping) {
+                document.getElementById('warmRatingValue').textContent = 
+                    '⭐'.repeat(savedData.draping.warmRating || 0);
+                document.getElementById('coolRatingValue').textContent = 
+                    '⭐'.repeat(savedData.draping.coolRating || 0);
+            }
+            
+            // Final choice
+            const seasonNames = {
+                'spring': '봄 웜톤',
+                'summer': '여름 쿨톤',
+                'autumn': '가을 웜톤',
+                'winter': '겨울 쿨톤'
+            };
+            document.getElementById('finalChoice').textContent = 
+                seasonNames[finalSelection] || '-';
+            
+            // Scroll to analysis
+            setTimeout(() => {
+                analysisSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+        }
+
+        function generateResult() {
+            // Save final selection
+            let savedData = JSON.parse(localStorage.getItem('personalColorData') || '{}');
+            savedData.finalSeason = finalSelection;
+            localStorage.setItem('personalColorData', JSON.stringify(savedData));
+            
+            // Move to result page with PDF generation
+            window.location.href = 'result.html';
+        }
+
+        function goBack() {
+            window.location.href = 'pcolor2.html';
+        }
+
+        // Load saved data if exists
+        window.onload = function() {
+            const savedData = JSON.parse(localStorage.getItem('personalColorData') || '{}');
+            if (savedData.finalSeason) {
+                finalSelection = savedData.finalSeason;
+                
+                // Restore selection visually
+                document.querySelectorAll('.season-card').forEach(card => {
+                    if (card.classList.contains(finalSelection)) {
+                        card.classList.add('selected');
+                        showAnalysis();
+                        document.getElementById('nextBtn').disabled = false;
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
