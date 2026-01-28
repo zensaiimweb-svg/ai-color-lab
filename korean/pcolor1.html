@@ -54,33 +54,54 @@
 
         .option-card {
             background: white;
-            padding: 2rem;
-            border: 2px solid var(--color-sand);
-            border-radius: 8px;
+            padding: 2.5rem;
+            border: 3px solid var(--color-sand);
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             animation: fadeInUp 0.8s ease-out;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        }
+
+        .option-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(157, 139, 124, 0.08) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 0;
         }
 
         .option-card:hover {
             border-color: var(--color-accent);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(157, 139, 124, 0.2);
+        }
+
+        .option-card:hover::before {
+            opacity: 1;
         }
 
         .option-card.selected {
             border-color: var(--color-accent);
-            background: linear-gradient(135deg, rgba(157, 139, 124, 0.05) 0%, transparent 100%);
+            border-width: 4px;
+            background: linear-gradient(135deg, rgba(157, 139, 124, 0.08) 0%, white 100%);
+            box-shadow: 0 15px 35px rgba(157, 139, 124, 0.25);
         }
 
         .option-card.selected::after {
             content: '✓';
             position: absolute;
-            top: 1rem;
-            right: 1rem;
-            width: 30px;
-            height: 30px;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 40px;
+            height: 40px;
             background: var(--color-accent);
             color: white;
             border-radius: 50%;
@@ -88,19 +109,88 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 15px rgba(157, 139, 124, 0.4);
+            animation: checkPop 0.3s ease-out;
+        }
+
+        @keyframes checkPop {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .option-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+            transition: transform 0.4s ease;
+            filter: grayscale(0.3);
+        }
+
+        .option-card:hover .option-icon {
+            transform: scale(1.15) rotate(-5deg);
+            filter: grayscale(0);
+        }
+
+        .option-card.selected .option-icon {
+            transform: scale(1.1);
+            filter: grayscale(0);
         }
 
         .option-title {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-family: var(--font-display);
             color: var(--color-black);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
         }
 
         .option-description {
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: var(--color-slate);
-            line-height: 1.6;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Different border colors for each season */
+        .option-card[data-season="spring"]:hover,
+        .option-card[data-season="spring"].selected {
+            border-color: #FFB6C1;
+        }
+
+        .option-card[data-season="spring"].selected::after {
+            background: #FFB6C1;
+        }
+
+        .option-card[data-season="summer"]:hover,
+        .option-card[data-season="summer"].selected {
+            border-color: #B0C4DE;
+        }
+
+        .option-card[data-season="summer"].selected::after {
+            background: #B0C4DE;
+        }
+
+        .option-card[data-season="autumn"]:hover,
+        .option-card[data-season="autumn"].selected {
+            border-color: #D2691E;
+        }
+
+        .option-card[data-season="autumn"].selected::after {
+            background: #D2691E;
+        }
+
+        .option-card[data-season="winter"]:hover,
+        .option-card[data-season="winter"].selected {
+            border-color: #4682B4;
+        }
+
+        .option-card[data-season="winter"].selected::after {
+            background: #4682B4;
         }
 
         .text-input-section {
@@ -235,21 +325,25 @@
                 
                 <div class="options-grid">
                     <div class="option-card" onclick="selectOption(this, 'style', 'elegant')">
+                        <span class="option-icon">👗</span>
                         <h3 class="option-title">우아하고 세련된 스타일</h3>
                         <p class="option-description">클래식하고 품격 있는 룩을 선호합니다</p>
                     </div>
 
                     <div class="option-card" onclick="selectOption(this, 'style', 'casual')">
+                        <span class="option-icon">👕</span>
                         <h3 class="option-title">편안하고 캐주얼한 스타일</h3>
                         <p class="option-description">자연스럽고 편안한 일상복을 좋아합니다</p>
                     </div>
 
                     <div class="option-card" onclick="selectOption(this, 'style', 'modern')">
+                        <span class="option-icon">✨</span>
                         <h3 class="option-title">트렌디하고 모던한 스타일</h3>
                         <p class="option-description">최신 유행을 따르는 스타일을 즐깁니다</p>
                     </div>
 
                     <div class="option-card" onclick="selectOption(this, 'style', 'unique')">
+                        <span class="option-icon">🎨</span>
                         <h3 class="option-title">개성 있고 독특한 스타일</h3>
                         <p class="option-description">나만의 독특한 패션 감각을 추구합니다</p>
                     </div>
@@ -261,28 +355,33 @@
                 <h2 class="question-title">예상하시는 퍼스널 컬러가 있으신가요?</h2>
                 
                 <div class="options-grid">
-                    <div class="option-card" onclick="selectOption(this, 'expected', 'spring')">
-                        <h3 class="option-title">🌸 봄 웜톤 (Spring Warm)</h3>
+                    <div class="option-card" data-season="spring" onclick="selectOption(this, 'expected', 'spring')">
+                        <span class="option-icon">🌸</span>
+                        <h3 class="option-title">봄 웜톤 (Spring Warm)</h3>
                         <p class="option-description">밝고 화사한 따뜻한 톤</p>
                     </div>
 
-                    <div class="option-card" onclick="selectOption(this, 'expected', 'summer')">
-                        <h3 class="option-title">🌊 여름 쿨톤 (Summer Cool)</h3>
+                    <div class="option-card" data-season="summer" onclick="selectOption(this, 'expected', 'summer')">
+                        <span class="option-icon">🌊</span>
+                        <h3 class="option-title">여름 쿨톤 (Summer Cool)</h3>
                         <p class="option-description">부드럽고 우아한 시원한 톤</p>
                     </div>
 
-                    <div class="option-card" onclick="selectOption(this, 'expected', 'autumn')">
-                        <h3 class="option-title">🍁 가을 웜톤 (Autumn Warm)</h3>
+                    <div class="option-card" data-season="autumn" onclick="selectOption(this, 'expected', 'autumn')">
+                        <span class="option-icon">🍁</span>
+                        <h3 class="option-title">가을 웜톤 (Autumn Warm)</h3>
                         <p class="option-description">깊고 풍성한 따뜻한 톤</p>
                     </div>
 
-                    <div class="option-card" onclick="selectOption(this, 'expected', 'winter')">
-                        <h3 class="option-title">❄️ 겨울 쿨톤 (Winter Cool)</h3>
+                    <div class="option-card" data-season="winter" onclick="selectOption(this, 'expected', 'winter')">
+                        <span class="option-icon">❄️</span>
+                        <h3 class="option-title">겨울 쿨톤 (Winter Cool)</h3>
                         <p class="option-description">선명하고 강렬한 시원한 톤</p>
                     </div>
 
                     <div class="option-card" onclick="selectOption(this, 'expected', 'unsure')">
-                        <h3 class="option-title">🤔 잘 모르겠어요</h3>
+                        <span class="option-icon">🤔</span>
+                        <h3 class="option-title">잘 모르겠어요</h3>
                         <p class="option-description">처음 진단받아봅니다</p>
                     </div>
                 </div>
