@@ -33,18 +33,233 @@
                 </ul>
             </div>
 
-            <div class="start-button-container">
-                <button class="start-button" onclick="startDiagnosis()">
-                    <span>진단 시작하기</span>
-                </button>
-                <p class="button-subtitle">소요 시간: 약 3분</p>
+            <div class="diagnosis-options">
+                <div class="diagnosis-card basic">
+                    <div class="card-badge">BASIC</div>
+                    <h3 class="card-title">간이 퍼스널 컬러</h3>
+                    <p class="card-description">
+                        측색기 기반 빠른 진단<br>
+                        4계절 분류 (약 3분)
+                    </p>
+                    <button class="diagnosis-button basic-btn" onclick="startBasicDiagnosis()">
+                        <span>시작</span>
+                    </button>
+                </div>
+
+                <div class="diagnosis-card premium">
+                    <div class="card-badge premium-badge">PREMIUM</div>
+                    <h3 class="card-title">프리미엄 퍼스널 컬러</h3>
+                    <p class="card-description">
+                        심층 분석 + 맞춤 컨설팅<br>
+                        12계절 분류 (약 5분)
+                    </p>
+                    <button class="diagnosis-button premium-btn" onclick="startPremiumDiagnosis()">
+                        <span>시작</span>
+                    </button>
+                </div>
+
+                <div class="diagnosis-card">
+                    <div class="card-badge" style="background: #4A90E5;">SKIN TONE</div>
+                    <h3 class="card-title">피부톤 분석</h3>
+                    <p class="card-description">
+                        측색기 기반 피부톤 측정<br>
+                        언더톤 + 명도 분석
+                    </p>
+                    <button class="diagnosis-button" style="background: #4A90E5;" onclick="startSkinTone()">
+                        <span>시작</span>
+                    </button>
+                </div>
+
+                <div class="diagnosis-card">
+                    <div class="card-badge" style="background: #E85D75;">MAKEUP</div>
+                    <h3 class="card-title">메이크업 컨설팅</h3>
+                    <p class="card-description">
+                        퍼스널 컬러 기반<br>
+                        맞춤 메이크업 추천
+                    </p>
+                    <button class="diagnosis-button" style="background: #E85D75;" onclick="startMakeup()">
+                        <span>시작</span>
+                    </button>
+                </div>
+
+                <div class="diagnosis-card">
+                    <div class="card-badge" style="background: #9B59B6;">STYLE</div>
+                    <h3 class="card-title">스타일링 가이드</h3>
+                    <p class="card-description">
+                        퍼스널 컬러 + 체형 분석<br>
+                        토탈 스타일링
+                    </p>
+                    <button class="diagnosis-button" style="background: #9B59B6;" onclick="startStyling()">
+                        <span>시작</span>
+                    </button>
+                </div>
+
+                <div class="diagnosis-card">
+                    <div class="card-badge" style="background: #27AE60;">HAIR COLOR</div>
+                    <h3 class="card-title">헤어 컬러 추천</h3>
+                    <p class="card-description">
+                        퍼스널 컬러 기반<br>
+                        어울리는 헤어 컬러
+                    </p>
+                    <button class="diagnosis-button" style="background: #27AE60;" onclick="startHairColor()">
+                        <span>시작</span>
+                    </button>
+                </div>
             </div>
         </div>
     </section>
 
+    <style>
+        .diagnosis-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .diagnosis-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            border: 3px solid transparent;
+        }
+
+        .diagnosis-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .diagnosis-card.basic {
+            border-color: var(--color-accent);
+        }
+
+        .diagnosis-card.premium {
+            border-color: #FFD700;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, white 100%);
+        }
+
+        .card-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: var(--color-accent);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+        }
+
+        .card-badge.premium-badge {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+        }
+
+        .card-title {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            color: var(--color-black);
+            margin-bottom: 1rem;
+        }
+
+        .card-description {
+            color: var(--color-slate);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 2rem;
+        }
+
+        .card-features li {
+            padding: 0.6rem 0;
+            color: var(--color-slate);
+            font-size: 0.95rem;
+        }
+
+        .diagnosis-button {
+            width: 100%;
+            padding: 1.2rem;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .basic-btn {
+            background: var(--color-black);
+            color: white;
+        }
+
+        .basic-btn:hover {
+            background: var(--color-accent);
+        }
+
+        .premium-btn {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: white;
+            font-weight: 600;
+        }
+
+        .premium-btn:hover {
+            background: linear-gradient(135deg, #FFA500, #FFD700);
+            transform: scale(1.02);
+        }
+
+        .diagnosis-button span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .time-info {
+            text-align: center;
+            color: var(--color-slate);
+            font-size: 0.85rem;
+            margin-top: 0.8rem;
+        }
+
+        @media (max-width: 768px) {
+            .diagnosis-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
     <script>
-        function startDiagnosis() {
-            window.location.href = 'https://ai-color-lab.vercel.app/korean/pcolor1.html';
+        function startBasicDiagnosis() {
+            window.location.href = 'pcolor1.html';
+        }
+
+        function startPremiumDiagnosis() {
+            window.location.href = 'pcolor_pre1.html';
+        }
+
+        function startSkinTone() {
+            alert('피부톤 분석 메뉴 준비 중입니다.');
+        }
+
+        function startMakeup() {
+            alert('메이크업 컨설팅 메뉴 준비 중입니다.');
+        }
+
+        function startStyling() {
+            alert('스타일링 가이드 메뉴 준비 중입니다.');
+        }
+
+        function startHairColor() {
+            alert('헤어 컬러 추천 메뉴 준비 중입니다.');
         }
     </script>
 </body>
