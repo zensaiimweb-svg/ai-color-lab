@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE COVE - 진단 결과</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        .result-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .result-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .result-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            color: var(--color-black);
+            margin-bottom: 1rem;
+        }
+
+        .result-subtitle {
+            font-size: 1.2rem;
+            color: var(--color-slate);
+        }
+
+        .result-card {
+            background: white;
+            padding: 4rem 3rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.1);
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .season-result {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 3rem;
+            border-bottom: 2px solid var(--color-sand);
+        }
+
+        .season-icon-large {
+            font-size: 6rem;
+            display: block;
+            margin-bottom: 1.5rem;
+        }
+
+        .season-name-large {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            color: var(--color-black);
+            margin-bottom: 0.5rem;
+        }
+
+        .season-type-large {
+            font-size: 1.3rem;
+            color: var(--color-slate);
+            font-style: italic;
+            margin-bottom: 2rem;
+        }
+
+        .season-description-large {
+            font-size: 1.1rem;
+            color: var(--color-slate);
+            line-height: 1.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .color-palette {
+            margin-bottom: 3rem;
+        }
+
+        .palette-title {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            color: var(--color-black);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .palette-color {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .palette-color:hover {
+            transform: scale(1.1);
+        }
+
+        .recommendations {
+            margin-bottom: 3rem;
+        }
+
+        .recommendation-section {
+            margin-bottom: 2rem;
+        }
+
+        .recommendation-title {
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: var(--color-black);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .recommendation-content {
+            color: var(--color-slate);
+            line-height: 1.7;
+            padding-left: 2rem;
+        }
+
+        .recommendation-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .recommendation-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .recommendation-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--color-accent);
+            font-size: 1.5rem;
+        }
+
+        .data-summary {
+            background: var(--color-cream);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 3rem;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .summary-item {
+            text-align: center;
+        }
+
+        .summary-label {
+            font-size: 0.85rem;
+            color: var(--color-slate);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-black);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1.2rem 3rem;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--color-black);
+            color: var(--color-cream);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: var(--color-accent);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .btn-primary:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-charcoal);
+            border: 2px solid var(--color-sand);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--color-accent);
+            background: var(--color-sand);
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-content {
+            text-align: center;
+            color: white;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .result-container {
+                padding: 2rem 1.5rem;
+            }
+
+            .result-card {
+                padding: 2.5rem 2rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .action-buttons,
+            .btn {
+                display: none !important;
+            }
+        }
+
+        /* Comparison Analysis Styles */
+        .comparison-analysis {
+            margin-top: 3rem;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .comparison-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 3px solid var(--color-sand);
+            text-align: center;
+        }
+
+        .comparison-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .comparison-icon {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .comparison-header h4 {
+            font-size: 1.1rem;
+            color: var(--color-slate);
+            font-weight: 400;
+        }
+
+        .comparison-season {
+            font-size: 1.8rem;
+            font-family: var(--font-display);
+            color: var(--color-black);
+            margin-bottom: 0.5rem;
+        }
+
+        .comparison-type {
+            color: var(--color-slate);
+            font-style: italic;
+        }
+
+        .comparison-confidence {
+            color: var(--color-accent);
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .match-status {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            border: 3px solid;
+        }
+
+        .match-status.match {
+            border-color: #4CAF50;
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.05) 0%, white 100%);
+        }
+
+        .match-status.mismatch {
+            border-color: #FF9800;
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.05) 0%, white 100%);
+        }
+
+        .match-icon {
+            font-size: 2rem;
+        }
+
+        .match-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--color-black);
+            margin: 0;
+        }
+
+        .detailed-analysis {
+            background: var(--color-cream);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .detail-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--color-black);
+            margin-bottom: 1.5rem;
+        }
+
+        .analysis-details {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--color-sand);
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 500;
+            color: var(--color-charcoal);
+        }
+
+        .detail-value {
+            color: var(--color-slate);
+            font-weight: 600;
+        }
+
+        .expert-opinion {
+            background: linear-gradient(135deg, rgba(157, 139, 124, 0.08) 0%, white 100%);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 3px solid var(--color-accent);
+            margin-bottom: 2rem;
+        }
+
+        .expert-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--color-black);
+            margin-bottom: 1.5rem;
+        }
+
+        .opinion-content p {
+            margin-bottom: 1rem;
+            line-height: 1.8;
+            color: var(--color-slate);
+        }
+
+        .opinion-content strong {
+            color: var(--color-black);
+        }
+
+        .compromise-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 3px solid var(--color-accent-light);
+            margin-top: 2rem;
+        }
+
+        .compromise-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--color-black);
+            margin-bottom: 1rem;
+        }
+
+        .compromise-intro {
+            color: var(--color-slate);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .compromise-palette {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .compromise-color {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .compromise-color:hover {
+            transform: scale(1.1);
+        }
+
+        .compromise-tips {
+            background: var(--color-cream);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .compromise-tips p {
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--color-black);
+        }
+
+        .compromise-tips ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .compromise-tips li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--color-slate);
+        }
+
+        .compromise-tips li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--color-accent);
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .compromise-palette {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p>PDF를 생성하는 중입니다...</p>
+        </div>
+    </div>
+
+    <section class="hero-section" style="min-height: auto; padding: 2rem;">
+        <div class="result-container">
+            <div class="result-header">
+                <p class="welcome-subtitle">Personal Color Analysis Result</p>
+                <h1 class="result-title">진단 결과</h1>
+                <p class="result-subtitle">당신의 퍼스널 컬러를 확인하세요</p>
+            </div>
+
+            <div class="result-card" id="resultCard">
+                <!-- Season Result -->
+                <div class="season-result">
+                    <span class="season-icon-large" id="seasonIcon">🌸</span>
+                    <h2 class="season-name-large" id="seasonName">봄 웜톤</h2>
+                    <p class="season-type-large" id="seasonType">Spring Warm</p>
+                    <p class="season-description-large" id="seasonDescription">
+                        밝고 화사한 따뜻한 톤이 당신에게 가장 잘 어울립니다.
+                    </p>
+                </div>
+
+                <!-- Color Palette -->
+                <div class="color-palette">
+                    <h3 class="palette-title">추천 컬러 팔레트</h3>
+                    <div class="palette-grid" id="paletteGrid">
+                        <!-- Colors will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Recommendations -->
+                <div class="recommendations">
+                    <div class="recommendation-section">
+                        <h4 class="recommendation-title">
+                            <span>👗</span>
+                            의류 추천
+                        </h4>
+                        <div class="recommendation-content">
+                            <ul class="recommendation-list" id="clothingRec"></ul>
+                        </div>
+                    </div>
+
+                    <div class="recommendation-section">
+                        <h4 class="recommendation-title">
+                            <span>💄</span>
+                            메이크업 추천
+                        </h4>
+                        <div class="recommendation-content">
+                            <ul class="recommendation-list" id="makeupRec"></ul>
+                        </div>
+                    </div>
+
+                    <div class="recommendation-section">
+                        <h4 class="recommendation-title">
+                            <span>💎</span>
+                            액세서리 추천
+                        </h4>
+                        <div class="recommendation-content">
+                            <ul class="recommendation-list" id="accessoryRec"></ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Summary -->
+                <div class="data-summary">
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <p class="summary-label">선호 스타일</p>
+                            <p class="summary-value" id="styleSummary">-</p>
+                        </div>
+                        <div class="summary-item">
+                            <p class="summary-label">예상 퍼컬</p>
+                            <p class="summary-value" id="expectedSummary">-</p>
+                        </div>
+                        <div class="summary-item">
+                            <p class="summary-label">평균 피부톤</p>
+                            <p class="summary-value" id="rgbSummary">-</p>
+                        </div>
+                        <div class="summary-item">
+                            <p class="summary-label">최종 선택</p>
+                            <p class="summary-value" id="finalSeasonSummary">-</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="downloadPDF()">
+                    <span>📄 PDF 다운로드</span>
+                </button>
+                <button class="btn btn-secondary" onclick="restartDiagnosis()">
+                    <span>🔄 다시 진단하기</span>
+                </button>
+                <button class="btn btn-secondary" onclick="goHome()">
+                    <span>🏠 홈으로</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const seasonData = {
+            spring: {
+                icon: '🌸',
+                name: '봄 웜톤',
+                type: 'Spring Warm',
+                description: '밝고 화사한 따뜻한 톤이 당신에게 가장 잘 어울립니다. 생기 넘치는 컬러로 자연스러운 화사함을 표현하세요.',
+                colors: ['#FFB399', '#FFD93D', '#FFB6C1', '#FFE4B5', '#FFDAB9', '#FFA07A'],
+                clothing: ['피치, 코랄 컬러의 상의', '아이보리, 크림 컬러 셔츠', '연한 카키, 민트 그린', '밝은 톤의 데님'],
+                makeup: ['코랄 핑크 립스틱', '피치 블러셔', '골드 아이섀도우', '브라운 계열 아이라이너'],
+                accessory: ['골드 주얼리', '따뜻한 톤의 가죽 소품', '밝은 색상의 스카프']
+            },
+            summer: {
+                icon: '🌊',
+                name: '여름 쿨톤',
+                type: 'Summer Cool',
+                description: '부드럽고 우아한 시원한 톤이 당신에게 가장 잘 어울립니다. 은은하고 세련된 컬러로 품격을 더하세요.',
+                colors: ['#B0C4DE', '#DDA0DD', '#FFB3D9', '#B0E0E6', '#D8BFD8', '#E6E6FA'],
+                clothing: ['라벤더, 소프트 핑크 블라우스', '그레이, 네이비 계열', '파스텔 블루 데님', '실버 그레이 니트'],
+                makeup: ['로즈 핑크 립스틱', '라벤더 아이섀도우', '실버 하이라이터', '쿨톤 브라운 마스카라'],
+                accessory: ['실버 주얼리', '펄 액세서리', '시원한 톤의 스카프']
+            },
+            autumn: {
+                icon: '🍁',
+                name: '가을 웜톤',
+                type: 'Autumn Warm',
+                description: '깊고 풍성한 따뜻한 톤이 당신에게 가장 잘 어울립니다. 자연스러운 깊이감으로 고급스러움을 연출하세요.',
+                colors: ['#D2691E', '#CD853F', '#A0522D', '#8B4513', '#DEB887', '#BC8F8F'],
+                clothing: ['테라코타, 버건디 니트', '카키, 올리브 그린 아우터', '머스타드 옐로우', '초콜릿 브라운'],
+                makeup: ['브릭 레드 립스틱', '테라코타 블러셔', '브론즈 아이섀도우', '다크 브라운 아이라이너'],
+                accessory: ['골드 주얼리', '가죽 소품', '따뜻한 브라운 벨트']
+            },
+            winter: {
+                icon: '❄️',
+                name: '겨울 쿨톤',
+                type: 'Winter Cool',
+                description: '선명하고 강렬한 시원한 톤이 당신에게 가장 잘 어울립니다. 뚜렷한 대비로 카리스마를 표현하세요.',
+                colors: ['#000080', '#4169E1', '#0000CD', '#191970', '#DC143C', '#FF1493'],
+                clothing: ['퓨어 화이트, 블랙', '로얄 블루, 네이비', '에메랄드 그린', '자주색, 와인'],
+                makeup: ['퓨시아 핑크 립스틱', '쿨톤 레드 립', '실버 아이섀도우', '블랙 아이라이너'],
+                accessory: ['실버, 화이트 골드 주얼리', '블랙 가죽 소품', '선명한 컬러의 스카프']
+            }
+        };
+
+        // RGB 값으로 퍼스널 컬러 분석
+        function analyzeColorFromRGB(r, g, b) {
+            // 1. 명도 계산 (밝기)
+            const brightness = (r + g + b) / 3;
+            
+            // 2. 언더톤 계산 (웜/쿨)
+            const warmScore = (r - b) + (r - g) * 0.5;
+            const isWarm = warmScore > 0;
+            
+            // 3. 채도 계산
+            const max = Math.max(r, g, b);
+            const min = Math.min(r, g, b);
+            const saturation = max - min;
+            
+            // 4. 계절 판단
+            let season;
+            let confidence;
+            
+            if (isWarm) {
+                if (brightness > 160 && saturation > 40) {
+                    season = 'spring';
+                    confidence = Math.min(95, 70 + (brightness - 160) / 2 + saturation / 4);
+                } else {
+                    season = 'autumn';
+                    confidence = Math.min(95, 70 + (200 - brightness) / 3 + saturation / 3);
+                }
+            } else {
+                if (brightness > 160 && saturation < 60) {
+                    season = 'summer';
+                    confidence = Math.min(95, 70 + (brightness - 160) / 2 + (80 - saturation) / 2);
+                } else {
+                    season = 'winter';
+                    confidence = Math.min(95, 70 + saturation / 2 + Math.abs(brightness - 140) / 2);
+                }
+            }
+            
+            return {
+                season: season,
+                confidence: Math.round(confidence),
+                isWarm: isWarm,
+                brightness: Math.round(brightness),
+                saturation: Math.round(saturation)
+            };
+        }
+
+        function loadResult() {
+            const savedData = JSON.parse(localStorage.getItem('personalColorData') || '{}');
+            const userChoice = savedData.finalSeason || 'spring';
+            
+            // 측색기 분석
+            let colormeterAnalysis = null;
+            if (savedData.colorimeter && savedData.colorimeter.average) {
+                const rgb = savedData.colorimeter.average;
+                colormeterAnalysis = analyzeColorFromRGB(rgb.r, rgb.g, rgb.b);
+            }
+            
+            // 최종 결과 결정 (사용자 선택 우선)
+            const finalSeason = userChoice;
+            const data = seasonData[finalSeason];
+
+            // Season info
+            document.getElementById('seasonIcon').textContent = data.icon;
+            document.getElementById('seasonName').textContent = data.name;
+            document.getElementById('seasonType').textContent = data.type;
+            document.getElementById('seasonDescription').textContent = data.description;
+
+            // Color palette
+            const paletteGrid = document.getElementById('paletteGrid');
+            data.colors.forEach(color => {
+                const colorDiv = document.createElement('div');
+                colorDiv.className = 'palette-color';
+                colorDiv.style.backgroundColor = color;
+                paletteGrid.appendChild(colorDiv);
+            });
+
+            // Recommendations
+            const clothingList = document.getElementById('clothingRec');
+            data.clothing.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                clothingList.appendChild(li);
+            });
+
+            const makeupList = document.getElementById('makeupRec');
+            data.makeup.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                makeupList.appendChild(li);
+            });
+
+            const accessoryList = document.getElementById('accessoryRec');
+            data.accessory.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                accessoryList.appendChild(li);
+            });
+
+            // Summary
+            const styleNames = { elegant: '우아한', casual: '캐주얼', modern: '모던', unique: '개성있는' };
+            document.getElementById('styleSummary').textContent = styleNames[savedData.style] || '-';
+
+            const expectedNames = { spring: '봄 웜톤', summer: '여름 쿨톤', autumn: '가을 웜톤', winter: '겨울 쿨톤', unsure: '잘 모름' };
+            document.getElementById('expectedSummary').textContent = expectedNames[savedData.expected] || '-';
+
+            if (savedData.colorimeter && savedData.colorimeter.average) {
+                const rgb = savedData.colorimeter.average;
+                document.getElementById('rgbSummary').textContent = `RGB(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+            }
+
+            const seasonNames = { spring: '봄 웜톤', summer: '여름 쿨톤', autumn: '가을 웜톤', winter: '겨울 쿨톤' };
+            document.getElementById('finalSeasonSummary').textContent = seasonNames[userChoice] || '-';
+            
+            // 비교 분석 추가
+            if (colormeterAnalysis) {
+                addComparisonAnalysis(userChoice, colormeterAnalysis, savedData);
+            }
+        }
+
+        function addComparisonAnalysis(userChoice, colormeterAnalysis, savedData) {
+            const resultCard = document.getElementById('resultCard');
+            const expectedNames = { spring: '봄 웜톤', summer: '여름 쿨톤', autumn: '가을 웜톤', winter: '겨울 쿨톤', unsure: '잘 모름' };
+            
+            // 비교 분석 섹션 생성
+            const comparisonSection = document.createElement('div');
+            comparisonSection.className = 'comparison-analysis';
+            comparisonSection.innerHTML = `
+                <h3 class="analysis-title" style="margin-top: 3rem; margin-bottom: 2rem;">📊 종합 분석</h3>
+                
+                <!-- 사용자 선택 vs 측색기 분석 -->
+                <div class="comparison-grid">
+                    <div class="comparison-card user-choice">
+                        <div class="comparison-header">
+                            <span class="comparison-icon">✋</span>
+                            <h4>당신의 선택</h4>
+                        </div>
+                        <div class="comparison-result">
+                            <p class="comparison-season">${seasonData[userChoice].name}</p>
+                            <p class="comparison-type">${seasonData[userChoice].type}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="comparison-card colorimeter-analysis">
+                        <div class="comparison-header">
+                            <span class="comparison-icon">📱</span>
+                            <h4>측색기 분석</h4>
+                        </div>
+                        <div class="comparison-result">
+                            <p class="comparison-season">${seasonData[colormeterAnalysis.season].name}</p>
+                            <p class="comparison-confidence">신뢰도: ${colormeterAnalysis.confidence}%</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 일치 여부 -->
+                <div class="match-status ${userChoice === colormeterAnalysis.season ? 'match' : 'mismatch'}">
+                    <span class="match-icon">${userChoice === colormeterAnalysis.season ? '✅' : '⚠️'}</span>
+                    <p class="match-text">
+                        ${userChoice === colormeterAnalysis.season 
+                            ? '당신의 선택과 측색기 분석이 일치합니다!' 
+                            : '당신의 선택과 측색기 분석이 다릅니다.'}
+                    </p>
+                </div>
+                
+                <!-- 상세 분석 -->
+                <div class="detailed-analysis">
+                    <h4 class="detail-title">🔍 상세 분석</h4>
+                    <div class="analysis-details">
+                        <div class="detail-item">
+                            <span class="detail-label">피부 명도:</span>
+                            <span class="detail-value">${colormeterAnalysis.brightness}/255 ${colormeterAnalysis.brightness > 160 ? '(밝음)' : '(어두움)'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">언더톤:</span>
+                            <span class="detail-value">${colormeterAnalysis.isWarm ? '웜톤' : '쿨톤'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">채도:</span>
+                            <span class="detail-value">${colormeterAnalysis.saturation}/255 ${colormeterAnalysis.saturation > 50 ? '(높음)' : '(낮음)'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">예상했던 퍼컬:</span>
+                            <span class="detail-value">${savedData.expected ? (expectedNames[savedData.expected] || '-') : '-'}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 전문가 의견 -->
+                <div class="expert-opinion">
+                    <h4 class="expert-title">💡 THE COVE 전문가 의견</h4>
+                    <div class="opinion-content">
+                        ${generateExpertOpinion(userChoice, colormeterAnalysis, savedData)}
+                    </div>
+                </div>
+                
+                ${userChoice !== colormeterAnalysis.season ? generateCompromise(userChoice, colormeterAnalysis.season) : ''}
+            `;
+            
+            // 데이터 요약 바로 앞에 삽입
+            const dataSummary = resultCard.querySelector('.data-summary');
+            resultCard.insertBefore(comparisonSection, dataSummary);
+        }
+
+        function generateExpertOpinion(userChoice, analysis, savedData) {
+            const isMatch = userChoice === analysis.season;
+            
+            if (isMatch) {
+                return `
+                    <p><strong>축하합니다!</strong> 당신의 직관과 측색기 분석이 완벽하게 일치합니다.</p>
+                    <p>측색기 데이터(명도: ${analysis.brightness}, 채도: ${analysis.saturation})가 
+                    <strong>${seasonData[userChoice].name}</strong>을 명확히 지지합니다.</p>
+                    <p>신뢰도 ${analysis.confidence}%로 매우 높은 정확도를 보이고 있습니다. 자신감을 가지고 추천 컬러 팔레트를 활용하세요!</p>
+                `;
+            }
+            
+            const userTone = userChoice === 'spring' || userChoice === 'autumn' ? 'warm' : 'cool';
+            const analysisTone = analysis.isWarm ? 'warm' : 'cool';
+            
+            if (userTone === analysisTone) {
+                // 같은 톤이지만 다른 계절
+                return `
+                    <p>당신의 선택과 측색기 분석 모두 <strong>${userTone === 'warm' ? '웜톤' : '쿨톤'}</strong>을 가리킵니다.</p>
+                    <p>다만 명도(${analysis.brightness})와 채도(${analysis.saturation})의 차이로 
+                    ${seasonData[userChoice].name}과 ${seasonData[analysis.season].name} 사이에서 
+                    고민이 있을 수 있습니다.</p>
+                    <p>두 계절 모두 같은 톤이므로, 양쪽의 컬러를 모두 시도해보시는 것을 추천합니다. 
+                    특히 타협안 컬러 팔레트가 당신에게 가장 잘 어울릴 것입니다.</p>
+                `;
+            } else {
+                // 다른 톤
+                return `
+                    <p>흥미롭게도 당신의 선택(${seasonData[userChoice].name})과 측색기 분석(${seasonData[analysis.season].name})이 
+                    <strong>웜/쿨 톤에서 차이</strong>를 보입니다.</p>
+                    <p>측색기는 명도 ${analysis.brightness}, 채도 ${analysis.saturation}을 기반으로 
+                    ${analysis.isWarm ? '웜톤' : '쿨톤'}을 제시했지만, 당신은 ${userChoice === 'spring' || userChoice === 'autumn' ? '웜톤' : '쿨톤'}을 선택했습니다.</p>
+                    <p>이런 경우, <strong>당신의 선택</strong>이 더 중요합니다. 
+                    거울을 보고 직접 느낀 당신의 판단을 신뢰하세요. 
+                    다만 타협안 컬러도 시도해보면 새로운 발견이 있을 수 있습니다.</p>
+                `;
+            }
+        }
+
+        function generateCompromise(userChoice, analysisSeason) {
+            const compromiseColors = getCompromiseColors(userChoice, analysisSeason);
+            
+            return `
+                <div class="compromise-section">
+                    <h4 class="compromise-title">🎨 타협안: 두 계절의 조화</h4>
+                    <p class="compromise-intro">
+                        ${seasonData[userChoice].name}과 ${seasonData[analysisSeason].name}의 
+                        공통 영역에서 가장 잘 어울리는 컬러들입니다.
+                    </p>
+                    <div class="compromise-palette">
+                        ${compromiseColors.map(color => `
+                            <div class="compromise-color" style="background: ${color};"></div>
+                        `).join('')}
+                    </div>
+                    <div class="compromise-tips">
+                        <p><strong>활용 팁:</strong></p>
+                        <ul>
+                            <li>${seasonData[userChoice].name} 컬러를 메인으로 사용</li>
+                            <li>타협안 컬러로 포인트 주기</li>
+                            <li>${seasonData[analysisSeason].name} 컬러는 액세서리로 활용</li>
+                            <li>상황에 따라 유연하게 믹스 매치</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getCompromiseColors(season1, season2) {
+            const compromises = {
+                'spring-summer': ['#FFB6D9', '#B3E5DD', '#FFD4B3', '#C8B3E6'],
+                'spring-autumn': ['#FFD4A3', '#E6C8A3', '#FFB38F', '#D4AF9A'],
+                'spring-winter': ['#FFB3D9', '#E6B3FF', '#FF99CC', '#CC99FF'],
+                'summer-autumn': ['#C8AF9A', '#B3A89A', '#A89ABF', '#9A8FB3'],
+                'summer-winter': ['#B3C8E6', '#A3B3D9', '#C8B3E6', '#B3A3D9'],
+                'autumn-winter': ['#8B7A73', '#9A8A83', '#8B738A', '#9A8399']
+            };
+            
+            const key1 = `${season1}-${season2}`;
+            const key2 = `${season2}-${season1}`;
+            
+            return compromises[key1] || compromises[key2] || ['#C8C8C8', '#B3B3B3', '#A8A8A8', '#9A9A9A'];
+        }
+
+        async function downloadPDF() {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            loadingOverlay.style.display = 'flex';
+
+            try {
+                const { jsPDF } = window.jspdf;
+                const resultCard = document.getElementById('resultCard');
+
+                // Capture the result card as canvas
+                const canvas = await html2canvas(resultCard, {
+                    scale: 2,
+                    useCORS: true,
+                    logging: false,
+                    backgroundColor: '#ffffff'
+                });
+
+                // Create PDF
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+
+                const imgWidth = 210; // A4 width in mm
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+                pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                pdf.save('THE_COVE_Personal_Color_Result.pdf');
+
+            } catch (error) {
+                console.error('PDF 생성 오류:', error);
+                alert('PDF 생성 중 오류가 발생했습니다.');
+            } finally {
+                loadingOverlay.style.display = 'none';
+            }
+        }
+
+        function restartDiagnosis() {
+            if (confirm('진단을 처음부터 다시 시작하시겠습니까?')) {
+                localStorage.removeItem('personalColorData');
+                window.location.href = 'pcolor1.html';
+            }
+        }
+
+        function goHome() {
+            window.location.href = 'index.html';
+        }
+
+        window.onload = loadResult;
+    </script>
+</body>
+</html>
