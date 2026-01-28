@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE COVE - 측색기 값 입력</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Additional styles for colorimeter page */
+        .diagnosis-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: var(--color-sand);
+            border-radius: 2px;
+            margin-bottom: 3rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-accent), var(--color-accent-light));
+            width: 40%;
+            transition: width 0.5s ease;
+        }
+
+        .step-number {
+            font-family: var(--font-body);
+            font-size: 0.875rem;
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--color-accent);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .question-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .instruction-text {
+            text-align: center;
+            color: var(--color-slate);
+            font-size: 1rem;
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+
+        .colorimeter-guide {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            margin-bottom: 3rem;
+            border: 3px solid var(--color-sand);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .guide-title {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            color: var(--color-black);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .guide-icon {
+            font-size: 1.5rem;
+        }
+
+        .guide-steps {
+            list-style: none;
+            padding: 0;
+        }
+
+        .guide-steps li {
+            padding: 1rem 0;
+            padding-left: 2.5rem;
+            position: relative;
+            color: var(--color-slate);
+            border-bottom: 1px solid var(--color-sand);
+        }
+
+        .guide-steps li:last-child {
+            border-bottom: none;
+        }
+
+        .guide-steps li::before {
+            content: attr(data-step);
+            position: absolute;
+            left: 0;
+            width: 28px;
+            height: 28px;
+            background: var(--color-accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .input-section {
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            border: 3px solid var(--color-sand);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 3rem;
+        }
+
+        .input-group {
+            margin-bottom: 2rem;
+        }
+
+        .input-label {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--color-charcoal);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .input-sublabel {
+            font-size: 0.9rem;
+            color: var(--color-slate);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .color-input-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .color-input-wrapper {
+            position: relative;
+        }
+
+        .color-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--color-charcoal);
+            margin-bottom: 0.5rem;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .color-input {
+            width: 100%;
+            padding: 1.2rem;
+            border: 3px solid var(--color-sand);
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--color-charcoal);
+            text-align: center;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .color-input:focus {
+            outline: none;
+            border-color: var(--color-accent);
+            box-shadow: 0 5px 20px rgba(157, 139, 124, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .color-input.red { border-color: #ffcccb; }
+        .color-input.red:focus { border-color: #ff6b6b; }
+
+        .color-input.green { border-color: #d4edda; }
+        .color-input.green:focus { border-color: #4caf50; }
+
+        .color-input.blue { border-color: #cce5ff; }
+        .color-input.blue:focus { border-color: #2196f3; }
+
+        .color-preview {
+            width: 100%;
+            height: 120px;
+            border-radius: 12px;
+            border: 3px solid var(--color-sand);
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-slate);
+            font-size: 0.9rem;
+        }
+
+        .measurement-area {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .measurement-section {
+            background: var(--color-cream);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 3px solid var(--color-sand);
+            transition: all 0.3s ease;
+        }
+
+        .measurement-section:hover {
+            border-color: var(--color-accent);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .measurement-title {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            color: var(--color-black);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .measurement-icon {
+            font-size: 1.8rem;
+        }
+
+        .mini-preview {
+            width: 100%;
+            height: 60px;
+            border-radius: 8px;
+            border: 2px solid var(--color-sand);
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            color: var(--color-slate);
+            transition: all 0.3s ease;
+        }
+
+        .average-result {
+            background: linear-gradient(135deg, rgba(157, 139, 124, 0.08) 0%, white 100%);
+            padding: 2.5rem;
+            border-radius: 12px;
+            border: 4px solid var(--color-accent);
+            margin-top: 3rem;
+            box-shadow: 0 10px 30px rgba(157, 139, 124, 0.15);
+        }
+
+        .average-title {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            color: var(--color-black);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            justify-content: center;
+        }
+
+        .average-icon {
+            font-size: 2rem;
+        }
+
+        .average-values {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--color-charcoal);
+            margin-bottom: 1.5rem;
+            font-family: monospace;
+            letter-spacing: 0.1em;
+        }
+
+        .area-card {
+            background: var(--color-cream);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid var(--color-sand);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .area-card:hover {
+            border-color: var(--color-accent);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .area-card.selected {
+            border-color: var(--color-accent);
+            border-width: 3px;
+            background: white;
+        }
+
+        .area-card.selected::before {
+            content: '✓';
+            float: right;
+            width: 24px;
+            height: 24px;
+            background: var(--color-accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .area-name {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--color-black);
+            margin-bottom: 0.5rem;
+        }
+
+        .area-description {
+            font-size: 0.85rem;
+            color: var(--color-slate);
+            line-height: 1.5;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 3rem;
+        }
+
+        .btn {
+            padding: 1.2rem 3rem;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-charcoal);
+            border: 2px solid var(--color-sand);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--color-accent);
+            background: var(--color-sand);
+        }
+
+        .btn-primary {
+            background: var(--color-black);
+            color: var(--color-cream);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: var(--color-accent);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .btn-primary:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .helper-text {
+            text-align: center;
+            color: var(--color-slate);
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            font-style: italic;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .diagnosis-container {
+                padding: 2rem 1.5rem;
+            }
+
+            .color-input-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .measurement-area {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .input-section,
+            .colorimeter-guide {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero-section" style="min-height: auto; padding: 2rem;">
+        <div class="diagnosis-container">
+            <!-- Progress Bar -->
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <p class="step-number">Step 2 of 5</p>
+
+            <h2 class="question-title">측색기로 피부톤을 측정해주세요</h2>
+            <p class="instruction-text">
+                측색기를 피부에 대고 RGB 값을 측정한 후<br>
+                아래에 입력해주세요
+            </p>
+
+            <!-- Colorimeter Guide -->
+            <div class="colorimeter-guide">
+                <h3 class="guide-title">
+                    <span class="guide-icon">📱</span>
+                    측색기 사용 방법
+                </h3>
+                <ul class="guide-steps">
+                    <li data-step="1">측색기 전원을 켜고 영점 조정을 합니다</li>
+                    <li data-step="2">측정할 피부 부위를 깨끗하게 닦습니다</li>
+                    <li data-step="3">측색기를 피부에 수직으로 가볍게 댑니다</li>
+                    <li data-step="4">측정 버튼을 누르고 RGB 값을 확인합니다</li>
+                    <li data-step="5">아래 입력란에 측정된 값을 입력합니다</li>
+                </ul>
+            </div>
+
+            <!-- Measurement Areas - All 3 -->
+            <div class="input-section">
+                <div class="input-group">
+                    <label class="input-label">3개 부위를 모두 측정해주세요</label>
+                    <p class="input-sublabel">각 부위를 측정하여 입력하면 자동으로 평균값이 계산됩니다</p>
+                </div>
+
+                <!-- Forehead Measurement -->
+                <div class="measurement-section">
+                    <h3 class="measurement-title">
+                        <span class="measurement-icon">1️⃣</span>
+                        이마 중앙
+                    </h3>
+                    
+                    <div class="color-input-grid">
+                        <div class="color-input-wrapper">
+                            <label class="color-label">R (Red)</label>
+                            <input 
+                                type="number" 
+                                class="color-input red" 
+                                id="forehead_r"
+                                min="0" 
+                                max="255" 
+                                placeholder="0"
+                                oninput="updateAverages()"
+                            >
+                        </div>
+                        
+                        <div class="color-input-wrapper">
+                            <label class="color-label">G (Green)</label>
+                            <input 
+                                type="number" 
+                                class="color-input green" 
+                                id="forehead_g"
+                                min="0" 
+                                max="255" 
+                                placeholder="0"
+                                oninput="updateAverages()"
+                            >
+                        </div>
+                        
+                        <div class="color-input-wrapper">
+                            <label class="color-label">B (Blue)</label>
+                            <input 
+                                type="number" 
+                                class="color-input blue" 
+                                id="forehead_b"
+                                min="0" 
+                                max="255" 
+                                placeholder="0"
+                                oninput="updateAverages()"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="mini-preview" id="preview_forehead">
+                        측정 대기 중...
+                    </div>
+                </div>
+
+                <!-- Cheek Measurement -->
+                <div class="measurement-section">
+                    <h3 class="measurement-title">
+                        <span class="measurement-icon">2️⃣</span>
+                        볼
+                    </h3>
+                    
+                    <div class="color-input-grid">
+                        <div class="color-input-wrapper">
+                            <label class="color-label">R (Red)</label>
+                            <input 
+                                type="number" 
+                                class="color-input red" 
+                                id="cheek_r"
+                                min="0" 
+                                max="255" 
+                                placeholder="0"
+                                oninput="updateAverages()"
+                            >
+                        </div>
+                        
+                        <div class="color-input-wrapper">
+                            <label class="color-label">G (Green)</label>
+                            <input 
+                                type="number" 
+                                class="color-input green" 
+                                id="cheek_g"
+                                min="0" 
+                                max="255" 
+                                placeholder="0"
+                                oninput="updateAverages()"
+                            >
+                        </div>
+                        
+                        <div class="color-input-wrapper">
+                            <label class="color-label">B (Blue)</label>
+                            <input 
+                                type="number" 
+                                class="color-input blue" 
+                                id="cheek_b"
+                                min="0" 
+                                max="255" 
+                                placeholder="0"
+                                oninput="updateAverages()"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="mini-preview" id="preview_cheek">
+                        측정 대기 중...
+                    </div>
+                </div>
+
+                <!-- Jawline Measurement -->
+                <div class="measurement-section">
+                    <h3 class="measurement-title">
+                        <span class="measurement-icon">3️⃣</span>
+                        턱선
+                    </h3>
+                    
+                    <div class="color-input-grid">
+                        <div class="color-input-wrapper">
+                            <label class="color-label">R (Red)</label>
+                            <input 
+                                type="number" 
+                                class="color-input red" 
+                                id="jawline_r"
+                                min="0" 
+                                max="255" 
+                                placeholder="0"
+                                oninput="updateAverages()"
+                            >
+                        </div>
+                        
+                        <div class="color-input-wrapper">
+                            <label class="color-label">G (Green)</label>
+                            <input 
+                                type="number" 
+                                class="color-input green" 
+                                id="jawline_g"
+                                min="0" 
+                                max="255" 
+                                placeholder="0"
+                                oninput="updateAverages()"
+                            >
+                        </div>
+                        
+                        <div class="color-input-wrapper">
+                            <label class="color-label">B (Blue)</label>
+                            <input 
+                                type="number" 
+                                class="color-input blue" 
+                                id="jawline_b"
+                                min="0" 
+                                max="255" 
+                                placeholder="0"
+                                oninput="updateAverages()"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="mini-preview" id="preview_jawline">
+                        측정 대기 중...
+                    </div>
+                </div>
+
+                <!-- Average Result -->
+                <div class="average-result">
+                    <h3 class="average-title">
+                        <span class="average-icon">📊</span>
+                        평균 피부톤
+                    </h3>
+                    <div class="average-values" id="averageValues">
+                        R: - / G: - / B: -
+                    </div>
+                    <div class="color-preview" id="colorPreview">
+                        3개 부위를 모두 측정하면 평균값이 표시됩니다
+                    </div>
+                    
+                    <p class="helper-text">
+                        💡 Tip: 각 부위를 2-3회 측정하여 평균값을 입력하면 더 정확합니다
+                    </p>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="button-group">
+                <button class="btn btn-secondary" onclick="goBack()">
+                    <span>이전</span>
+                </button>
+                <button class="btn btn-primary" id="nextBtn" onclick="goNext()" disabled>
+                    <span>다음</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        let measurementData = {
+            forehead: { r: null, g: null, b: null },
+            cheek: { r: null, g: null, b: null },
+            jawline: { r: null, g: null, b: null },
+            average: { r: null, g: null, b: null }
+        };
+
+        function updateAverages() {
+            // Get all values
+            const forehead_r = parseInt(document.getElementById('forehead_r').value) || 0;
+            const forehead_g = parseInt(document.getElementById('forehead_g').value) || 0;
+            const forehead_b = parseInt(document.getElementById('forehead_b').value) || 0;
+
+            const cheek_r = parseInt(document.getElementById('cheek_r').value) || 0;
+            const cheek_g = parseInt(document.getElementById('cheek_g').value) || 0;
+            const cheek_b = parseInt(document.getElementById('cheek_b').value) || 0;
+
+            const jawline_r = parseInt(document.getElementById('jawline_r').value) || 0;
+            const jawline_g = parseInt(document.getElementById('jawline_g').value) || 0;
+            const jawline_b = parseInt(document.getElementById('jawline_b').value) || 0;
+
+            // Update mini previews
+            updateMiniPreview('forehead', forehead_r, forehead_g, forehead_b);
+            updateMiniPreview('cheek', cheek_r, cheek_g, cheek_b);
+            updateMiniPreview('jawline', jawline_r, jawline_g, jawline_b);
+
+            // Save individual measurements
+            measurementData.forehead = { r: forehead_r, g: forehead_g, b: forehead_b };
+            measurementData.cheek = { r: cheek_r, g: cheek_g, b: cheek_b };
+            measurementData.jawline = { r: jawline_r, g: jawline_g, b: jawline_b };
+
+            // Check if all areas are measured
+            const allMeasured = 
+                forehead_r > 0 && forehead_g > 0 && forehead_b > 0 &&
+                cheek_r > 0 && cheek_g > 0 && cheek_b > 0 &&
+                jawline_r > 0 && jawline_g > 0 && jawline_b > 0;
+
+            if (allMeasured) {
+                // Calculate averages
+                const avg_r = Math.round((forehead_r + cheek_r + jawline_r) / 3);
+                const avg_g = Math.round((forehead_g + cheek_g + jawline_g) / 3);
+                const avg_b = Math.round((forehead_b + cheek_b + jawline_b) / 3);
+
+                measurementData.average = { r: avg_r, g: avg_g, b: avg_b };
+
+                // Update display
+                document.getElementById('averageValues').textContent = 
+                    `R: ${avg_r} / G: ${avg_g} / B: ${avg_b}`;
+
+                const preview = document.getElementById('colorPreview');
+                preview.style.backgroundColor = `rgb(${avg_r}, ${avg_g}, ${avg_b})`;
+                preview.textContent = `평균 피부톤: RGB(${avg_r}, ${avg_g}, ${avg_b})`;
+                preview.style.color = (avg_r + avg_g + avg_b) / 3 > 128 ? '#333' : '#fff';
+                preview.style.fontWeight = '600';
+                preview.style.fontSize = '1.1rem';
+
+                // Enable next button
+                document.getElementById('nextBtn').disabled = false;
+            } else {
+                // Reset average display
+                document.getElementById('averageValues').textContent = 'R: - / G: - / B: -';
+                const preview = document.getElementById('colorPreview');
+                preview.style.backgroundColor = 'transparent';
+                preview.textContent = '3개 부위를 모두 측정하면 평균값이 표시됩니다';
+                preview.style.color = 'var(--color-slate)';
+                preview.style.fontWeight = 'normal';
+                preview.style.fontSize = '0.9rem';
+
+                // Disable next button
+                document.getElementById('nextBtn').disabled = true;
+            }
+        }
+
+        function updateMiniPreview(area, r, g, b) {
+            const preview = document.getElementById(`preview_${area}`);
+            
+            if (r > 0 || g > 0 || b > 0) {
+                preview.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+                preview.textContent = `RGB(${r}, ${g}, ${b})`;
+                preview.style.color = (r + g + b) / 3 > 128 ? '#333' : '#fff';
+                preview.style.fontWeight = '500';
+            } else {
+                preview.style.backgroundColor = 'transparent';
+                preview.textContent = '측정 대기 중...';
+                preview.style.color = 'var(--color-slate)';
+                preview.style.fontWeight = 'normal';
+            }
+        }
+
+        function goNext() {
+            // Save data to localStorage
+            let savedData = JSON.parse(localStorage.getItem('personalColorData') || '{}');
+            savedData.colorimeter = measurementData;
+            localStorage.setItem('personalColorData', JSON.stringify(savedData));
+            
+            // Move to next step
+            alert(`측색기 값이 저장되었습니다!\n평균 피부톤: RGB(${measurementData.average.r}, ${measurementData.average.g}, ${measurementData.average.b})\n\n다음 단계: 천 가져다 대기`);
+            // window.location.href = 'step3-fabric.html';
+        }
+
+        function goBack() {
+            window.location.href = 'pcolor1.html';
+        }
+
+        // Load saved data if exists
+        window.onload = function() {
+            const savedData = JSON.parse(localStorage.getItem('personalColorData') || '{}');
+            if (savedData.colorimeter) {
+                const data = savedData.colorimeter;
+                
+                // Restore forehead values
+                if (data.forehead) {
+                    document.getElementById('forehead_r').value = data.forehead.r || '';
+                    document.getElementById('forehead_g').value = data.forehead.g || '';
+                    document.getElementById('forehead_b').value = data.forehead.b || '';
+                }
+                
+                // Restore cheek values
+                if (data.cheek) {
+                    document.getElementById('cheek_r').value = data.cheek.r || '';
+                    document.getElementById('cheek_g').value = data.cheek.g || '';
+                    document.getElementById('cheek_b').value = data.cheek.b || '';
+                }
+                
+                // Restore jawline values
+                if (data.jawline) {
+                    document.getElementById('jawline_r').value = data.jawline.r || '';
+                    document.getElementById('jawline_g').value = data.jawline.g || '';
+                    document.getElementById('jawline_b').value = data.jawline.b || '';
+                }
+                
+                updateAverages();
+            }
+        }
+    </script>
+</body>
+</html>
