@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE COVE - 퍼스널 컬러 진단 시작</title>
+    <title>THE COVE - 측색기 값 입력</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Additional styles for diagnosis page */
+        /* Additional styles for colorimeter page */
         .diagnosis-container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 3rem 2rem;
         }
@@ -25,7 +25,7 @@
         .progress-fill {
             height: 100%;
             background: linear-gradient(90deg, var(--color-accent), var(--color-accent-light));
-            width: 25%;
+            width: 33%;
             transition: width 0.5s ease;
         }
 
@@ -42,190 +42,313 @@
 
         .question-title {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 1.5rem;
             animation: fadeInUp 0.6s ease-out;
         }
 
-        .options-grid {
-            display: grid;
-            gap: 1.5rem;
+        .instruction-text {
+            text-align: center;
+            color: var(--color-slate);
+            font-size: 1rem;
             margin-bottom: 3rem;
+            line-height: 1.8;
         }
 
-        .option-card {
+        .colorimeter-guide {
             background: white;
             padding: 2.5rem;
+            border-radius: 12px;
+            margin-bottom: 3rem;
             border: 3px solid var(--color-sand);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .guide-title {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            color: var(--color-black);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .guide-icon {
+            font-size: 1.5rem;
+        }
+
+        .guide-steps {
+            list-style: none;
+            padding: 0;
+        }
+
+        .guide-steps li {
+            padding: 1rem 0;
+            padding-left: 2.5rem;
             position: relative;
-            animation: fadeInUp 0.8s ease-out;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            color: var(--color-slate);
+            border-bottom: 1px solid var(--color-sand);
         }
 
-        .option-card::before {
-            content: '';
+        .guide-steps li:last-child {
+            border-bottom: none;
+        }
+
+        .guide-steps li::before {
+            content: attr(data-step);
             position: absolute;
-            top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            border-radius: 12px;
-            background: linear-gradient(135deg, rgba(157, 139, 124, 0.08) 0%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            z-index: 0;
-        }
-
-        .option-card:hover {
-            border-color: var(--color-accent);
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(157, 139, 124, 0.2);
-        }
-
-        .option-card:hover::before {
-            opacity: 1;
-        }
-
-        .option-card.selected {
-            border-color: var(--color-accent);
-            border-width: 4px;
-            background: linear-gradient(135deg, rgba(157, 139, 124, 0.08) 0%, white 100%);
-            box-shadow: 0 15px 35px rgba(157, 139, 124, 0.25);
-        }
-
-        .option-card.selected::after {
-            content: '✓';
-            position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            width: 40px;
-            height: 40px;
+            width: 28px;
+            height: 28px;
             background: var(--color-accent);
             color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 0.85rem;
             font-weight: bold;
-            font-size: 1.3rem;
-            box-shadow: 0 4px 15px rgba(157, 139, 124, 0.4);
-            animation: checkPop 0.3s ease-out;
         }
 
-        @keyframes checkPop {
-            0% { transform: scale(0); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+        .input-section {
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            border: 3px solid var(--color-sand);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 3rem;
         }
 
-        .option-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            display: block;
-            transition: transform 0.4s ease;
-            filter: grayscale(0.3);
-        }
-
-        .option-card:hover .option-icon {
-            transform: scale(1.15) rotate(-5deg);
-            filter: grayscale(0);
-        }
-
-        .option-card.selected .option-icon {
-            transform: scale(1.1);
-            filter: grayscale(0);
-        }
-
-        .option-title {
-            font-size: 1.4rem;
-            font-family: var(--font-display);
-            color: var(--color-black);
-            margin-bottom: 0.8rem;
-            position: relative;
-            z-index: 1;
-            font-weight: 500;
-        }
-
-        .option-description {
-            font-size: 1rem;
-            color: var(--color-slate);
-            line-height: 1.7;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Different border colors for each season */
-        .option-card[data-season="spring"]:hover,
-        .option-card[data-season="spring"].selected {
-            border-color: #FFB6C1;
-        }
-
-        .option-card[data-season="spring"].selected::after {
-            background: #FFB6C1;
-        }
-
-        .option-card[data-season="summer"]:hover,
-        .option-card[data-season="summer"].selected {
-            border-color: #B0C4DE;
-        }
-
-        .option-card[data-season="summer"].selected::after {
-            background: #B0C4DE;
-        }
-
-        .option-card[data-season="autumn"]:hover,
-        .option-card[data-season="autumn"].selected {
-            border-color: #D2691E;
-        }
-
-        .option-card[data-season="autumn"].selected::after {
-            background: #D2691E;
-        }
-
-        .option-card[data-season="winter"]:hover,
-        .option-card[data-season="winter"].selected {
-            border-color: #4682B4;
-        }
-
-        .option-card[data-season="winter"].selected::after {
-            background: #4682B4;
-        }
-
-        .text-input-section {
-            margin-top: 3rem;
-            animation: fadeInUp 1s ease-out;
+        .input-group {
+            margin-bottom: 2rem;
         }
 
         .input-label {
             font-size: 1.1rem;
+            font-weight: 500;
             color: var(--color-charcoal);
             margin-bottom: 1rem;
             display: block;
-            text-align: center;
         }
 
-        .text-input {
+        .input-sublabel {
+            font-size: 0.9rem;
+            color: var(--color-slate);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .color-input-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .color-input-wrapper {
+            position: relative;
+        }
+
+        .color-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--color-charcoal);
+            margin-bottom: 0.5rem;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .color-input {
             width: 100%;
-            padding: 1.5rem;
-            border: 2px solid var(--color-sand);
+            padding: 1.2rem;
+            border: 3px solid var(--color-sand);
             border-radius: 8px;
             font-family: var(--font-body);
-            font-size: 1rem;
+            font-size: 1.5rem;
+            font-weight: 600;
             color: var(--color-charcoal);
+            text-align: center;
             transition: all 0.3s ease;
             background: white;
         }
 
-        .text-input:focus {
+        .color-input:focus {
             outline: none;
             border-color: var(--color-accent);
-            box-shadow: 0 5px 20px rgba(157, 139, 124, 0.1);
+            box-shadow: 0 5px 20px rgba(157, 139, 124, 0.15);
+            transform: translateY(-2px);
         }
 
-        .text-input::placeholder {
-            color: var(--color-stone);
+        .color-input.red { border-color: #ffcccb; }
+        .color-input.red:focus { border-color: #ff6b6b; }
+
+        .color-input.green { border-color: #d4edda; }
+        .color-input.green:focus { border-color: #4caf50; }
+
+        .color-input.blue { border-color: #cce5ff; }
+        .color-input.blue:focus { border-color: #2196f3; }
+
+        .color-input.lightness { border-color: #e0e0e0; }
+        .color-input.lightness:focus { border-color: #757575; }
+
+        .color-input.a-axis { border-color: #ffcdd2; }
+        .color-input.a-axis:focus { border-color: #e57373; }
+
+        .color-input.b-axis { border-color: #fff9c4; }
+        .color-input.b-axis:focus { border-color: #ffd54f; }
+
+        .input-hint {
+            font-size: 0.75rem;
+            color: var(--color-slate);
+            margin-top: 0.3rem;
+            text-align: center;
+        }
+
+        .color-preview {
+            width: 100%;
+            height: 120px;
+            border-radius: 12px;
+            border: 3px solid var(--color-sand);
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-slate);
+            font-size: 0.9rem;
+        }
+
+        .measurement-area {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .measurement-section {
+            background: var(--color-cream);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 3px solid var(--color-sand);
+            transition: all 0.3s ease;
+        }
+
+        .measurement-section:hover {
+            border-color: var(--color-accent);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .measurement-title {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            color: var(--color-black);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .measurement-icon {
+            font-size: 1.8rem;
+        }
+
+        .mini-preview {
+            width: 100%;
+            height: 60px;
+            border-radius: 8px;
+            border: 2px solid var(--color-sand);
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            color: var(--color-slate);
+            transition: all 0.3s ease;
+        }
+
+        .average-result {
+            background: linear-gradient(135deg, rgba(157, 139, 124, 0.08) 0%, white 100%);
+            padding: 2.5rem;
+            border-radius: 12px;
+            border: 4px solid var(--color-accent);
+            margin-top: 3rem;
+            box-shadow: 0 10px 30px rgba(157, 139, 124, 0.15);
+        }
+
+        .average-title {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            color: var(--color-black);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            justify-content: center;
+        }
+
+        .average-icon {
+            font-size: 2rem;
+        }
+
+        .average-values {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--color-charcoal);
+            margin-bottom: 1.5rem;
+            font-family: monospace;
+            letter-spacing: 0.1em;
+        }
+
+        .area-card {
+            background: var(--color-cream);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid var(--color-sand);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .area-card:hover {
+            border-color: var(--color-accent);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .area-card.selected {
+            border-color: var(--color-accent);
+            border-width: 3px;
+            background: white;
+        }
+
+        .area-card.selected::before {
+            content: '✓';
+            float: right;
+            width: 24px;
+            height: 24px;
+            background: var(--color-accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .area-name {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--color-black);
+            margin-bottom: 0.5rem;
+        }
+
+        .area-description {
+            font-size: 0.85rem;
+            color: var(--color-slate);
+            line-height: 1.5;
         }
 
         .button-group {
@@ -294,9 +417,36 @@
             cursor: not-allowed;
         }
 
+        .helper-text {
+            text-align: center;
+            color: var(--color-slate);
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            font-style: italic;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         @media (max-width: 768px) {
             .diagnosis-container {
                 padding: 2rem 1.5rem;
+            }
+
+            .color-input-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .measurement-area {
+                grid-template-columns: 1fr;
             }
 
             .button-group {
@@ -305,6 +455,11 @@
 
             .btn {
                 width: 100%;
+            }
+
+            .input-section,
+            .colorimeter-guide {
+                padding: 2rem 1.5rem;
             }
         }
     </style>
@@ -317,89 +472,235 @@
                 <div class="progress-fill" id="progressFill"></div>
             </div>
 
-            <p class="step-number">Step 1 of 4</p>
+            <p class="step-number">Step 1 of 3</p>
 
-            <!-- Question 1: Style Preference -->
-            <div id="question1" class="question-section">
-                <h2 class="question-title">어떤 스타일을 선호하시나요?</h2>
-                
-                <div class="options-grid">
-                    <div class="option-card" onclick="selectOption(this, 'style', 'elegant')">
-                        <span class="option-icon">👗</span>
-                        <h3 class="option-title">우아하고 세련된 스타일</h3>
-                        <p class="option-description">클래식하고 품격 있는 룩을 선호합니다</p>
-                    </div>
+            <h2 class="question-title">측색기로 피부톤을 측정해주세요</h2>
+            <p class="instruction-text">
+                측색기를 피부에 대고 RGB 값을 측정한 후<br>
+                아래에 입력해주세요
+            </p>
 
-                    <div class="option-card" onclick="selectOption(this, 'style', 'casual')">
-                        <span class="option-icon">👕</span>
-                        <h3 class="option-title">편안하고 캐주얼한 스타일</h3>
-                        <p class="option-description">자연스럽고 편안한 일상복을 좋아합니다</p>
-                    </div>
-
-                    <div class="option-card" onclick="selectOption(this, 'style', 'modern')">
-                        <span class="option-icon">✨</span>
-                        <h3 class="option-title">트렌디하고 모던한 스타일</h3>
-                        <p class="option-description">최신 유행을 따르는 스타일을 즐깁니다</p>
-                    </div>
-
-                    <div class="option-card" onclick="selectOption(this, 'style', 'unique')">
-                        <span class="option-icon">🎨</span>
-                        <h3 class="option-title">개성 있고 독특한 스타일</h3>
-                        <p class="option-description">나만의 독특한 패션 감각을 추구합니다</p>
-                    </div>
-                </div>
+            <!-- Colorimeter Guide -->
+            <div class="colorimeter-guide">
+                <h3 class="guide-title">
+                    <span class="guide-icon">📱</span>
+                    측색기 사용 방법
+                </h3>
+                <ul class="guide-steps">
+                    <li data-step="1">측색기 전원을 켜고 영점 조정을 합니다</li>
+                    <li data-step="2">측정할 피부 부위를 깨끗하게 닦습니다</li>
+                    <li data-step="3">측색기를 피부에 수직으로 가볍게 댑니다</li>
+                    <li data-step="4">측정 버튼을 누르고 RGB 값을 확인합니다</li>
+                    <li data-step="5">아래 입력란에 측정된 값을 입력합니다</li>
+                </ul>
             </div>
 
-            <!-- Question 2: Expected Personal Color -->
-            <div id="question2" class="question-section" style="display: none;">
-                <h2 class="question-title">예상하시는 퍼스널 컬러가 있으신가요?</h2>
-                
-                <div class="options-grid">
-                    <div class="option-card" data-season="spring" onclick="selectOption(this, 'expected', 'spring')">
-                        <span class="option-icon">🌸</span>
-                        <h3 class="option-title">봄 웜톤 (Spring Warm)</h3>
-                        <p class="option-description">밝고 화사한 따뜻한 톤</p>
+            <!-- Measurement Areas - All 3 -->
+            <div class="input-section">
+                <div class="input-group">
+                    <label class="input-label">3개 부위를 모두 측정해주세요</label>
+                    <p class="input-sublabel">각 부위를 측정하여 입력하면 자동으로 평균값이 계산됩니다 (LAB 색공간)</p>
+                </div>
+
+                <!-- Forehead Measurement -->
+                <div class="measurement-section">
+                    <h3 class="measurement-title">
+                        <span class="measurement-icon">1️⃣</span>
+                        이마 중앙
+                    </h3>
+                    
+                    <div class="color-input-grid">
+                        <div class="color-input-wrapper">
+                            <label class="color-label">L (명도)</label>
+                            <input 
+                                type="number" 
+                                class="color-input lightness" 
+                                id="forehead_l"
+                                min="0" 
+                                max="100" 
+                                step="0.1"
+                                placeholder="0"
+                                oninput="updateAverages()"
+                            >
+                            <p class="input-hint">0-100</p>
+                        </div>
+                        
+                        <div class="color-input-wrapper">
+                            <label class="color-label">A (초록↔빨강)</label>
+                            <input 
+                                type="number" 
+                                class="color-input a-axis" 
+                                id="forehead_a"
+                                min="-128" 
+                                max="127" 
+                                step="0.1"
+                                placeholder="0"
+                                oninput="updateAverages()"
+                            >
+                            <p class="input-hint">-128 ~ 127</p>
+                        </div>
+                        
+                        <div class="color-input-wrapper">
+                            <label class="color-label">B (파랑↔노랑)</label>
+                            <input 
+                                type="number" 
+                                class="color-input b-axis" 
+                                id="forehead_b"
+                                min="-128" 
+                                max="127" 
+                                step="0.1"
+                                placeholder="0"
+                                oninput="updateAverages()"
+                            >
+                            <p class="input-hint">-128 ~ 127</p>
+                        </div>
                     </div>
 
-                    <div class="option-card" data-season="summer" onclick="selectOption(this, 'expected', 'summer')">
-                        <span class="option-icon">🌊</span>
-                        <h3 class="option-title">여름 쿨톤 (Summer Cool)</h3>
-                        <p class="option-description">부드럽고 우아한 시원한 톤</p>
-                    </div>
-
-                    <div class="option-card" data-season="autumn" onclick="selectOption(this, 'expected', 'autumn')">
-                        <span class="option-icon">🍁</span>
-                        <h3 class="option-title">가을 웜톤 (Autumn Warm)</h3>
-                        <p class="option-description">깊고 풍성한 따뜻한 톤</p>
-                    </div>
-
-                    <div class="option-card" data-season="winter" onclick="selectOption(this, 'expected', 'winter')">
-                        <span class="option-icon">❄️</span>
-                        <h3 class="option-title">겨울 쿨톤 (Winter Cool)</h3>
-                        <p class="option-description">선명하고 강렬한 시원한 톤</p>
-                    </div>
-
-                    <div class="option-card" onclick="selectOption(this, 'expected', 'unsure')">
-                        <span class="option-icon">🤔</span>
-                        <h3 class="option-title">잘 모르겠어요</h3>
-                        <p class="option-description">처음 진단받아봅니다</p>
+                    <div class="mini-preview" id="preview_forehead">
+                        측정 대기 중...
                     </div>
                 </div>
 
-                <div class="text-input-section">
-                    <label class="input-label">추가로 말씀하고 싶은 내용이 있으신가요? (선택사항)</label>
-                    <textarea 
-                        class="text-input" 
-                        id="additionalComments"
-                        rows="4" 
-                        placeholder="예: 항상 베이지 색을 입으면 칭찬을 받아요, 형광색은 어울리지 않는 것 같아요 등"
-                    ></textarea>
+                <!-- Cheek Measurement -->
+                <div class="measurement-section">
+                    <h3 class="measurement-title">
+                        <span class="measurement-icon">2️⃣</span>
+                        볼
+                    </h3>
+                    
+                    <div class="color-input-grid">
+                        <div class="color-input-wrapper">
+                            <label class="color-label">L (명도)</label>
+                            <input 
+                                type="number" 
+                                class="color-input lightness" 
+                                id="cheek_l"
+                                min="0" 
+                                max="100" 
+                                step="0.1"
+                                placeholder="0"
+                                oninput="updateAverages()"
+                            >
+                            <p class="input-hint">0-100</p>
+                        </div>
+                        
+                        <div class="color-input-wrapper">
+                            <label class="color-label">A (초록↔빨강)</label>
+                            <input 
+                                type="number" 
+                                class="color-input a-axis" 
+                                id="cheek_a"
+                                min="-128" 
+                                max="127" 
+                                step="0.1"
+                                placeholder="0"
+                                oninput="updateAverages()"
+                            >
+                            <p class="input-hint">-128 ~ 127</p>
+                        </div>
+                        
+                        <div class="color-input-wrapper">
+                            <label class="color-label">B (파랑↔노랑)</label>
+                            <input 
+                                type="number" 
+                                class="color-input b-axis" 
+                                id="cheek_b"
+                                min="-128" 
+                                max="127" 
+                                step="0.1"
+                                placeholder="0"
+                                oninput="updateAverages()"
+                            >
+                            <p class="input-hint">-128 ~ 127</p>
+                        </div>
+                    </div>
+
+                    <div class="mini-preview" id="preview_cheek">
+                        측정 대기 중...
+                    </div>
+                </div>
+
+                <!-- Jawline Measurement -->
+                <div class="measurement-section">
+                    <h3 class="measurement-title">
+                        <span class="measurement-icon">3️⃣</span>
+                        턱선
+                    </h3>
+                    
+                    <div class="color-input-grid">
+                        <div class="color-input-wrapper">
+                            <label class="color-label">L (명도)</label>
+                            <input 
+                                type="number" 
+                                class="color-input lightness" 
+                                id="jawline_l"
+                                min="0" 
+                                max="100" 
+                                step="0.1"
+                                placeholder="0"
+                                oninput="updateAverages()"
+                            >
+                            <p class="input-hint">0-100</p>
+                        </div>
+                        
+                        <div class="color-input-wrapper">
+                            <label class="color-label">A (초록↔빨강)</label>
+                            <input 
+                                type="number" 
+                                class="color-input a-axis" 
+                                id="jawline_a"
+                                min="-128" 
+                                max="127" 
+                                step="0.1"
+                                placeholder="0"
+                                oninput="updateAverages()"
+                            >
+                            <p class="input-hint">-128 ~ 127</p>
+                        </div>
+                        
+                        <div class="color-input-wrapper">
+                            <label class="color-label">B (파랑↔노랑)</label>
+                            <input 
+                                type="number" 
+                                class="color-input b-axis" 
+                                id="jawline_b"
+                                min="-128" 
+                                max="127" 
+                                step="0.1"
+                                placeholder="0"
+                                oninput="updateAverages()"
+                            >
+                            <p class="input-hint">-128 ~ 127</p>
+                        </div>
+                    </div>
+
+                    <div class="mini-preview" id="preview_jawline">
+                        측정 대기 중...
+                    </div>
+                </div>
+
+                <!-- Average Result -->
+                <div class="average-result">
+                    <h3 class="average-title">
+                        <span class="average-icon">📊</span>
+                        평균 피부톤
+                    </h3>
+                    <div class="average-values" id="averageValues">
+                        L: - / A: - / B: -
+                    </div>
+                    <div class="color-preview" id="colorPreview">
+                        3개 부위를 모두 측정하면 평균값이 표시됩니다
+                    </div>
+                    
+                    <p class="helper-text">
+                        💡 Tip: 각 부위를 2-3회 측정하여 평균값을 입력하면 더 정확합니다
+                    </p>
                 </div>
             </div>
 
             <!-- Navigation Buttons -->
             <div class="button-group">
-                <button class="btn btn-secondary" id="backBtn" onclick="goBack()" style="display: none;">
+                <button class="btn btn-secondary" onclick="goBack()">
                     <span>이전</span>
                 </button>
                 <button class="btn btn-primary" id="nextBtn" onclick="goNext()" disabled>
@@ -410,91 +711,171 @@
     </section>
 
     <script>
-        let currentStep = 1;
-        let selections = {
-            style: null,
-            expected: null,
-            comments: ''
+        let measurementData = {
+            forehead: { l: null, a: null, b: null },
+            cheek: { l: null, a: null, b: null },
+            jawline: { l: null, a: null, b: null },
+            average: { l: null, a: null, b: null }
         };
 
-        function selectOption(element, category, value) {
-            // Remove selected class from all cards in the same category
-            const cards = element.parentElement.querySelectorAll('.option-card');
-            cards.forEach(card => card.classList.remove('selected'));
+        // LAB to RGB conversion for preview
+        function labToRgb(l, a, b) {
+            // LAB to XYZ
+            let y = (l + 16) / 116;
+            let x = a / 500 + y;
+            let z = y - b / 200;
+
+            x = 0.95047 * ((x * x * x > 0.008856) ? x * x * x : (x - 16/116) / 7.787);
+            y = 1.00000 * ((y * y * y > 0.008856) ? y * y * y : (y - 16/116) / 7.787);
+            z = 1.08883 * ((z * z * z > 0.008856) ? z * z * z : (z - 16/116) / 7.787);
+
+            // XYZ to RGB
+            let r = x *  3.2406 + y * -1.5372 + z * -0.4986;
+            let g = x * -0.9689 + y *  1.8758 + z *  0.0415;
+            let bl = x *  0.0557 + y * -0.2040 + z *  1.0570;
+
+            r = (r > 0.0031308) ? (1.055 * Math.pow(r, 1/2.4) - 0.055) : 12.92 * r;
+            g = (g > 0.0031308) ? (1.055 * Math.pow(g, 1/2.4) - 0.055) : 12.92 * g;
+            bl = (bl > 0.0031308) ? (1.055 * Math.pow(bl, 1/2.4) - 0.055) : 12.92 * bl;
+
+            return {
+                r: Math.max(0, Math.min(255, Math.round(r * 255))),
+                g: Math.max(0, Math.min(255, Math.round(g * 255))),
+                b: Math.max(0, Math.min(255, Math.round(bl * 255)))
+            };
+        }
+
+        function updateAverages() {
+            // Get all LAB values
+            const forehead_l = parseFloat(document.getElementById('forehead_l').value) || 0;
+            const forehead_a = parseFloat(document.getElementById('forehead_a').value) || 0;
+            const forehead_b = parseFloat(document.getElementById('forehead_b').value) || 0;
+
+            const cheek_l = parseFloat(document.getElementById('cheek_l').value) || 0;
+            const cheek_a = parseFloat(document.getElementById('cheek_a').value) || 0;
+            const cheek_b = parseFloat(document.getElementById('cheek_b').value) || 0;
+
+            const jawline_l = parseFloat(document.getElementById('jawline_l').value) || 0;
+            const jawline_a = parseFloat(document.getElementById('jawline_a').value) || 0;
+            const jawline_b = parseFloat(document.getElementById('jawline_b').value) || 0;
+
+            // Update mini previews
+            updateMiniPreview('forehead', forehead_l, forehead_a, forehead_b);
+            updateMiniPreview('cheek', cheek_l, cheek_a, cheek_b);
+            updateMiniPreview('jawline', jawline_l, jawline_a, jawline_b);
+
+            // Save individual measurements
+            measurementData.forehead = { l: forehead_l, a: forehead_a, b: forehead_b };
+            measurementData.cheek = { l: cheek_l, a: cheek_a, b: cheek_b };
+            measurementData.jawline = { l: jawline_l, a: jawline_a, b: jawline_b };
+
+            // Check if all areas are measured (입력값이 있는지 체크)
+            const allMeasured = 
+                document.getElementById('forehead_l').value !== '' && 
+                document.getElementById('cheek_l').value !== '' && 
+                document.getElementById('jawline_l').value !== '';
+
+            if (allMeasured) {
+                // Calculate averages
+                const avg_l = ((forehead_l + cheek_l + jawline_l) / 3).toFixed(2);
+                const avg_a = ((forehead_a + cheek_a + jawline_a) / 3).toFixed(2);
+                const avg_b = ((forehead_b + cheek_b + jawline_b) / 3).toFixed(2);
+
+                measurementData.average = { 
+                    l: parseFloat(avg_l), 
+                    a: parseFloat(avg_a), 
+                    b: parseFloat(avg_b) 
+                };
+
+                // Update display
+                document.getElementById('averageValues').textContent = 
+                    `L: ${avg_l} / A: ${avg_a} / B: ${avg_b}`;
+
+                // Convert to RGB for preview
+                const rgb = labToRgb(parseFloat(avg_l), parseFloat(avg_a), parseFloat(avg_b));
+                const preview = document.getElementById('colorPreview');
+                preview.style.backgroundColor = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+                preview.textContent = `평균 피부톤: LAB(${avg_l}, ${avg_a}, ${avg_b})`;
+                preview.style.color = parseFloat(avg_l) > 50 ? '#333' : '#fff';
+                preview.style.fontWeight = '600';
+                preview.style.fontSize = '1.1rem';
+
+                // Enable next button
+                document.getElementById('nextBtn').disabled = false;
+            } else {
+                // Reset average display
+                document.getElementById('averageValues').textContent = 'L: - / A: - / B: -';
+                const preview = document.getElementById('colorPreview');
+                preview.style.backgroundColor = 'transparent';
+                preview.textContent = '3개 부위를 모두 측정하면 평균값이 표시됩니다';
+                preview.style.color = 'var(--color-slate)';
+                preview.style.fontWeight = 'normal';
+                preview.style.fontSize = '0.9rem';
+
+                // Disable next button
+                document.getElementById('nextBtn').disabled = true;
+            }
+        }
+
+        function updateMiniPreview(area, l, a, b) {
+            const preview = document.getElementById(`preview_${area}`);
             
-            // Add selected class to clicked card
-            element.classList.add('selected');
-            
-            // Save selection
-            selections[category] = value;
-            
-            // Enable next button
-            document.getElementById('nextBtn').disabled = false;
+            if (l > 0) {
+                const rgb = labToRgb(l, a, b);
+                preview.style.backgroundColor = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+                preview.textContent = `LAB(${l.toFixed(1)}, ${a.toFixed(1)}, ${b.toFixed(1)})`;
+                preview.style.color = l > 50 ? '#333' : '#fff';
+                preview.style.fontWeight = '500';
+            } else {
+                preview.style.backgroundColor = 'transparent';
+                preview.textContent = '측정 대기 중...';
+                preview.style.color = 'var(--color-slate)';
+                preview.style.fontWeight = 'normal';
+            }
         }
 
         function goNext() {
-            if (currentStep === 1) {
-                // Save comments if any
-                const comments = document.getElementById('additionalComments');
-                if (comments) {
-                    selections.comments = comments.value;
-                }
-                
-                // Hide question 1, show question 2
-                document.getElementById('question1').style.display = 'none';
-                document.getElementById('question2').style.display = 'block';
-                
-                // Update progress
-                currentStep = 2;
-                document.querySelector('.step-number').textContent = 'Step 2 of 4';
-                document.getElementById('progressFill').style.width = '50%';
-                
-                // Show back button, disable next button
-                document.getElementById('backBtn').style.display = 'block';
-                document.getElementById('nextBtn').disabled = true;
-                
-            } else if (currentStep === 2) {
-                // Save data and move to next page
-                const comments = document.getElementById('additionalComments').value;
-                selections.comments = comments;
-                
-                // Save to localStorage
-                localStorage.setItem('personalColorData', JSON.stringify(selections));
-                
-                // Move to next page (측색기 단계)
-                window.location.href = 'pcolor2.html';
-            }
+            // Save data to localStorage
+            let savedData = JSON.parse(localStorage.getItem('personalColorData') || '{}');
+            savedData.colorimeter = measurementData;
+            localStorage.setItem('personalColorData', JSON.stringify(savedData));
+            
+            // Move to next step
+            window.location.href = 'pcolor2.html';
         }
 
         function goBack() {
-            if (currentStep === 2) {
-                // Show question 1, hide question 2
-                document.getElementById('question1').style.display = 'block';
-                document.getElementById('question2').style.display = 'none';
-                
-                // Update progress
-                currentStep = 1;
-                document.querySelector('.step-number').textContent = 'Step 1 of 4';
-                document.getElementById('progressFill').style.width = '25%';
-                
-                // Hide back button
-                document.getElementById('backBtn').style.display = 'none';
-                
-                // Enable next button if selection was made
-                if (selections.style) {
-                    document.getElementById('nextBtn').disabled = false;
-                }
-            }
+            window.location.href = 'korean.html';
         }
 
         // Load saved data if exists
         window.onload = function() {
-            const savedData = localStorage.getItem('personalColorData');
-            if (savedData) {
-                selections = JSON.parse(savedData);
+            const savedData = JSON.parse(localStorage.getItem('personalColorData') || '{}');
+            if (savedData.colorimeter) {
+                const data = savedData.colorimeter;
                 
-                // Restore selections visually if needed
-                console.log('Loaded previous selections:', selections);
+                // Restore forehead values
+                if (data.forehead) {
+                    document.getElementById('forehead_l').value = data.forehead.l || '';
+                    document.getElementById('forehead_a').value = data.forehead.a || '';
+                    document.getElementById('forehead_b').value = data.forehead.b || '';
+                }
+                
+                // Restore cheek values
+                if (data.cheek) {
+                    document.getElementById('cheek_l').value = data.cheek.l || '';
+                    document.getElementById('cheek_a').value = data.cheek.a || '';
+                    document.getElementById('cheek_b').value = data.cheek.b || '';
+                }
+                
+                // Restore jawline values
+                if (data.jawline) {
+                    document.getElementById('jawline_l').value = data.jawline.l || '';
+                    document.getElementById('jawline_a').value = data.jawline.a || '';
+                    document.getElementById('jawline_b').value = data.jawline.b || '';
+                }
+                
+                updateAverages();
             }
         }
     </script>
