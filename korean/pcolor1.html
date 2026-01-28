@@ -1,2 +1,404 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE COVE - 퍼스널 컬러 진단 시작</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Additional styles for diagnosis page */
+        .diagnosis-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
 
-test
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: var(--color-sand);
+            border-radius: 2px;
+            margin-bottom: 3rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-accent), var(--color-accent-light));
+            width: 20%;
+            transition: width 0.5s ease;
+        }
+
+        .step-number {
+            font-family: var(--font-body);
+            font-size: 0.875rem;
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--color-accent);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .question-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .option-card {
+            background: white;
+            padding: 2rem;
+            border: 2px solid var(--color-sand);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .option-card:hover {
+            border-color: var(--color-accent);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .option-card.selected {
+            border-color: var(--color-accent);
+            background: linear-gradient(135deg, rgba(157, 139, 124, 0.05) 0%, transparent 100%);
+        }
+
+        .option-card.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 30px;
+            height: 30px;
+            background: var(--color-accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .option-title {
+            font-size: 1.3rem;
+            font-family: var(--font-display);
+            color: var(--color-black);
+            margin-bottom: 0.5rem;
+        }
+
+        .option-description {
+            font-size: 0.95rem;
+            color: var(--color-slate);
+            line-height: 1.6;
+        }
+
+        .text-input-section {
+            margin-top: 3rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .input-label {
+            font-size: 1.1rem;
+            color: var(--color-charcoal);
+            margin-bottom: 1rem;
+            display: block;
+            text-align: center;
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 1.5rem;
+            border: 2px solid var(--color-sand);
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            color: var(--color-charcoal);
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: var(--color-accent);
+            box-shadow: 0 5px 20px rgba(157, 139, 124, 0.1);
+        }
+
+        .text-input::placeholder {
+            color: var(--color-stone);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 3rem;
+        }
+
+        .btn {
+            padding: 1.2rem 3rem;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-charcoal);
+            border: 2px solid var(--color-sand);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--color-accent);
+            background: var(--color-sand);
+        }
+
+        .btn-primary {
+            background: var(--color-black);
+            color: var(--color-cream);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: var(--color-accent);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .btn-primary:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .diagnosis-container {
+                padding: 2rem 1.5rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero-section" style="min-height: auto; padding: 2rem;">
+        <div class="diagnosis-container">
+            <!-- Progress Bar -->
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <p class="step-number">Step 1 of 5</p>
+
+            <!-- Question 1: Style Preference -->
+            <div id="question1" class="question-section">
+                <h2 class="question-title">어떤 스타일을 선호하시나요?</h2>
+                
+                <div class="options-grid">
+                    <div class="option-card" onclick="selectOption(this, 'style', 'elegant')">
+                        <h3 class="option-title">우아하고 세련된 스타일</h3>
+                        <p class="option-description">클래식하고 품격 있는 룩을 선호합니다</p>
+                    </div>
+
+                    <div class="option-card" onclick="selectOption(this, 'style', 'casual')">
+                        <h3 class="option-title">편안하고 캐주얼한 스타일</h3>
+                        <p class="option-description">자연스럽고 편안한 일상복을 좋아합니다</p>
+                    </div>
+
+                    <div class="option-card" onclick="selectOption(this, 'style', 'modern')">
+                        <h3 class="option-title">트렌디하고 모던한 스타일</h3>
+                        <p class="option-description">최신 유행을 따르는 스타일을 즐깁니다</p>
+                    </div>
+
+                    <div class="option-card" onclick="selectOption(this, 'style', 'unique')">
+                        <h3 class="option-title">개성 있고 독특한 스타일</h3>
+                        <p class="option-description">나만의 독특한 패션 감각을 추구합니다</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 2: Expected Personal Color -->
+            <div id="question2" class="question-section" style="display: none;">
+                <h2 class="question-title">예상하시는 퍼스널 컬러가 있으신가요?</h2>
+                
+                <div class="options-grid">
+                    <div class="option-card" onclick="selectOption(this, 'expected', 'spring')">
+                        <h3 class="option-title">🌸 봄 웜톤 (Spring Warm)</h3>
+                        <p class="option-description">밝고 화사한 따뜻한 톤</p>
+                    </div>
+
+                    <div class="option-card" onclick="selectOption(this, 'expected', 'summer')">
+                        <h3 class="option-title">🌊 여름 쿨톤 (Summer Cool)</h3>
+                        <p class="option-description">부드럽고 우아한 시원한 톤</p>
+                    </div>
+
+                    <div class="option-card" onclick="selectOption(this, 'expected', 'autumn')">
+                        <h3 class="option-title">🍁 가을 웜톤 (Autumn Warm)</h3>
+                        <p class="option-description">깊고 풍성한 따뜻한 톤</p>
+                    </div>
+
+                    <div class="option-card" onclick="selectOption(this, 'expected', 'winter')">
+                        <h3 class="option-title">❄️ 겨울 쿨톤 (Winter Cool)</h3>
+                        <p class="option-description">선명하고 강렬한 시원한 톤</p>
+                    </div>
+
+                    <div class="option-card" onclick="selectOption(this, 'expected', 'unsure')">
+                        <h3 class="option-title">🤔 잘 모르겠어요</h3>
+                        <p class="option-description">처음 진단받아봅니다</p>
+                    </div>
+                </div>
+
+                <div class="text-input-section">
+                    <label class="input-label">추가로 말씀하고 싶은 내용이 있으신가요? (선택사항)</label>
+                    <textarea 
+                        class="text-input" 
+                        id="additionalComments"
+                        rows="4" 
+                        placeholder="예: 항상 베이지 색을 입으면 칭찬을 받아요, 형광색은 어울리지 않는 것 같아요 등"
+                    ></textarea>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="button-group">
+                <button class="btn btn-secondary" id="backBtn" onclick="goBack()" style="display: none;">
+                    <span>이전</span>
+                </button>
+                <button class="btn btn-primary" id="nextBtn" onclick="goNext()" disabled>
+                    <span>다음</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        let currentStep = 1;
+        let selections = {
+            style: null,
+            expected: null,
+            comments: ''
+        };
+
+        function selectOption(element, category, value) {
+            // Remove selected class from all cards in the same category
+            const cards = element.parentElement.querySelectorAll('.option-card');
+            cards.forEach(card => card.classList.remove('selected'));
+            
+            // Add selected class to clicked card
+            element.classList.add('selected');
+            
+            // Save selection
+            selections[category] = value;
+            
+            // Enable next button
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function goNext() {
+            if (currentStep === 1) {
+                // Save comments if any
+                const comments = document.getElementById('additionalComments');
+                if (comments) {
+                    selections.comments = comments.value;
+                }
+                
+                // Hide question 1, show question 2
+                document.getElementById('question1').style.display = 'none';
+                document.getElementById('question2').style.display = 'block';
+                
+                // Update progress
+                currentStep = 2;
+                document.querySelector('.step-number').textContent = 'Step 2 of 5';
+                document.getElementById('progressFill').style.width = '40%';
+                
+                // Show back button, disable next button
+                document.getElementById('backBtn').style.display = 'block';
+                document.getElementById('nextBtn').disabled = true;
+                
+            } else if (currentStep === 2) {
+                // Save data and move to next page
+                const comments = document.getElementById('additionalComments').value;
+                selections.comments = comments;
+                
+                // Save to localStorage
+                localStorage.setItem('personalColorData', JSON.stringify(selections));
+                
+                // Move to next page (측색기 단계)
+                alert('저장되었습니다! 다음 단계로 이동합니다.\n(측색기 페이지를 만들어주세요)');
+                // window.location.href = 'step2-colorimeter.html';
+            }
+        }
+
+        function goBack() {
+            if (currentStep === 2) {
+                // Show question 1, hide question 2
+                document.getElementById('question1').style.display = 'block';
+                document.getElementById('question2').style.display = 'none';
+                
+                // Update progress
+                currentStep = 1;
+                document.querySelector('.step-number').textContent = 'Step 1 of 5';
+                document.getElementById('progressFill').style.width = '20%';
+                
+                // Hide back button
+                document.getElementById('backBtn').style.display = 'none';
+                
+                // Enable next button if selection was made
+                if (selections.style) {
+                    document.getElementById('nextBtn').disabled = false;
+                }
+            }
+        }
+
+        // Load saved data if exists
+        window.onload = function() {
+            const savedData = localStorage.getItem('personalColorData');
+            if (savedData) {
+                selections = JSON.parse(savedData);
+                
+                // Restore selections visually if needed
+                console.log('Loaded previous selections:', selections);
+            }
+        }
+    </script>
+</body>
+</html>
