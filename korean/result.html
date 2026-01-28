@@ -699,48 +699,153 @@
             }
         };
 
-        // RGB 값으로 퍼스널 컬러 분석
-        function analyzeColorFromRGB(r, g, b) {
-            // 1. 명도 계산 (밝기)
-            const brightness = (r + g + b) / 3;
+        // 12계절 정의
+        const TWELVE_SEASONS = {
+            'light_spring': { parent: 'spring', name: '라이트 봄', icon: '🌸' },
+            'bright_spring': { parent: 'spring', name: '브라이트 봄', icon: '🌺' },
+            'warm_spring': { parent: 'spring', name: '웜 봄', icon: '🌼' },
+            'light_summer': { parent: 'summer', name: '라이트 여름', icon: '🌊' },
+            'soft_summer': { parent: 'summer', name: '소프트 여름', icon: '💙' },
+            'cool_summer': { parent: 'summer', name: '쿨 여름', icon: '💎' },
+            'soft_autumn': { parent: 'autumn', name: '소프트 가을', icon: '🍂' },
+            'warm_autumn': { parent: 'autumn', name: '웜 가을', icon: '🍁' },
+            'deep_autumn': { parent: 'autumn', name: '딥 가을', icon: '🌰' },
+            'cool_winter': { parent: 'winter', name: '쿨 겨울', icon: '❄️' },
+            'bright_winter': { parent: 'winter', name: '브라이트 겨울', icon: '💠' },
+            'deep_winter': { parent: 'winter', name: '딥 겨울', icon: '🌑' }
+        };
+
+        // LAB 값으로 퍼스널 컬러 분석
+        function analyzeColorFromLAB(l, a, b) {
+            // 1. 명도 분석
+            const lightness = l;
+            const isLight = lightness > 65;
+            const isMedium = lightness >= 45 && lightness <= 65;
+            const isDark = lightness < 45;
             
-            // 2. 언더톤 계산 (웜/쿨)
-            const warmScore = (r - b) + (r - g) * 0.5;
-            const isWarm = warmScore > 0;
+            // 2. 언더톤 분석 (A축)
+            const redGreenAxis = a;
+            const isPink = redGreenAxis > 5;
+            const isNeutral = redGreenAxis >= -2 && redGreenAxis <= 5;
+            const isOlive = redGreenAxis < -2;
             
-            // 3. 채도 계산
-            const max = Math.max(r, g, b);
-            const min = Math.min(r, g, b);
-            const saturation = max - min;
+            // 3. 온도 분석 (B축)
+            const blueYellowAxis = b;
+            const isWarm = blueYellowAxis > 8;
+            const isCool = blueYellowAxis < 5;
+            const isNeutralTemp = blueYellowAxis >= 5 && blueYellowAxis <= 8;
             
-            // 4. 계절 판단
-            let season;
-            let confidence;
+            // 4. 채도 분석
+            const chroma = Math.sqrt(a * a + b * b);
+            const isMuted = chroma < 20;
+            const isModerate = chroma >= 20 && chroma <= 35;
+            const isVibrant = chroma > 35;
             
-            if (isWarm) {
-                if (brightness > 160 && saturation > 40) {
-                    season = 'spring';
-                    confidence = Math.min(95, 70 + (brightness - 160) / 2 + saturation / 4);
-                } else {
-                    season = 'autumn';
-                    confidence = Math.min(95, 70 + (200 - brightness) / 3 + saturation / 3);
-                }
-            } else {
-                if (brightness > 160 && saturation < 60) {
-                    season = 'summer';
-                    confidence = Math.min(95, 70 + (brightness - 160) / 2 + (80 - saturation) / 2);
-                } else {
-                    season = 'winter';
-                    confidence = Math.min(95, 70 + saturation / 2 + Math.abs(brightness - 140) / 2);
+            // 5. 12계절 점수 계산
+            let scores = {};
+            
+            scores.light_spring = 0;
+            if (isLight) scores.light_spring += 40;
+            if (isWarm) scores.light_spring += 30;
+            if (isModerate || isVibrant) scores.light_spring += 20;
+            if (isPink || isNeutral) scores.light_spring += 10;
+            
+            scores.bright_spring = 0;
+            if (isLight) scores.bright_spring += 35;
+            if (isWarm) scores.bright_spring += 30;
+            if (isVibrant) scores.bright_spring += 30;
+            if (isPink) scores.bright_spring += 5;
+            
+            scores.warm_spring = 0;
+            if (isMedium || isLight) scores.warm_spring += 30;
+            if (isWarm) scores.warm_spring += 40;
+            if (isModerate) scores.warm_spring += 20;
+            if (isOlive || isNeutral) scores.warm_spring += 10;
+            
+            scores.light_summer = 0;
+            if (isLight) scores.light_summer += 40;
+            if (isCool) scores.light_summer += 30;
+            if (isMuted || isModerate) scores.light_summer += 20;
+            if (isPink) scores.light_summer += 10;
+            
+            scores.soft_summer = 0;
+            if (isMedium) scores.soft_summer += 35;
+            if (isCool || isNeutralTemp) scores.soft_summer += 30;
+            if (isMuted) scores.soft_summer += 30;
+            if (isNeutral) scores.soft_summer += 5;
+            
+            scores.cool_summer = 0;
+            if (isMedium || isLight) scores.cool_summer += 30;
+            if (isCool) scores.cool_summer += 40;
+            if (isMuted || isModerate) scores.cool_summer += 20;
+            if (isPink) scores.cool_summer += 10;
+            
+            scores.soft_autumn = 0;
+            if (isMedium) scores.soft_autumn += 35;
+            if (isWarm || isNeutralTemp) scores.soft_autumn += 30;
+            if (isMuted) scores.soft_autumn += 30;
+            if (isOlive || isNeutral) scores.soft_autumn += 5;
+            
+            scores.warm_autumn = 0;
+            if (isMedium || isDark) scores.warm_autumn += 35;
+            if (isWarm) scores.warm_autumn += 40;
+            if (isModerate) scores.warm_autumn += 20;
+            if (isOlive) scores.warm_autumn += 5;
+            
+            scores.deep_autumn = 0;
+            if (isDark) scores.deep_autumn += 40;
+            if (isWarm) scores.deep_autumn += 30;
+            if (isModerate || isVibrant) scores.deep_autumn += 20;
+            if (isOlive || isNeutral) scores.deep_autumn += 10;
+            
+            scores.cool_winter = 0;
+            if (isMedium || isDark) scores.cool_winter += 35;
+            if (isCool) scores.cool_winter += 40;
+            if (isModerate) scores.cool_winter += 20;
+            if (isPink) scores.cool_winter += 5;
+            
+            scores.bright_winter = 0;
+            if (isMedium || isLight) scores.bright_winter += 30;
+            if (isCool) scores.bright_winter += 35;
+            if (isVibrant) scores.bright_winter += 30;
+            if (isPink) scores.bright_winter += 5;
+            
+            scores.deep_winter = 0;
+            if (isDark) scores.deep_winter += 40;
+            if (isCool) scores.deep_winter += 35;
+            if (isVibrant) scores.deep_winter += 20;
+            if (isPink || isNeutral) scores.deep_winter += 5;
+            
+            // 최고 점수 계절 찾기
+            let maxScore = 0;
+            let topSeason = 'warm_spring';
+            for (let s in scores) {
+                if (scores[s] > maxScore) {
+                    maxScore = scores[s];
+                    topSeason = s;
                 }
             }
             
+            const confidence = Math.min(95, Math.round((maxScore / 100) * 100));
+            const parentSeason = TWELVE_SEASONS[topSeason].parent;
+            
             return {
-                season: season,
-                confidence: Math.round(confidence),
-                isWarm: isWarm,
-                brightness: Math.round(brightness),
-                saturation: Math.round(saturation)
+                season: parentSeason,
+                subSeason: topSeason,
+                seasonName: TWELVE_SEASONS[topSeason].name,
+                confidence: confidence,
+                isWarm: isWarm || (isNeutralTemp && !isCool),
+                lightness: Math.round(lightness),
+                chroma: Math.round(chroma),
+                undertone: isPink ? 'pink' : isOlive ? 'olive' : 'neutral',
+                details: {
+                    l: Math.round(l * 10) / 10,
+                    a: Math.round(a * 10) / 10,
+                    b: Math.round(b * 10) / 10,
+                    lightnessLevel: isLight ? 'light' : isMedium ? 'medium' : 'dark',
+                    chromaLevel: isMuted ? 'muted' : isModerate ? 'moderate' : 'vibrant',
+                    temperature: isWarm ? 'warm' : isCool ? 'cool' : 'neutral'
+                }
             };
         }
 
@@ -748,11 +853,11 @@
             const savedData = JSON.parse(localStorage.getItem('personalColorData') || '{}');
             const userChoice = savedData.finalSeason || 'spring';
             
-            // 측색기 분석
+            // 측색기 분석 (LAB)
             let colormeterAnalysis = null;
             if (savedData.colorimeter && savedData.colorimeter.average) {
-                const rgb = savedData.colorimeter.average;
-                colormeterAnalysis = analyzeColorFromRGB(rgb.r, rgb.g, rgb.b);
+                const lab = savedData.colorimeter.average;
+                colormeterAnalysis = analyzeColorFromLAB(lab.l, lab.a, lab.b);
             }
             
             // 최종 결과 결정 (사용자 선택 우선)
@@ -804,8 +909,8 @@
             document.getElementById('expectedSummary').textContent = expectedNames[savedData.expected] || '-';
 
             if (savedData.colorimeter && savedData.colorimeter.average) {
-                const rgb = savedData.colorimeter.average;
-                document.getElementById('rgbSummary').textContent = `RGB(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+                const lab = savedData.colorimeter.average;
+                document.getElementById('rgbSummary').textContent = `LAB(${lab.l.toFixed(1)}, ${lab.a.toFixed(1)}, ${lab.b.toFixed(1)})`;
             }
 
             const seasonNames = { spring: '봄 웜톤', summer: '여름 쿨톤', autumn: '가을 웜톤', winter: '겨울 쿨톤' };
@@ -864,19 +969,31 @@
                 
                 <!-- 상세 분석 -->
                 <div class="detailed-analysis">
-                    <h4 class="detail-title">🔍 상세 분석</h4>
+                    <h4 class="detail-title">🔍 상세 분석 (LAB 색공간)</h4>
                     <div class="analysis-details">
                         <div class="detail-item">
-                            <span class="detail-label">피부 명도:</span>
-                            <span class="detail-value">${colormeterAnalysis.brightness}/255 ${colormeterAnalysis.brightness > 160 ? '(밝음)' : '(어두움)'}</span>
+                            <span class="detail-label">LAB 값:</span>
+                            <span class="detail-value">L:${colormeterAnalysis.details.l} / A:${colormeterAnalysis.details.a} / B:${colormeterAnalysis.details.b}</span>
                         </div>
                         <div class="detail-item">
-                            <span class="detail-label">언더톤:</span>
-                            <span class="detail-value">${colormeterAnalysis.isWarm ? '웜톤' : '쿨톤'}</span>
+                            <span class="detail-label">명도:</span>
+                            <span class="detail-value">${colormeterAnalysis.lightness}/100 (${colormeterAnalysis.details.lightnessLevel === 'light' ? '밝음' : colormeterAnalysis.details.lightnessLevel === 'medium' ? '중간' : '어두움'})</span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">채도:</span>
-                            <span class="detail-value">${colormeterAnalysis.saturation}/255 ${colormeterAnalysis.saturation > 50 ? '(높음)' : '(낮음)'}</span>
+                            <span class="detail-value">${colormeterAnalysis.chroma} (${colormeterAnalysis.details.chromaLevel === 'vibrant' ? '선명함' : colormeterAnalysis.details.chromaLevel === 'moderate' ? '중간' : '은은함'})</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">온도:</span>
+                            <span class="detail-value">${colormeterAnalysis.details.temperature === 'warm' ? '웜톤' : colormeterAnalysis.details.temperature === 'cool' ? '쿨톤' : '중성'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">언더톤:</span>
+                            <span class="detail-value">${colormeterAnalysis.undertone === 'pink' ? '핑크' : colormeterAnalysis.undertone === 'olive' ? '올리브' : '중성'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">12계절 분류:</span>
+                            <span class="detail-value">${TWELVE_SEASONS[colormeterAnalysis.subSeason].icon} ${colormeterAnalysis.seasonName}</span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">예상했던 퍼컬:</span>
@@ -907,9 +1024,15 @@
             if (isMatch) {
                 return `
                     <p><strong>축하합니다!</strong> 당신의 직관과 측색기 분석이 완벽하게 일치합니다.</p>
-                    <p>측색기 데이터(명도: ${analysis.brightness}, 채도: ${analysis.saturation})가 
-                    <strong>${seasonData[userChoice].name}</strong>을 명확히 지지합니다.</p>
-                    <p>신뢰도 ${analysis.confidence}%로 매우 높은 정확도를 보이고 있습니다. 자신감을 가지고 추천 컬러 팔레트를 활용하세요!</p>
+                    <p>측색기 데이터 분석 결과:</p>
+                    <ul style="margin-left: 1.5rem; color: var(--color-slate);">
+                        <li>명도(L): ${analysis.lightness} - ${analysis.details.lightnessLevel === 'light' ? '밝은' : analysis.details.lightnessLevel === 'medium' ? '중간' : '어두운'} 톤</li>
+                        <li>채도: ${analysis.chroma} - ${analysis.details.chromaLevel === 'vibrant' ? '선명한' : analysis.details.chromaLevel === 'moderate' ? '중간' : '은은한'} 색감</li>
+                        <li>온도: ${analysis.details.temperature === 'warm' ? '웜톤' : analysis.details.temperature === 'cool' ? '쿨톤' : '중성톤'}</li>
+                        <li>12계절: <strong>${analysis.seasonName}</strong></li>
+                    </ul>
+                    <p>신뢰도 <strong>${analysis.confidence}%</strong>로 매우 높은 정확도입니다. 
+                    자신감을 가지고 추천 컬러 팔레트를 활용하세요!</p>
                 `;
             }
             
@@ -920,22 +1043,31 @@
                 // 같은 톤이지만 다른 계절
                 return `
                     <p>당신의 선택과 측색기 분석 모두 <strong>${userTone === 'warm' ? '웜톤' : '쿨톤'}</strong>을 가리킵니다.</p>
-                    <p>다만 명도(${analysis.brightness})와 채도(${analysis.saturation})의 차이로 
-                    ${seasonData[userChoice].name}과 ${seasonData[analysis.season].name} 사이에서 
-                    고민이 있을 수 있습니다.</p>
-                    <p>두 계절 모두 같은 톤이므로, 양쪽의 컬러를 모두 시도해보시는 것을 추천합니다. 
-                    특히 타협안 컬러 팔레트가 당신에게 가장 잘 어울릴 것입니다.</p>
+                    <p>측색기 상세 분석:</p>
+                    <ul style="margin-left: 1.5rem; color: var(--color-slate);">
+                        <li>12계절 분류: <strong>${analysis.seasonName}</strong></li>
+                        <li>명도 ${analysis.lightness} (${analysis.details.lightnessLevel})</li>
+                        <li>채도 ${analysis.chroma} (${analysis.details.chromaLevel})</li>
+                        <li>신뢰도: ${analysis.confidence}%</li>
+                    </ul>
+                    <p>${seasonData[userChoice].name}과 ${seasonData[analysis.season].name}은 같은 ${userTone === 'warm' ? '웜' : '쿨'}톤 계열이므로, 
+                    두 계절의 컬러를 모두 시도해보시는 것을 추천합니다. 
+                    특히 ${analysis.seasonName} 계열의 컬러가 잘 어울릴 것입니다.</p>
                 `;
             } else {
                 // 다른 톤
                 return `
                     <p>흥미롭게도 당신의 선택(${seasonData[userChoice].name})과 측색기 분석(${seasonData[analysis.season].name})이 
                     <strong>웜/쿨 톤에서 차이</strong>를 보입니다.</p>
-                    <p>측색기는 명도 ${analysis.brightness}, 채도 ${analysis.saturation}을 기반으로 
-                    ${analysis.isWarm ? '웜톤' : '쿨톤'}을 제시했지만, 당신은 ${userChoice === 'spring' || userChoice === 'autumn' ? '웜톤' : '쿨톤'}을 선택했습니다.</p>
+                    <p>측색기 분석 결과:</p>
+                    <ul style="margin-left: 1.5rem; color: var(--color-slate);">
+                        <li>12계절: <strong>${analysis.seasonName}</strong> (신뢰도 ${analysis.confidence}%)</li>
+                        <li>B축(온도): ${analysis.details.b} → ${analysis.details.temperature === 'warm' ? '웜톤' : analysis.details.temperature === 'cool' ? '쿨톤' : '중성톤'}</li>
+                        <li>언더톤: ${analysis.undertone === 'pink' ? '핑크' : analysis.undertone === 'olive' ? '올리브' : '중성'}</li>
+                    </ul>
                     <p>이런 경우, <strong>당신의 선택</strong>이 더 중요합니다. 
                     거울을 보고 직접 느낀 당신의 판단을 신뢰하세요. 
-                    다만 타협안 컬러도 시도해보면 새로운 발견이 있을 수 있습니다.</p>
+                    다만 ${analysis.seasonName} 계열의 컬러도 시도해보면 새로운 발견이 있을 수 있습니다.</p>
                 `;
             }
         }
