@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE COVE PREMIUM - 최종 진단 결과</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body style="margin:0;font-family:-apple-system,sans-serif;background:#fafafa;">
+<div style="max-width:1400px;margin:0 auto;padding:3rem 2rem;">
+    <!-- Progress -->
+    <div style="width:100%;height:6px;background:rgba(255,215,0,0.2);border-radius:3px;margin-bottom:3rem;">
+        <div style="height:100%;background:linear-gradient(90deg,#FFD700,#FFA500);width:100%;"></div>
+    </div>
+
+    <!-- Header -->
+    <div style="text-align:center;margin-bottom:4rem;">
+        <div style="font-size:0.875rem;letter-spacing:0.3em;color:#FFA500;margin-bottom:1rem;">
+            <span style="background:linear-gradient(135deg,#FFD700,#FFA500);color:white;padding:0.3rem 0.8rem;border-radius:12px;font-size:0.7rem;font-weight:700;">PREMIUM</span>
+        </div>
+        <h1 style="font-size:3rem;margin:0 0 1rem 0;">🎨 퍼스널 컬러 진단 완료</h1>
+        <p style="font-size:1.2rem;color:#666;">7-Layer 생체 데이터 분석 기반</p>
+    </div>
+
+    <!-- Final Type -->
+    <div style="background:linear-gradient(135deg,#FFD700,#FFA500);color:white;border-radius:20px;padding:4rem 3rem;text-align:center;margin-bottom:3rem;box-shadow:0 10px 40px rgba(255,215,0,0.4);">
+        <h2 style="font-size:2rem;margin:0 0 2rem 0;font-weight:400;">당신의 퍼스널 컬러는</h2>
+        <div id="finalType" style="font-size:4rem;font-weight:700;margin-bottom:2rem;">-</div>
+        <div style="display:flex;justify-content:center;gap:3rem;flex-wrap:wrap;">
+            <div>
+                <div style="font-size:0.9rem;opacity:0.9;margin-bottom:0.3rem;">측색 분석 (40%)</div>
+                <div id="step1Conf" style="font-size:2rem;font-weight:700;">-</div>
+            </div>
+            <div>
+                <div style="font-size:0.9rem;opacity:0.9;margin-bottom:0.3rem;">드레이핑 (60%)</div>
+                <div id="step2Conf" style="font-size:2rem;font-weight:700;">-</div>
+            </div>
+            <div style="border-left:2px solid rgba(255,255,255,0.3);padding-left:3rem;">
+                <div style="font-size:0.9rem;opacity:0.9;margin-bottom:0.3rem;">종합 신뢰도</div>
+                <div id="totalConf" style="font-size:2.5rem;font-weight:700;">-</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analysis Logic -->
+    <div style="background:white;border-radius:16px;padding:3rem;margin-bottom:3rem;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <h3 style="font-size:2rem;margin:0 0 2rem 0;border-bottom:3px solid #FFD700;padding-bottom:1rem;">🧮 진단 로직 상세</h3>
+        
+        <div style="background:#f9f9f9;padding:2rem;border-radius:12px;margin-bottom:2rem;">
+            <h4 style="font-size:1.3rem;margin:0 0 1rem 0;color:#333;">📐 최종 타입 계산 공식</h4>
+            <div style="font-family:monospace;background:white;padding:1.5rem;border-radius:8px;font-size:0.95rem;line-height:1.8;color:#666;border-left:4px solid #FFD700;">
+                최종 신뢰도 = (Step1 측색 신뢰도 × 0.4) + (Step2 드레이핑 신뢰도 × 0.6)<br><br>
+                <strong style="color:#333;">가중치 이유:</strong><br>
+                • 측색(40%): 객관적 데이터이나 조명/상태에 영향<br>
+                • 드레이핑(60%): 실제 착용 테스트로 더 높은 가중치<br><br>
+                <strong style="color:#333;">Step3 생체 데이터는?</strong><br>
+                → 대비감/스타일링 전략으로 활용 (타입 결정엔 미반영)
+            </div>
+        </div>
+
+        <div id="calculationDetail"></div>
+    </div>
+
+    <!-- 7-Layer Biometric Data -->
+    <div style="background:white;border-radius:16px;padding:3rem;margin-bottom:3rem;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <h3 style="font-size:2rem;margin:0 0 2rem 0;border-bottom:3px solid #FFD700;padding-bottom:1rem;">🔬 7-Layer 생체 데이터</h3>
+        
+        <!-- Step 1: Lab Data -->
+        <div style="background:#f9f9f9;padding:2rem;border-radius:12px;margin-bottom:2rem;">
+            <h4 style="font-size:1.3rem;margin:0 0 1rem 0;color:#333;">📊 STEP 1: 피부 측색 (4부위)</h4>
+            <div id="step1Data"></div>
+        </div>
+
+        <!-- Step 2: Draping -->
+        <div style="background:#f9f9f9;padding:2rem;border-radius:12px;margin-bottom:2rem;">
+            <h4 style="font-size:1.3rem;margin:0 0 1rem 0;color:#333;">🎭 STEP 2: 드레이핑 (3회차)</h4>
+            <div id="step2Data"></div>
+        </div>
+
+        <!-- Step 3: Hair (3-layer) -->
+        <div style="background:#f9f9f9;padding:2rem;border-radius:12px;margin-bottom:2rem;">
+            <h4 style="font-size:1.3rem;margin:0 0 1rem 0;color:#333;">💇 STEP 3-A: 모발 3-Layer 분석</h4>
+            <div id="hairData"></div>
+        </div>
+
+        <!-- Step 3: Eye (4-layer) -->
+        <div style="background:#f9f9f9;padding:2rem;border-radius:12px;">
+            <h4 style="font-size:1.3rem;margin:0 0 1rem 0;color:#333;">👁️ STEP 3-B: 홍채 Golden Circle (4-Layer)</h4>
+            <div id="eyeData"></div>
+        </div>
+    </div>
+
+    <!-- Best Colors -->
+    <div style="background:white;border-radius:16px;padding:3rem;margin-bottom:3rem;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <h3 style="font-size:2rem;margin:0 0 2rem 0;border-bottom:3px solid #FFD700;padding-bottom:1rem;">🌈 베스트 컬러 팔레트</h3>
+        <div id="bestColors" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:1rem;"></div>
+    </div>
+
+    <!-- Worst Colors -->
+    <div style="background:white;border-radius:16px;padding:3rem;margin-bottom:3rem;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <h3 style="font-size:2rem;margin:0 0 2rem 0;border-bottom:3px solid #FF6B6B;padding-bottom:1rem;">⚠️ 피해야 할 컬러</h3>
+        <div id="worstColors" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:1rem;"></div>
+    </div>
+
+    <!-- Styling Guide -->
+    <div style="background:white;border-radius:16px;padding:3rem;margin-bottom:3rem;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <h3 style="font-size:2rem;margin:0 0 2rem 0;border-bottom:3px solid #FFD700;padding-bottom:1rem;">💄 맞춤 스타일링 가이드</h3>
+        <div id="stylingGuide"></div>
+    </div>
+
+    <!-- Contrast Strategy -->
+    <div style="background:white;border-radius:16px;padding:3rem;margin-bottom:3rem;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <h3 style="font-size:2rem;margin:0 0 2rem 0;border-bottom:3px solid #FFD700;padding-bottom:1rem;">✨ 대비감 기반 전략</h3>
+        <div id="contrastStrategy"></div>
+    </div>
+
+    <!-- Actions -->
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <button onclick="downloadPDF()" style="padding:1rem 2.5rem;font-size:1rem;border:none;border-radius:8px;cursor:pointer;background:linear-gradient(135deg,#FFD700,#FFA500);color:white;font-weight:600;box-shadow:0 4px 15px rgba(255,215,0,0.3);">
+            📥 PDF 다운로드
+        </button>
+        <button onclick="restart()" style="padding:1rem 2.5rem;font-size:1rem;border:none;border-radius:8px;cursor:pointer;background:#e0e0e0;color:#333;">
+            🔄 다시 진단하기
+        </button>
+    </div>
+</div>
+
+<script>
+const typeData={
+    light_spring:{name:'라이트 봄',colors:['#FFE4E1','#FFB6C1','#FFD700','#98FB98','#E0FFFF'],worst:['#000000','#2F4F4F','#8B4513']},
+    bright_spring:{name:'브라이트 봄',colors:['#FF6347','#FFD700','#00CED1','#FF69B4','#7FFF00'],worst:['#696969','#8B4513','#2F4F4F']},
+    warm_spring:{name:'웜 봄',colors:['#FF8C00','#FFD700','#ADFF2F','#FF6347','#FFA07A'],worst:['#191970','#000080','#4B0082']},
+    light_summer:{name:'라이트 여름',colors:['#E6E6FA','#B0C4DE','#FFB6C1','#DDA0DD','#F0E68C'],worst:['#FF8C00','#FF4500','#8B4513']},
+    soft_summer:{name:'소프트 여름',colors:['#D8BFD8','#B0C4DE','#DDA0DD','#BC8F8F','#F5DEB3'],worst:['#FF0000','#FF8C00','#000000']},
+    cool_summer:{name:'쿨 여름',colors:['#B0C4DE','#9370DB','#FFB6C1','#DDA0DD','#E0FFFF'],worst:['#FF8C00','#D2691E','#8B4513']},
+    soft_autumn:{name:'소프트 가을',colors:['#BC8F8F','#D2B48C','#BDB76B','#8FBC8F','#DDA0DD'],worst:['#FF1493','#00FFFF','#00FF00']},
+    warm_autumn:{name:'웜 가을',colors:['#D2691E','#CD853F','#BDB76B','#F4A460','#DEB887'],worst:['#00FFFF','#FF1493','#7FFF00']},
+    deep_autumn:{name:'딥 가을',colors:['#8B4513','#A0522D','#6B8E23','#8B0000','#B8860B'],worst:['#FFB6C1','#E0FFFF','#F0E68C']},
+    cool_winter:{name:'쿨 겨울',colors:['#000080','#4169E1','#FF1493','#8B008B','#E0FFFF'],worst:['#FF8C00','#FFD700','#F4A460']},
+    bright_winter:{name:'브라이트 겨울',colors:['#FF0000','#0000FF','#FF1493','#00FFFF','#FFFFFF'],worst:['#BC8F8F','#D2B48C','#BDB76B']},
+    deep_winter:{name:'딥 겨울',colors:['#000000','#8B0000','#191970','#FF1493','#FFFFFF'],worst:['#FFE4E1','#F5DEB3','#FFDAB9']}
+};
+
+const stylingData={
+    spring:{makeup:'• 립: 코랄, 피치, 오렌지<br>• 섀도우: 브론즈, 골드<br>• 블러셔: 코랄 핑크',fashion:'• 밝고 화사한 색<br>• 크림, 카키<br>• 플로럴 패턴',accessory:'• 골드 주얼리<br>• 나무, 가죽 소재'},
+    summer:{makeup:'• 립: 로즈, 라벤더, 핑크<br>• 섀도우: 실버, 그레이<br>• 블러셔: 로즈 핑크',fashion:'• 쿨하고 부드러운 색<br>• 네이비, 그레이<br>• 심플 패턴',accessory:'• 실버 주얼리<br>• 진주, 수정'},
+    autumn:{makeup:'• 립: 브릭, 브라운, 테라코타<br>• 섀도우: 브론즈, 카키<br>• 블러셔: 피치 베이지',fashion:'• 따뜻하고 깊은 색<br>• 카키, 브라운, 와인<br>• 체크 패턴',accessory:'• 골드, 브론즈<br>• 가죽, 나무 소재'},
+    winter:{makeup:'• 립: 버건디, 레드, 핫핑크<br>• 섀도우: 블랙, 실버<br>• 블러셔: 핑크 (또렷)',fashion:'• 선명하고 강렬한 색<br>• 블랙, 화이트<br>• 모던 패턴',accessory:'• 실버, 플래티넘<br>• 크리스탈'}
+};
+
+function calculateFinal(){
+    const saved=JSON.parse(localStorage.getItem('personalColorData_premium')||'{}');
+    
+    if(!saved.step1||!saved.step2){
+        alert('진단 데이터 없음');
+        window.location.href='pcolor_pre1.html';
+        return;
+    }
+
+    // Step1: 40%
+    const step1Top=saved.step1.top3[0];
+    const step1Conf=step1Top.score;
+
+    // Step2: 60%
+    const step2Scores=saved.step2.scores;
+    const step2Sorted=Object.entries(step2Scores).sort((a,b)=>b[1]-a[1]);
+    const step2Type=step2Sorted[0][0];
+    const step2Score=step2Sorted[0][1];
+    const step2Conf=Math.min(100,(step2Score/60)*100);
+
+    // Final
+    const finalType=step2Type;
+    const totalConf=Math.round((step1Conf*0.4)+(step2Conf*0.6));
+
+    // Display
+    document.getElementById('finalType').textContent=typeData[finalType].name;
+    document.getElementById('step1Conf').textContent=Math.round(step1Conf)+'%';
+    document.getElementById('step2Conf').textContent=Math.round(step2Conf)+'%';
+    document.getElementById('totalConf').textContent=totalConf+'%';
+
+    // Calculation Detail
+    document.getElementById('calculationDetail').innerHTML=`
+        <div style="background:white;padding:2rem;border-radius:12px;border:2px solid #FFD700;">
+            <h4 style="font-size:1.2rem;margin:0 0 1rem 0;color:#333;">💡 계산 과정</h4>
+            <div style="font-family:monospace;font-size:0.95rem;color:#666;line-height:1.8;">
+                <strong>Step 1 (측색):</strong><br>
+                • TOP1: ${step1Top.name} (${step1Top.score}점)<br>
+                • 가중치: ${step1Top.score} × 0.4 = ${(step1Top.score*0.4).toFixed(1)}점<br><br>
+                
+                <strong>Step 2 (드레이핑):</strong><br>
+                • 최종 선택: ${typeData[step2Type].name} (${step2Score}점)<br>
+                • 신뢰도: ${step2Conf.toFixed(1)}%<br>
+                • 가중치: ${step2Conf.toFixed(1)} × 0.6 = ${(step2Conf*0.6).toFixed(1)}점<br><br>
+                
+                <strong style="color:#FFA500;font-size:1.1rem;">최종: ${(step1Conf*0.4).toFixed(1)} + ${(step2Conf*0.6).toFixed(1)} = ${totalConf}%</strong>
+            </div>
+        </div>
+    `;
+
+    // Step1 Data
+    document.getElementById('step1Data').innerHTML=`
+        <div style="color:#666;line-height:1.8;">
+            • 평균 L: ${saved.step1.average.l.toFixed(1)} (명도)<br>
+            • 평균 A: ${saved.step1.average.a.toFixed(1)} (붉은기)<br>
+            • 평균 B: ${saved.step1.average.b.toFixed(1)} (노란기)<br>
+            • 채도: ${Math.sqrt(saved.step1.average.a**2+saved.step1.average.b**2).toFixed(1)}<br><br>
+            <strong>TOP 3 후보:</strong><br>
+            1. ${saved.step1.top3[0].name} (${saved.step1.top3[0].conf})<br>
+            2. ${saved.step1.top3[1].name} (${saved.step1.top3[1].conf})<br>
+            3. ${saved.step1.top3[2].name} (${saved.step1.top3[2].conf})
+        </div>
+    `;
+
+    // Step2 Data
+    const top3Draping=step2Sorted.slice(0,3);
+    document.getElementById('step2Data').innerHTML=`
+        <div style="color:#666;line-height:1.8;">
+            <strong>3회 토너먼트 결과:</strong><br>
+            1. ${typeData[top3Draping[0][0]].name} (${top3Draping[0][1]}점)<br>
+            2. ${typeData[top3Draping[1][0]].name} (${top3Draping[1][1]}점)<br>
+            3. ${typeData[top3Draping[2][0]].name} (${top3Draping[2][1]}점)
+        </div>
+    `;
+
+    // Step3 Hair
+    if(saved.step3){
+        const hair=saved.step3;
+        document.getElementById('hairData').innerHTML=`
+            <div style="color:#666;line-height:1.8;">
+                <strong>Layer 1 - Depth:</strong> ${hair.hairDepth.name} (L:${hair.hairDepth.l})<br>
+                <strong>Layer 2 - Melanin:</strong> ${hair.hairMelanin.name} (A:${hair.hairMelanin.a}, B:${hair.hairMelanin.b})<br>
+                <strong>Layer 3 - Gloss:</strong> ${hair.hairGloss.name}<br><br>
+                <div style="background:#fffbf0;padding:1rem;border-radius:8px;border-left:4px solid #FFD700;">
+                    <strong>소재 추천:</strong> ${hair.hairGloss.level==='high'?'실크, 새틴, 시폰':hair.hairGloss.level==='medium'?'면, 린넨, 저지':'울, 트위드, 벨벳'}
+                </div>
+            </div>
+        `;
+
+        // Step3 Eye
+        document.getElementById('eyeData').innerHTML=`
+            <div style="color:#666;line-height:1.8;">
+                <strong>Layer 1 - Depth:</strong> ${hair.eyeDepth.name} (L:${hair.eyeDepth.l})<br>
+                <strong>Layer 2 - Contrast:</strong> ${hair.eyeContrast.name} (${hair.eyeContrast.score>0?'+':''} ${hair.eyeContrast.score}점)<br>
+                <strong>Layer 3 - Pattern:</strong> ${hair.eyePattern.name}<br>
+                <strong>Layer 4 - Sclera:</strong> ${hair.eyeSclera.name} (${hair.eyeSclera.score>0?'+':''} ${hair.eyeSclera.score}점)<br><br>
+                <div style="background:#fffbf0;padding:1rem;border-radius:8px;border-left:4px solid #4A90E5;">
+                    <strong>타입 힌트:</strong><br>
+                    ${hair.eyeContrast.level==='high'?'• 브라이트 타입 가능성 ↑<br>':''}
+                    ${hair.eyeContrast.level==='low'?'• 소프트 타입 가능성 ↑<br>':''}
+                    ${hair.eyePattern.season==='spring_winter'?'• 봄/겨울 (청색 계절) ↑<br>':''}
+                    ${hair.eyePattern.season==='summer_autumn'?'• 여름/가을 (탁색 계절) ↑<br>':''}
+                    ${hair.eyeSclera.type==='blue'?'• 쿨톤 보정':''}
+                    ${hair.eyeSclera.type==='ivory'?'• 웜톤 보정':''}
+                </div>
+            </div>
+        `;
+
+        // Contrast Strategy
+        const contrast=saved.step3.contrast;
+        document.getElementById('contrastStrategy').innerHTML=`
+            <div style="background:linear-gradient(135deg,#FFD700,#FFA500);color:white;padding:2rem;border-radius:12px;text-align:center;margin-bottom:2rem;">
+                <div style="font-size:1.3rem;margin-bottom:0.5rem;">종합 대비감</div>
+                <div style="font-size:3rem;font-weight:700;margin-bottom:0.5rem;">${Math.round(contrast.score)}</div>
+                <div style="font-size:1.2rem;font-weight:600;">${contrast.level}</div>
+            </div>
+            <div style="background:#f9f9f9;padding:2rem;border-radius:12px;">
+                <h4 style="font-size:1.2rem;margin:0 0 1rem 0;color:#333;">맞춤 전략</h4>
+                <div style="color:#666;line-height:1.8;">
+                    ${contrast.level==='HIGH CONTRAST'?'• 선명하고 강렬한 색상 추천<br>• 골드/실버 액세서리<br>• 대담한 컬러 블로킹':
+                      contrast.level==='MEDIUM CONTRAST'?'• 선명~부드러운 색 모두 가능<br>• 다양한 스타일 연출<br>• 톤온톤 or 포인트 컬러':
+                      '• 부드럽고 은은한 색상<br>• 뮤트 톤, 파스텔<br>• 작고 섬세한 액세서리'}
+                </div>
+            </div>
+        `;
+    }
+
+    // Colors
+    const colors=typeData[finalType].colors;
+    document.getElementById('bestColors').innerHTML=colors.map(c=>`
+        <div style="background:${c};height:100px;border-radius:8px;display:flex;align-items:flex-end;justify-content:center;padding:0.5rem;color:${getBright(c)>128?'#333':'#fff'};font-size:0.75rem;font-weight:600;">${c}</div>
+    `).join('');
+
+    const worst=typeData[finalType].worst;
+    document.getElementById('worstColors').innerHTML=worst.map(c=>`
+        <div style="background:${c};height:100px;border-radius:8px;display:flex;align-items:flex-end;justify-content:center;padding:0.5rem;color:${getBright(c)>128?'#333':'#fff'};font-size:0.75rem;font-weight:600;opacity:0.7;">${c}</div>
+    `).join('');
+
+    // Styling
+    const season=finalType.includes('spring')?'spring':finalType.includes('summer')?'summer':finalType.includes('autumn')?'autumn':'winter';
+    const guide=stylingData[season];
+    document.getElementById('stylingGuide').innerHTML=`
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem;">
+            <div style="background:#f9f9f9;padding:2rem;border-radius:12px;">
+                <h4 style="font-size:1.3rem;margin:0 0 1rem 0;color:#333;">💄 메이크업</h4>
+                <div style="color:#666;font-size:0.95rem;line-height:1.8;">${guide.makeup}</div>
+            </div>
+            <div style="background:#f9f9f9;padding:2rem;border-radius:12px;">
+                <h4 style="font-size:1.3rem;margin:0 0 1rem 0;color:#333;">👗 패션</h4>
+                <div style="color:#666;font-size:0.95rem;line-height:1.8;">${guide.fashion}</div>
+            </div>
+            <div style="background:#f9f9f9;padding:2rem;border-radius:12px;">
+                <h4 style="font-size:1.3rem;margin:0 0 1rem 0;color:#333;">💍 액세서리</h4>
+                <div style="color:#666;font-size:0.95rem;line-height:1.8;">${guide.accessory}</div>
+            </div>
+        </div>
+    `;
+}
+
+function getBright(hex){
+    const r=parseInt(hex.substr(1,2),16);
+    const g=parseInt(hex.substr(3,2),16);
+    const b=parseInt(hex.substr(5,2),16);
+    return(r*299+g*587+b*114)/1000;
+}
+
+function downloadPDF(){alert('PDF 다운로드 준비 중');}
+function restart(){localStorage.removeItem('personalColorData_premium');window.location.href='./';}
+
+window.onload=calculateFinal;
+</script>
+</body>
+</html>
