@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE COVE PREMIUM - 측색 분석 결과</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body style="margin: 0; font-family: -apple-system, system-ui, sans-serif; background: #fafafa;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 3rem 2rem;">
+        <!-- Progress -->
+        <div style="width: 100%; height: 6px; background: rgba(255,215,0,0.2); border-radius: 3px; margin-bottom: 3rem;">
+            <div style="height: 100%; background: linear-gradient(90deg, #FFD700, #FFA500); width: 37.5%;"></div>
+        </div>
+
+        <!-- Header -->
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <div style="font-size: 0.875rem; letter-spacing: 0.3em; color: #FFA500; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.8rem;">
+                <span style="background: linear-gradient(135deg, #FFD700, #FFA500); color: white; padding: 0.3rem 0.8rem; border-radius: 12px; font-size: 0.7rem; font-weight: 700;">PREMIUM</span>
+                STEP 1.5 - 측색 분석 결과
+            </div>
+            <h1 style="font-size: 2.5rem; margin: 0 0 1rem 0;">📊 데이터 분석 완료</h1>
+            <p style="font-size: 1.1rem; color: #666;">측색기 기반 AI 분석 결과를 확인해주세요</p>
+        </div>
+
+        <!-- Main Results Container -->
+        <div style="background: white; border-radius: 16px; padding: 3rem; margin-bottom: 3rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+            
+            <!-- Section 1: LAB Values -->
+            <div style="margin-bottom: 3rem;">
+                <h2 style="font-size: 1.8rem; margin: 0 0 1.5rem 0; color: #333; border-bottom: 3px solid #FFD700; padding-bottom: 0.5rem;">
+                    🔬 측정된 LAB 값
+                </h2>
+                
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2rem;">
+                    <!-- Forehead -->
+                    <div style="background: #f9f9f9; padding: 1.5rem; border-radius: 12px; text-align: center;">
+                        <div style="font-size: 1.2rem; margin-bottom: 0.5rem;">1️⃣ 이마</div>
+                        <div id="foreheadPreview" style="width: 80px; height: 80px; border-radius: 12px; margin: 1rem auto; border: 2px solid #e0e0e0;"></div>
+                        <div id="foreheadLab" style="font-family: monospace; font-size: 0.85rem; color: #666;"></div>
+                    </div>
+
+                    <!-- Cheek -->
+                    <div style="background: #f9f9f9; padding: 1.5rem; border-radius: 12px; text-align: center;">
+                        <div style="font-size: 1.2rem; margin-bottom: 0.5rem;">2️⃣ 볼</div>
+                        <div id="cheekPreview" style="width: 80px; height: 80px; border-radius: 12px; margin: 1rem auto; border: 2px solid #e0e0e0;"></div>
+                        <div id="cheekLab" style="font-family: monospace; font-size: 0.85rem; color: #666;"></div>
+                    </div>
+
+                    <!-- Jawline -->
+                    <div style="background: #f9f9f9; padding: 1.5rem; border-radius: 12px; text-align: center;">
+                        <div style="font-size: 1.2rem; margin-bottom: 0.5rem;">3️⃣ 턱선</div>
+                        <div id="jawlinePreview" style="width: 80px; height: 80px; border-radius: 12px; margin: 1rem auto; border: 2px solid #e0e0e0;"></div>
+                        <div id="jawlineLab" style="font-family: monospace; font-size: 0.85rem; color: #666;"></div>
+                    </div>
+
+                    <!-- Neck -->
+                    <div style="background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,215,0,0.02)); padding: 1.5rem; border-radius: 12px; text-align: center; border: 2px solid #FFD700;">
+                        <div style="font-size: 1.2rem; margin-bottom: 0.5rem;">4️⃣ 목 <span style="font-size: 0.7rem; color: #FFA500;">★</span></div>
+                        <div id="neckPreview" style="width: 80px; height: 80px; border-radius: 12px; margin: 1rem auto; border: 2px solid #FFD700;"></div>
+                        <div id="neckLab" style="font-family: monospace; font-size: 0.85rem; color: #666;"></div>
+                    </div>
+                </div>
+
+                <!-- Average -->
+                <div style="background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,215,0,0.03)); border: 3px solid #FFD700; border-radius: 16px; padding: 2rem; text-align: center;">
+                    <h3 style="font-size: 1.5rem; margin: 0 0 1rem 0; color: #333;">📊 4부위 평균값</h3>
+                    <div id="avgPreview" style="width: 120px; height: 120px; border-radius: 16px; margin: 1rem auto; border: 3px solid #FFD700;"></div>
+                    <div id="avgLab" style="font-family: monospace; font-size: 1.5rem; font-weight: 700; color: #FFA500; margin-bottom: 0.5rem;"></div>
+                    <div style="font-size: 0.95rem; color: #666;">이 값을 기준으로 분석합니다</div>
+                </div>
+            </div>
+
+            <!-- Section 2: Korean Average Comparison -->
+            <div style="margin-bottom: 3rem;">
+                <h2 style="font-size: 1.8rem; margin: 0 0 1.5rem 0; color: #333; border-bottom: 3px solid #FFD700; padding-bottom: 0.5rem;">
+                    🇰🇷 한국인 평균 대비 분석
+                </h2>
+
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
+                    <!-- L Analysis -->
+                    <div style="background: #f9f9f9; padding: 2rem; border-radius: 12px;">
+                        <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; color: #333;">명도 (L)</div>
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #4A90E5; margin-bottom: 0.5rem;" id="lValueDisplay">-</div>
+                        <div style="font-size: 0.9rem; color: #999; margin-bottom: 1rem;">한국인 평균: 62.0</div>
+                        <div id="lAnalysis" style="font-size: 0.95rem; color: #666; line-height: 1.6;"></div>
+                    </div>
+
+                    <!-- A Analysis -->
+                    <div style="background: #f9f9f9; padding: 2rem; border-radius: 12px;">
+                        <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; color: #333;">붉은기 (A)</div>
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #E85D75; margin-bottom: 0.5rem;" id="aValueDisplay">-</div>
+                        <div style="font-size: 0.9rem; color: #999; margin-bottom: 1rem;">한국인 평균: 10.5</div>
+                        <div id="aAnalysis" style="font-size: 0.95rem; color: #666; line-height: 1.6;"></div>
+                    </div>
+
+                    <!-- B Analysis -->
+                    <div style="background: #f9f9f9; padding: 2rem; border-radius: 12px;">
+                        <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; color: #333;">노란기 (B)</div>
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #FFD700; margin-bottom: 0.5rem;" id="bValueDisplay">-</div>
+                        <div style="font-size: 0.9rem; color: #999; margin-bottom: 1rem;">한국인 평균: 14.2</div>
+                        <div id="bAnalysis" style="font-size: 0.95rem; color: #666; line-height: 1.6;"></div>
+                    </div>
+                </div>
+
+                <!-- Overall Analysis -->
+                <div style="background: white; border: 2px solid #FFD700; border-radius: 12px; padding: 2rem; margin-top: 2rem;">
+                    <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                        <div style="font-size: 2.5rem;">💡</div>
+                        <div>
+                            <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: #333;">종합 분석</div>
+                            <div id="overallAnalysis" style="font-size: 1rem; color: #666; line-height: 1.8;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3: TOP 3 Candidates -->
+            <div>
+                <h2 style="font-size: 1.8rem; margin: 0 0 1.5rem 0; color: #333; border-bottom: 3px solid #FFD700; padding-bottom: 0.5rem;">
+                    🏆 유력 후보군 TOP 3
+                </h2>
+
+                <div id="top3Container"></div>
+
+                <div style="background: #fffbf0; border: 2px solid #FFD700; border-radius: 12px; padding: 1.5rem; margin-top: 2rem;">
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        <div style="font-size: 2rem;">⚠️</div>
+                        <div style="font-size: 0.95rem; color: #666; line-height: 1.7;">
+                            <strong style="color: #333;">참고:</strong> 이 결과는 측색기 데이터만을 기반으로 한 예측입니다. 
+                            다음 단계의 <strong style="color: #FFA500;">드레이핑 테스트</strong>를 통해 실제 얼굴에 어울리는 색상을 확인하여 
+                            최종 타입을 확정합니다.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div style="display: flex; gap: 1rem; justify-content: center;">
+            <button onclick="goBack()" style="padding: 1rem 2.5rem; font-size: 1rem; border: none; border-radius: 8px; cursor: pointer; background: #e0e0e0; color: #333;">
+                ← 측정 다시하기
+            </button>
+            <button onclick="goNext()" style="padding: 1rem 2.5rem; font-size: 1rem; border: none; border-radius: 8px; cursor: pointer; background: linear-gradient(135deg, #FFD700, #FFA500); color: white; font-weight: 600; box-shadow: 0 4px 15px rgba(255,215,0,0.3);">
+                드레이핑 테스트 시작 →
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const KA = {L: 62, a: 10.5, b: 14.2};
+
+        function rgb(l,a,b) {
+            let y=(l+16)/116, x=a/500+y, z=y-b/200;
+            x=0.95047*((x**3>0.008856)?x**3:(x-16/116)/7.787);
+            y=1.00000*((y**3>0.008856)?y**3:(y-16/116)/7.787);
+            z=1.08883*((z**3>0.008856)?z**3:(z-16/116)/7.787);
+            let r=x*3.2406+y*-1.5372+z*-0.4986, g=x*-0.9689+y*1.8758+z*0.0415, bl=x*0.0557+y*-0.2040+z*1.0570;
+            r=(r>0.0031308)?(1.055*r**(1/2.4)-0.055):12.92*r;
+            g=(g>0.0031308)?(1.055*g**(1/2.4)-0.055):12.92*g;
+            bl=(bl>0.0031308)?(1.055*bl**(1/2.4)-0.055):12.92*bl;
+            return {r:Math.max(0,Math.min(255,Math.round(r*255))), g:Math.max(0,Math.min(255,Math.round(g*255))), b:Math.max(0,Math.min(255,Math.round(bl*255)))};
+        }
+
+        function displayPreview(id, l, a, b) {
+            const el = document.getElementById(id);
+            const c = rgb(l, a, b);
+            el.style.backgroundColor = `rgb(${c.r},${c.g},${c.b})`;
+        }
+
+        function goNext() {
+            window.location.href = 'pcolor_pre2.html';
+        }
+
+        function goBack() {
+            window.location.href = 'pcolor_pre1.html';
+        }
+
+        window.onload = function() {
+            const data = JSON.parse(localStorage.getItem('personalColorData_premium') || '{}');
+            
+            // FOR TESTING: Auto-fill with sample data if no data exists
+            if (!data.step1) {
+                const sampleData = {
+                    step1: {
+                        forehead: {l: 68.5, a: 12.3, b: 18.7},
+                        cheek: {l: 67.2, a: 13.1, b: 19.2},
+                        jawline: {l: 69.1, a: 11.8, b: 18.1},
+                        neck: {l: 68.0, a: 12.5, b: 18.9},
+                        average: {l: 68.2, a: 12.4, b: 18.7},
+                        top3: [
+                            {rank: 1, name: '라이트 봄', score: 95, conf: '95%', reasons: '명도(L:68.2) 범위 내, 웜톤 일치, 채도(22.4) 적합'},
+                            {rank: 2, name: '웜 봄', score: 85, conf: '85%', reasons: '웜톤 일치, 채도 적합'},
+                            {rank: 3, name: '브라이트 봄', score: 78, conf: '78%', reasons: '명도 범위 일치, 웜톤 일치'}
+                        ]
+                    }
+                };
+                localStorage.setItem('personalColorData_premium', JSON.stringify(sampleData));
+                const step1 = sampleData.step1;
+            } else {
+                const step1 = data.step1;
+            }
+
+            const step1 = data.step1 || JSON.parse(localStorage.getItem('personalColorData_premium')).step1;
+
+            // Display 4 measurements
+            displayPreview('foreheadPreview', step1.forehead.l, step1.forehead.a, step1.forehead.b);
+            document.getElementById('foreheadLab').textContent = 
+                `L:${step1.forehead.l.toFixed(1)} A:${step1.forehead.a.toFixed(1)} B:${step1.forehead.b.toFixed(1)}`;
+
+            displayPreview('cheekPreview', step1.cheek.l, step1.cheek.a, step1.cheek.b);
+            document.getElementById('cheekLab').textContent = 
+                `L:${step1.cheek.l.toFixed(1)} A:${step1.cheek.a.toFixed(1)} B:${step1.cheek.b.toFixed(1)}`;
+
+            displayPreview('jawlinePreview', step1.jawline.l, step1.jawline.a, step1.jawline.b);
+            document.getElementById('jawlineLab').textContent = 
+                `L:${step1.jawline.l.toFixed(1)} A:${step1.jawline.a.toFixed(1)} B:${step1.jawline.b.toFixed(1)}`;
+
+            displayPreview('neckPreview', step1.neck.l, step1.neck.a, step1.neck.b);
+            document.getElementById('neckLab').textContent = 
+                `L:${step1.neck.l.toFixed(1)} A:${step1.neck.a.toFixed(1)} B:${step1.neck.b.toFixed(1)}`;
+
+            // Display average
+            const avg = step1.average;
+            displayPreview('avgPreview', avg.l, avg.a, avg.b);
+            document.getElementById('avgLab').textContent = 
+                `L: ${avg.l.toFixed(1)} / A: ${avg.a.toFixed(1)} / B: ${avg.b.toFixed(1)}`;
+
+            // Korean average comparison
+            document.getElementById('lValueDisplay').textContent = avg.l.toFixed(1);
+            document.getElementById('aValueDisplay').textContent = (avg.a > 0 ? '+' : '') + avg.a.toFixed(1);
+            document.getElementById('bValueDisplay').textContent = (avg.b > 0 ? '+' : '') + avg.b.toFixed(1);
+
+            // L Analysis
+            const lDiff = avg.l - KA.L;
+            const lZ = lDiff / 5.5;
+            let lText = '';
+            if (lZ > 1.5) {
+                lText = '✓ 상위 7%에 해당하는 매우 밝은 피부입니다.<br>✓ 라이트 계열 타입에 유리합니다.';
+            } else if (lZ > 0.5) {
+                lText = '✓ 상위 30%에 해당하는 밝은 피부입니다.<br>✓ 라이트~미디엄 타입에 적합합니다.';
+            } else if (lZ > -0.5) {
+                lText = '✓ 평균 범위의 명도입니다.<br>✓ 대부분의 타입이 가능합니다.';
+            } else {
+                lText = '✓ 평균보다 어두운 피부입니다.<br>✓ 딥 계열 타입에 유리합니다.';
+            }
+            document.getElementById('lAnalysis').innerHTML = lText;
+
+            // A Analysis
+            const aDiff = avg.a - KA.a;
+            let aText = '';
+            if (aDiff > 5) {
+                aText = '✓ 강한 핑크 언더톤입니다.<br>✓ 쿨톤 계열에 매우 유리합니다.<br>✓ 여름/겨울 타입 가능성이 높습니다.';
+            } else if (aDiff > 0) {
+                aText = '✓ 핑크 언더톤입니다.<br>✓ 쿨톤 계열에 유리합니다.';
+            } else if (aDiff > -5) {
+                aText = '✓ 중성~올리브 언더톤입니다.<br>✓ 웜/쿨 모두 가능합니다.';
+            } else {
+                aText = '✓ 강한 올리브 언더톤입니다.<br>✓ 웜톤 계열에 유리합니다.<br>✓ 가을 타입 가능성이 높습니다.';
+            }
+            document.getElementById('aAnalysis').innerHTML = aText;
+
+            // B Analysis
+            const bDiff = avg.b - KA.b;
+            let bText = '';
+            if (bDiff > 5) {
+                bText = '✓ 강한 웜톤입니다.<br>✓ 봄/가을 타입 가능성이 높습니다.<br>✓ 옐로우 베이스입니다.';
+            } else if (bDiff > 0) {
+                bText = '✓ 웜톤입니다.<br>✓ 따뜻한 색상이 잘 어울립니다.';
+            } else if (bDiff > -5) {
+                bText = '✓ 중성 온도입니다.<br>✓ 웜/쿨 모두 활용 가능합니다.';
+            } else {
+                bText = '✓ 쿨톤입니다.<br>✓ 여름/겨울 타입 가능성이 높습니다.<br>✓ 블루 베이스입니다.';
+            }
+            document.getElementById('bAnalysis').innerHTML = bText;
+
+            // Overall Analysis
+            let overall = `귀하의 피부는 한국인 평균 대비 `;
+            if (lZ > 0.5) overall += '<strong>밝은 편</strong>이며, ';
+            else if (lZ < -0.5) overall += '<strong>어두운 편</strong>이며, ';
+            else overall += '<strong>평균 명도</strong>이며, ';
+
+            if (aDiff > 3) overall += '<strong>핑크 언더톤</strong>이 강하고, ';
+            else if (aDiff < -3) overall += '<strong>올리브 언더톤</strong>이 있으며, ';
+            else overall += '<strong>중성 언더톤</strong>이고, ';
+
+            if (bDiff > 3) overall += '<strong>웜톤</strong>입니다.';
+            else if (bDiff < -3) overall += '<strong>쿨톤</strong>입니다.';
+            else overall += '<strong>중성 온도</strong>입니다.';
+
+            document.getElementById('overallAnalysis').innerHTML = overall;
+
+            // TOP 3 Display
+            const top3 = step1.top3;
+            const container = document.getElementById('top3Container');
+
+            top3.forEach((candidate, index) => {
+                const card = document.createElement('div');
+                card.style = `
+                    background: ${index === 0 ? 'linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,215,0,0.05))' : 'white'};
+                    border: ${index === 0 ? '3px' : '2px'} solid ${index === 0 ? '#FFD700' : '#e0e0e0'};
+                    border-radius: 12px;
+                    padding: 2rem;
+                    margin-bottom: 1.5rem;
+                    ${index === 0 ? 'box-shadow: 0 8px 25px rgba(255,215,0,0.3);' : ''}
+                `;
+
+                card.innerHTML = `
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="
+                                background: linear-gradient(135deg, #FFD700, #FFA500);
+                                color: white;
+                                width: 50px;
+                                height: 50px;
+                                border-radius: 50%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                font-size: 1.5rem;
+                                font-weight: 700;
+                            ">${candidate.rank}</div>
+                            <div>
+                                <div style="font-size: ${index === 0 ? '1.8rem' : '1.5rem'}; font-weight: 700; color: #333; margin-bottom: 0.3rem;">
+                                    ${candidate.name}
+                                    ${index === 0 ? '<span style="color: #FFD700; margin-left: 0.5rem;">★</span>' : ''}
+                                </div>
+                                <div style="font-size: 1rem; color: #666;">예측 신뢰도</div>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 2.5rem; font-weight: 700; color: #FFA500;">${candidate.conf}</div>
+                        </div>
+                    </div>
+                    <div style="background: white; padding: 1rem; border-radius: 8px; border-left: 4px solid #FFD700;">
+                        <div style="font-size: 0.9rem; color: #333; font-weight: 600; margin-bottom: 0.5rem;">📌 선정 이유</div>
+                        <div style="font-size: 0.95rem; color: #666; line-height: 1.6;">${candidate.reasons}</div>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
