@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE COVE PREMIUM - 16타입 심화 드레이핑</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .premium-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 215, 0, 0.2);
+            border-radius: 3px;
+            margin-bottom: 3rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FFD700, #FFA500);
+            width: 50%;
+            transition: width 0.5s ease;
+        }
+
+        .premium-badge {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .step-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .step-number {
+            font-size: 0.875rem;
+            letter-spacing: 0.3em;
+            color: #FFA500;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+        }
+
+        .step-title {
+            font-size: 2.5rem;
+            color: var(--color-black);
+            margin-bottom: 1rem;
+        }
+
+        .step-description {
+            font-size: 1.1rem;
+            color: var(--color-slate);
+            line-height: 1.7;
+        }
+
+        .round-container {
+            background: white;
+            padding: 3rem;
+            border-radius: 16px;
+            border: 3px solid #FFD700;
+            margin-bottom: 3rem;
+        }
+
+        .round-title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--color-black);
+        }
+
+        .round-subtitle {
+            text-align: center;
+            color: var(--color-slate);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .color-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .color-option {
+            background: var(--color-cream);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .color-option:hover {
+            border-color: #FFD700;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .color-option.selected {
+            border-color: #FFD700;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, white 100%);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .option-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--color-black);
+        }
+
+        .option-colors {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .color-swatch {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .option-description {
+            color: var(--color-slate);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .round-result {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .result-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .score-display {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 2px solid var(--color-sand);
+        }
+
+        .score-title {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: var(--color-black);
+        }
+
+        .score-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        .score-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--color-cream);
+            border-radius: 8px;
+        }
+
+        .score-item.top {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 165, 0, 0.2));
+            border: 2px solid #FFD700;
+        }
+
+        .score-label {
+            font-size: 0.85rem;
+            color: var(--color-slate);
+            margin-bottom: 0.5rem;
+        }
+
+        .score-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #FFA500;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 3rem;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-back {
+            background: var(--color-sand);
+            color: var(--color-charcoal);
+        }
+
+        .btn-back:hover {
+            background: var(--color-accent);
+            color: white;
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .btn-next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .btn-next:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @media (max-width: 768px) {
+            .color-options {
+                grid-template-columns: 1fr;
+            }
+            .score-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="premium-container">
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- Header -->
+        <div class="step-header">
+            <div class="step-number">
+                <span class="premium-badge">PREMIUM</span>
+                Step 2 of 4
+            </div>
+            <h1 class="step-title">16타입 심화 드레이핑</h1>
+            <p class="step-description">
+                3회에 걸친 토너먼트 방식으로 명도/채도/청탁을 정밀하게 분석합니다.
+            </p>
+        </div>
+
+        <!-- Step 1 Summary -->
+        <div id="step1Summary" style="background: linear-gradient(135deg, rgba(255,215,0,0.1) 0%, white 100%); border: 3px solid #FFD700; border-radius: 16px; padding: 2rem; margin-bottom: 3rem; display: none;">
+            <h3 style="font-size: 1.5rem; margin: 0 0 1.5rem 0; text-align: center;">📊 Step 1 측색 분석 결과</h3>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                <!-- LAB Values -->
+                <div style="background: white; padding: 1.5rem; border-radius: 12px;">
+                    <h4 style="font-size: 1.1rem; margin: 0 0 1rem 0; color: #333;">평균 LAB 값</h4>
+                    <div style="font-family: monospace; font-size: 1.2rem; color: #FFA500; font-weight: 600;" id="labSummary">-</div>
+                </div>
+
+                <!-- Korean Average -->
+                <div style="background: white; padding: 1.5rem; border-radius: 12px;">
+                    <h4 style="font-size: 1.1rem; margin: 0 0 1rem 0; color: #333;">한국인 평균 대비</h4>
+                    <div style="font-size: 0.95rem; color: #666; line-height: 1.7;" id="avgComparison">-</div>
+                </div>
+            </div>
+
+            <!-- TOP 3 Candidates -->
+            <div style="background: white; padding: 1.5rem; border-radius: 12px;">
+                <h4 style="font-size: 1.1rem; margin: 0 0 1rem 0; color: #333;">🏆 유력 후보군 TOP 3</h4>
+                <div id="top3Summary" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;"></div>
+            </div>
+
+            <div style="text-align: center; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #e0e0e0;">
+                <p style="color: #666; font-size: 0.95rem; margin: 0;">
+                    💡 이제 드레이핑 테스트를 통해 최종 타입을 확정합니다
+                </p>
+            </div>
+        </div>
+
+        <!-- Score Display -->
+        <div class="score-display" id="scoreDisplay" style="display: none;">
+            <h3 class="score-title">📊 현재 점수 (상위 4개)</h3>
+            <div class="score-grid" id="scoreGrid"></div>
+        </div>
+
+        <!-- Round 1: Temperature -->
+        <div class="round-container" id="round1">
+            <h2 class="round-title">🌡️ Round 1: 온도 (Warm vs Cool)</h2>
+            <p class="round-subtitle">어떤 색상이 더 얼굴을 화사하게 만드나요?</p>
+            
+            <div class="color-options">
+                <div class="color-option" onclick="selectOption(1, 'warm')">
+                    <h3 class="option-title">웜톤 계열</h3>
+                    <div class="option-colors">
+                        <div class="color-swatch" style="background: #FF9B85;"></div>
+                        <div class="color-swatch" style="background: #FFD700;"></div>
+                    </div>
+                    <p class="option-description">
+                        코랄, 피치, 골드 등<br>
+                        따뜻하고 노란기가 도는 색상
+                    </p>
+                </div>
+
+                <div class="color-option" onclick="selectOption(1, 'cool')">
+                    <h3 class="option-title">쿨톤 계열</h3>
+                    <div class="option-colors">
+                        <div class="color-swatch" style="background: #FFB3D9;"></div>
+                        <div class="color-swatch" style="background: #B0C4DE;"></div>
+                    </div>
+                    <p class="option-description">
+                        핑크, 라벤더, 실버 등<br>
+                        차갑고 푸른기가 도는 색상
+                    </p>
+                </div>
+            </div>
+
+            <div class="round-result" id="result1">
+                <p class="result-text"></p>
+            </div>
+        </div>
+
+        <!-- Round 2: Brightness -->
+        <div class="round-container" id="round2" style="display: none;">
+            <h2 class="round-title">💡 Round 2: 명도 (Light vs Deep)</h2>
+            <p class="round-subtitle">어떤 색상이 더 피부를 돋보이게 하나요?</p>
+            
+            <div class="color-options">
+                <div class="color-option" onclick="selectOption(2, 'light')">
+                    <h3 class="option-title">고명도 (밝은 색)</h3>
+                    <div class="option-colors">
+                        <div class="color-swatch" style="background: #FFE4E1;"></div>
+                        <div class="color-swatch" style="background: #E6E6FA;"></div>
+                    </div>
+                    <p class="option-description">
+                        파스텔, 아이보리 등<br>
+                        밝고 부드러운 색상
+                    </p>
+                </div>
+
+                <div class="color-option" onclick="selectOption(2, 'deep')">
+                    <h3 class="option-title">저명도 (어두운 색)</h3>
+                    <div class="option-colors">
+                        <div class="color-swatch" style="background: #8B4513;"></div>
+                        <div class="color-swatch" style="background: #191970;"></div>
+                    </div>
+                    <p class="option-description">
+                        다크 브라운, 네이비 등<br>
+                        깊고 진한 색상
+                    </p>
+                </div>
+            </div>
+
+            <div class="round-result" id="result2">
+                <p class="result-text"></p>
+            </div>
+        </div>
+
+        <!-- Round 3: Chroma -->
+        <div class="round-container" id="round3" style="display: none;">
+            <h2 class="round-title">✨ Round 3: 채도 (Vivid vs Muted)</h2>
+            <p class="round-subtitle">어떤 색상이 더 자연스러운가요?</p>
+            
+            <div class="color-options">
+                <div class="color-option" onclick="selectOption(3, 'vivid')">
+                    <h3 class="option-title">비비드 (선명함)</h3>
+                    <div class="option-colors">
+                        <div class="color-swatch" style="background: #FF1493;"></div>
+                        <div class="color-swatch" style="background: #4169E1;"></div>
+                    </div>
+                    <p class="option-description">
+                        선명하고 강렬한 색상<br>
+                        높은 채도의 컬러
+                    </p>
+                </div>
+
+                <div class="color-option" onclick="selectOption(3, 'muted')">
+                    <h3 class="option-title">뮤트 (부드러움)</h3>
+                    <div class="option-colors">
+                        <div class="color-swatch" style="background: #D8BFD8;"></div>
+                        <div class="color-swatch" style="background: #BC8F8F;"></div>
+                    </div>
+                    <p class="option-description">
+                        은은하고 부드러운 색상<br>
+                        낮은 채도의 컬러
+                    </p>
+                </div>
+            </div>
+
+            <div class="round-result" id="result3">
+                <p class="result-text"></p>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="button-group">
+            <button class="btn btn-back" onclick="goBack()">← 이전</button>
+            <button class="btn btn-next" id="nextBtn" onclick="goNext()" disabled>다음 단계로 →</button>
+        </div>
+    </div>
+
+    <script>
+        // 16 types scoring system
+        let scores = {
+            light_spring: 0,
+            bright_spring: 0,
+            warm_spring: 0,
+            light_summer: 0,
+            soft_summer: 0,
+            cool_summer: 0,
+            soft_autumn: 0,
+            warm_autumn: 0,
+            deep_autumn: 0,
+            cool_winter: 0,
+            bright_winter: 0,
+            deep_winter: 0
+        };
+
+        const typeNames = {
+            light_spring: '라이트 봄',
+            bright_spring: '브라이트 봄',
+            warm_spring: '웜 봄',
+            light_summer: '라이트 여름',
+            soft_summer: '소프트 여름',
+            cool_summer: '쿨 여름',
+            soft_autumn: '소프트 가을',
+            warm_autumn: '웜 가을',
+            deep_autumn: '딥 가을',
+            cool_winter: '쿨 겨울',
+            bright_winter: '브라이트 겨울',
+            deep_winter: '딥 겨울'
+        };
+
+        let roundResults = {
+            round1: null,
+            round2: null,
+            round3: null
+        };
+
+        let currentRound = 1;
+
+        function selectOption(round, choice) {
+            // Remove previous selection
+            document.querySelectorAll(`#round${round} .color-option`).forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            // Add selection to clicked option
+            event.currentTarget.classList.add('selected');
+
+            // Save choice
+            roundResults[`round${round}`] = choice;
+
+            // Update scores based on choice
+            updateScores(round, choice);
+
+            // Show result
+            setTimeout(() => {
+                showRoundResult(round, choice);
+            }, 300);
+        }
+
+        function updateScores(round, choice) {
+            if (round === 1) {
+                // Temperature
+                if (choice === 'warm') {
+                    scores.light_spring += 15;
+                    scores.bright_spring += 15;
+                    scores.warm_spring += 20;
+                    scores.soft_autumn += 15;
+                    scores.warm_autumn += 20;
+                    scores.deep_autumn += 15;
+                } else {
+                    scores.light_summer += 15;
+                    scores.soft_summer += 15;
+                    scores.cool_summer += 20;
+                    scores.cool_winter += 20;
+                    scores.bright_winter += 15;
+                    scores.deep_winter += 15;
+                }
+            } else if (round === 2) {
+                // Brightness
+                if (choice === 'light') {
+                    scores.light_spring += 20;
+                    scores.bright_spring += 15;
+                    scores.light_summer += 20;
+                    scores.soft_summer += 10;
+                    scores.cool_summer += 15;
+                    scores.bright_winter += 10;
+                } else {
+                    scores.warm_spring += 5;
+                    scores.soft_autumn += 10;
+                    scores.warm_autumn += 15;
+                    scores.deep_autumn += 20;
+                    scores.cool_winter += 15;
+                    scores.deep_winter += 20;
+                }
+            } else if (round === 3) {
+                // Chroma
+                if (choice === 'vivid') {
+                    scores.bright_spring += 20;
+                    scores.warm_spring += 10;
+                    scores.cool_summer += 5;
+                    scores.warm_autumn += 10;
+                    scores.deep_autumn += 10;
+                    scores.bright_winter += 20;
+                    scores.deep_winter += 15;
+                } else {
+                    scores.light_spring += 15;
+                    scores.light_summer += 15;
+                    scores.soft_summer += 20;
+                    scores.soft_autumn += 20;
+                }
+            }
+
+            // Show scores
+            updateScoreDisplay();
+        }
+
+        function updateScoreDisplay() {
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            scoreDisplay.style.display = 'block';
+
+            const scoreGrid = document.getElementById('scoreGrid');
+            scoreGrid.innerHTML = '';
+
+            // Get top 4 scores
+            const sortedScores = Object.entries(scores)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 4);
+
+            sortedScores.forEach(([type, score], index) => {
+                const item = document.createElement('div');
+                item.className = 'score-item' + (index === 0 ? ' top' : '');
+                item.innerHTML = `
+                    <div class="score-label">${typeNames[type]}</div>
+                    <div class="score-value">${score}</div>
+                `;
+                scoreGrid.appendChild(item);
+            });
+        }
+
+        function showRoundResult(round, choice) {
+            const result = document.getElementById(`result${round}`);
+            const resultText = result.querySelector('.result-text');
+            
+            let message = '';
+            if (round === 1) {
+                message = choice === 'warm' ? 
+                    '✅ 웜톤 선택! 따뜻한 색상이 잘 어울리시네요.' :
+                    '✅ 쿨톤 선택! 차가운 색상이 잘 어울리시네요.';
+            } else if (round === 2) {
+                message = choice === 'light' ?
+                    '✅ 밝은 색 선택! 고명도 컬러가 잘 어울리시네요.' :
+                    '✅ 어두운 색 선택! 저명도 컬러가 잘 어울리시네요.';
+            } else {
+                message = choice === 'vivid' ?
+                    '✅ 선명한 색 선택! 비비드 컬러가 잘 어울리시네요.' :
+                    '✅ 부드러운 색 선택! 뮤트 컬러가 잘 어울리시네요.';
+            }
+
+            resultText.textContent = message;
+            result.style.display = 'block';
+
+            // Move to next round
+            setTimeout(() => {
+                if (round < 3) {
+                    document.getElementById(`round${round}`).style.display = 'none';
+                    document.getElementById(`round${round + 1}`).style.display = 'block';
+                    currentRound = round + 1;
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    // All rounds complete
+                    document.getElementById('nextBtn').disabled = false;
+                    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                }
+            }, 1500);
+        }
+
+        function goNext() {
+            // Get top type
+            const topType = Object.entries(scores)
+                .sort((a, b) => b[1] - a[1])[0][0];
+
+            // Save data
+            const savedData = JSON.parse(localStorage.getItem('personalColorData_premium') || '{}');
+            savedData.step2 = {
+                rounds: roundResults,
+                scores: scores,
+                topType: topType,
+                topTypeName: typeNames[topType]
+            };
+            localStorage.setItem('personalColorData_premium', JSON.stringify(savedData));
+
+            // Move to next step
+            window.location.href = 'pcolor_pre3.html';
+        }
+
+        function goBack() {
+            window.location.href = 'pcolor_pre1.html';
+        }
+
+        // Load saved data
+        window.onload = function() {
+            const savedData = JSON.parse(localStorage.getItem('personalColorData_premium') || '{}');
+            
+            // Show Step 1 Summary
+            if (savedData.step1) {
+                displayStep1Summary(savedData.step1);
+            }
+            
+            // Restore Step 2 data if exists
+            if (savedData.step2) {
+                const data = savedData.step2;
+                scores = data.scores || scores;
+                roundResults = data.rounds || roundResults;
+                
+                if (roundResults.round1) {
+                    currentRound = 3;
+                    document.getElementById('round1').style.display = 'block';
+                    document.getElementById('round2').style.display = 'block';
+                    document.getElementById('round3').style.display = 'block';
+                    updateScoreDisplay();
+                    document.getElementById('nextBtn').disabled = false;
+                }
+            }
+        }
+
+        function displayStep1Summary(step1Data) {
+            const summary = document.getElementById('step1Summary');
+            summary.style.display = 'block';
+
+            // LAB Values
+            const avg = step1Data.average;
+            document.getElementById('labSummary').textContent = 
+                `L: ${avg.l.toFixed(1)} / A: ${avg.a.toFixed(1)} / B: ${avg.b.toFixed(1)}`;
+
+            // Korean Average Comparison
+            const KA = {L: 62, a: 10.5, b: 14.2};
+            const lDiff = avg.l - KA.L;
+            const aDiff = avg.a - KA.a;
+            const bDiff = avg.b - KA.b;
+
+            let comparison = '';
+            if (lDiff > 5) comparison += '✓ 밝은 피부<br>';
+            else if (lDiff < -5) comparison += '✓ 어두운 피부<br>';
+            else comparison += '✓ 평균 명도<br>';
+
+            if (aDiff > 3) comparison += '✓ 핑크 언더톤<br>';
+            else if (aDiff < -3) comparison += '✓ 올리브 언더톤<br>';
+            else comparison += '✓ 중성 언더톤<br>';
+
+            if (bDiff > 3) comparison += '✓ 웜톤';
+            else if (bDiff < -3) comparison += '✓ 쿨톤';
+            else comparison += '✓ 중성 온도';
+
+            document.getElementById('avgComparison').innerHTML = comparison;
+
+            // TOP 3
+            const top3Container = document.getElementById('top3Summary');
+            top3Container.innerHTML = '';
+
+            if (step1Data.top3) {
+                step1Data.top3.forEach((candidate, index) => {
+                    const card = document.createElement('div');
+                    card.style = `
+                        background: ${index === 0 ? 'linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,215,0,0.05))' : '#f9f9f9'};
+                        padding: 1rem;
+                        border-radius: 8px;
+                        border: 2px solid ${index === 0 ? '#FFD700' : '#e0e0e0'};
+                        text-align: center;
+                    `;
+                    card.innerHTML = `
+                        <div style="font-size: 0.8rem; color: #FFA500; font-weight: 600; margin-bottom: 0.5rem;">${candidate.rank}위</div>
+                        <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.3rem; color: #333;">${candidate.name}</div>
+                        <div style="font-size: 0.9rem; color: #666;">${candidate.conf}</div>
+                    `;
+                    top3Container.appendChild(card);
+                });
+            }
+        }
+    </script>
+</body>
+</html>
