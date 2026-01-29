@@ -3,713 +3,341 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE COVE PREMIUM - 초정밀 측색 분석</title>
+    <title>THE COVE PREMIUM - Step 1</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        .premium-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 3rem 2rem;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: rgba(255, 215, 0, 0.2);
-            border-radius: 3px;
-            margin-bottom: 3rem;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #FFD700, #FFA500);
-            width: 25%;
-            transition: width 0.5s ease;
-        }
-
-        .premium-badge {
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            font-weight: 700;
-        }
-
-        .step-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .step-number {
-            font-size: 0.875rem;
-            letter-spacing: 0.3em;
-            color: #FFA500;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.8rem;
-        }
-
-        .step-title {
-            font-size: 2.5rem;
-            color: var(--color-black);
-            margin-bottom: 1rem;
-        }
-
-        .step-description {
-            font-size: 1.1rem;
-            color: var(--color-slate);
-            line-height: 1.7;
-        }
-
-        .measurement-section {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            margin-bottom: 2rem;
-            border: 2px solid var(--color-sand);
-            transition: all 0.3s ease;
-        }
-
-        .measurement-section:hover {
-            border-color: #FFD700;
-            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.2);
-        }
-
-        .measurement-section.premium-special {
-            border: 3px solid #FFD700;
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, white 100%);
-        }
-
-        .measurement-title {
-            font-size: 1.3rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .measurement-icon {
-            font-size: 1.8rem;
-        }
-
-        .input-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .input-wrapper {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .input-label {
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-        }
-
-        .premium-input {
-            padding: 0.8rem;
-            border: 2px solid var(--color-sand);
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .premium-input:focus {
-            outline: none;
-            border-color: #FFD700;
-            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
-        }
-
-        .input-hint {
-            font-size: 0.75rem;
-            color: var(--color-slate);
-            margin-top: 0.3rem;
-        }
-
-        .color-preview {
-            height: 60px;
-            border-radius: 8px;
-            border: 2px solid var(--color-sand);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--color-slate);
-            font-size: 0.9rem;
-        }
-
-        .average-box {
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, white 100%);
-            border: 3px solid #FFD700;
-            padding: 2.5rem;
-            border-radius: 16px;
-            text-align: center;
-            margin: 3rem 0;
-        }
-
-        .average-title {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .average-values {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: #FFA500;
-            margin-bottom: 1.5rem;
-        }
-
-        .average-preview {
-            height: 120px;
-            border-radius: 12px;
-            border: 2px solid var(--color-sand);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-top: 3rem;
-        }
-
-        .btn {
-            padding: 1rem 2.5rem;
-            font-size: 1rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-back {
-            background: var(--color-sand);
-            color: var(--color-charcoal);
-        }
-
-        .btn-back:hover {
-            background: var(--color-accent);
-            color: white;
-        }
-
-        .btn-next {
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: white;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-        }
-
-        .btn-next:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
-        }
-
-        .btn-next:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        @media (max-width: 768px) {
-            .input-grid {
-                grid-template-columns: 1fr;
-            }
-            .button-group {
-                flex-direction: column;
-            }
-        }
-    </style>
 </head>
-<body>
-    <div class="premium-container">
-        <!-- Progress Bar -->
-        <div class="progress-bar">
-            <div class="progress-fill"></div>
+<body style="margin: 0; font-family: -apple-system, system-ui, sans-serif; background: #fafafa;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 3rem 2rem;">
+        <!-- Progress -->
+        <div style="width: 100%; height: 6px; background: rgba(255,215,0,0.2); border-radius: 3px; margin-bottom: 3rem;">
+            <div style="height: 100%; background: linear-gradient(90deg, #FFD700, #FFA500); width: 25%;"></div>
         </div>
 
         <!-- Header -->
-        <div class="step-header">
-            <div class="step-number">
-                <span class="premium-badge">PREMIUM</span>
-                Step 1 of 4
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <div style="font-size: 0.875rem; letter-spacing: 0.3em; color: #FFA500; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.8rem;">
+                <span style="background: linear-gradient(135deg, #FFD700, #FFA500); color: white; padding: 0.3rem 0.8rem; border-radius: 12px; font-size: 0.7rem; font-weight: 700;">PREMIUM</span>
+                STEP 1 OF 4
             </div>
-            <h1 class="step-title">초정밀 측색 및 데이터 시각화</h1>
-            <p class="step-description">
-                프리미엄 진단에서는 4부위를 측정하여 더욱 정확한 피부 바탕색을 분석합니다.
-            </p>
+            <h1 style="font-size: 2.5rem; margin: 0 0 1rem 0;">초정밀 측색 및 데이터 시각화</h1>
+            <p style="font-size: 1.1rem; color: #666;">4부위를 측정하여 정확한 피부 바탕색을 분석합니다.</p>
         </div>
 
-        <!-- Real-time Analysis Dashboard -->
-        <div id="dashboard" style="display: none; background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, white 100%); border: 3px solid #FFD700; border-radius: 16px; padding: 2.5rem; margin-bottom: 3rem; animation: slideIn 0.5s ease;">
-            <h3 style="font-size: 1.8rem; text-align: center; margin-bottom: 2rem; color: var(--color-black);">📊 실시간 데이터 분석</h3>
+        <!-- Dashboard -->
+        <div id="dashboard" style="display: none; background: linear-gradient(135deg, rgba(255,215,0,0.05) 0%, white 100%); border: 3px solid #FFD700; border-radius: 16px; padding: 2.5rem; margin-bottom: 3rem;">
+            <h3 style="font-size: 1.8rem; text-align: center; margin-bottom: 2rem;">📊 실시간 데이터 분석</h3>
             
-            <!-- Metric Cards -->
+            <!-- Metrics -->
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 2rem;">
-                <!-- L Metric -->
                 <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
                     <div style="font-weight: 600; margin-bottom: 1rem;">명도 (L)</div>
-                    <div style="height: 30px; background: var(--color-sand); border-radius: 15px; overflow: hidden; margin-bottom: 0.8rem;">
-                        <div id="lBar" style="height: 100%; background: linear-gradient(90deg, #4A90E5, #6FB3E0); width: 0%; transition: width 1s ease;"></div>
+                    <div style="height: 30px; background: #f0f0f0; border-radius: 15px; overflow: hidden; margin-bottom: 0.8rem;">
+                        <div id="lBar" style="height: 100%; background: linear-gradient(90deg, #4A90E5, #6FB3E0); width: 0%; transition: width 1s;"></div>
                     </div>
-                    <div style="text-align: right; font-weight: 700; color: #FFA500; font-size: 1.2rem;" id="lValue">-</div>
-                    <p style="font-size: 0.85rem; color: var(--color-slate); margin-top: 0.5rem;" id="lComment"></p>
+                    <div id="lValue" style="text-align: right; font-weight: 700; color: #FFA500; font-size: 1.2rem;">-</div>
+                    <p id="lComment" style="font-size: 0.85rem; color: #666; margin: 0.5rem 0 0 0;"></p>
                 </div>
 
-                <!-- A Metric -->
                 <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
                     <div style="font-weight: 600; margin-bottom: 1rem;">붉은기 (A)</div>
-                    <div style="height: 30px; background: var(--color-sand); border-radius: 15px; overflow: hidden; margin-bottom: 0.8rem;">
-                        <div id="aBar" style="height: 100%; background: linear-gradient(90deg, #E85D75, #FF8FA3); width: 0%; transition: width 1s ease;"></div>
+                    <div style="height: 30px; background: #f0f0f0; border-radius: 15px; overflow: hidden; margin-bottom: 0.8rem;">
+                        <div id="aBar" style="height: 100%; background: linear-gradient(90deg, #E85D75, #FF8FA3); width: 0%; transition: width 1s;"></div>
                     </div>
-                    <div style="text-align: right; font-weight: 700; color: #FFA500; font-size: 1.2rem;" id="aValue">-</div>
-                    <p style="font-size: 0.85rem; color: var(--color-slate); margin-top: 0.5rem;" id="aComment"></p>
+                    <div id="aValue" style="text-align: right; font-weight: 700; color: #FFA500; font-size: 1.2rem;">-</div>
+                    <p id="aComment" style="font-size: 0.85rem; color: #666; margin: 0.5rem 0 0 0;"></p>
                 </div>
 
-                <!-- B Metric -->
                 <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
                     <div style="font-weight: 600; margin-bottom: 1rem;">노란기 (B)</div>
-                    <div style="height: 30px; background: var(--color-sand); border-radius: 15px; overflow: hidden; margin-bottom: 0.8rem;">
-                        <div id="bBar" style="height: 100%; background: linear-gradient(90deg, #FFD700, #FFA500); width: 0%; transition: width 1s ease;"></div>
+                    <div style="height: 30px; background: #f0f0f0; border-radius: 15px; overflow: hidden; margin-bottom: 0.8rem;">
+                        <div id="bBar" style="height: 100%; background: linear-gradient(90deg, #FFD700, #FFA500); width: 0%; transition: width 1s;"></div>
                     </div>
-                    <div style="text-align: right; font-weight: 700; color: #FFA500; font-size: 1.2rem;" id="bValue">-</div>
-                    <p style="font-size: 0.85rem; color: var(--color-slate); margin-top: 0.5rem;" id="bComment"></p>
+                    <div id="bValue" style="text-align: right; font-weight: 700; color: #FFA500; font-size: 1.2rem;">-</div>
+                    <p id="bComment" style="font-size: 0.85rem; color: #666; margin: 0.5rem 0 0 0;"></p>
                 </div>
             </div>
 
-            <!-- Analysis Comment -->
+            <!-- Analysis -->
             <div style="background: white; padding: 2rem; border-radius: 12px; border-left: 4px solid #FFD700; margin-bottom: 2rem; display: flex; gap: 1rem;">
                 <div style="font-size: 2rem;">💡</div>
-                <p id="analysisText" style="color: var(--color-slate); line-height: 1.8; margin: 0; font-size: 1.05rem;"></p>
+                <p id="analysisText" style="color: #666; line-height: 1.8; margin: 0; font-size: 1.05rem;"></p>
             </div>
 
-            <!-- Prediction Box -->
-            <div id="predictionBox" style="display: none; background: linear-gradient(135deg, #FFD700, #FFA500); color: white; padding: 2rem; border-radius: 16px; box-shadow: 0 8px 30px rgba(255, 215, 0, 0.3); text-align: center;">
-                <h4 style="font-size: 1.5rem; margin-bottom: 1rem;">🎯 후보군 자동 예측</h4>
-                <p id="predictionText" style="font-size: 1.2rem; line-height: 1.7; margin-bottom: 1rem;"></p>
-                <div style="font-size: 1.1rem;">
-                    <span>예측 신뢰도: </span>
-                    <span id="confidenceValue" style="font-weight: 700; font-size: 1.5rem;">-</span>
-                </div>
+            <!-- TOP 3 -->
+            <div style="background: white; padding: 2rem; border-radius: 16px; border: 3px solid #FFD700;">
+                <h4 style="font-size: 1.5rem; margin: 0 0 1.5rem 0; text-align: center;">🏆 유력 후보군 TOP 3</h4>
+                <div id="candidatesList"></div>
             </div>
         </div>
-
-        <style>
-            @keyframes slideIn {
-                from { opacity: 0; transform: translateY(-20px); }
-                to { opacity: 1; transform: translateY(0); }
-            }
-            @media (max-width: 768px) {
-                #dashboard > div:first-of-type {
-                    grid-template-columns: 1fr !important;
-                }
-            }
-        </style>
 
         <!-- Measurements -->
-        <div class="measurements">
-            <!-- 1. Forehead -->
-            <div class="measurement-section">
-                <h3 class="measurement-title">
-                    <span class="measurement-icon">1️⃣</span>
-                    이마 중앙
+        <div style="margin-bottom: 3rem;">
+            <!-- Forehead -->
+            <div style="background: white; padding: 2rem; border-radius: 12px; margin-bottom: 2rem; border: 2px solid #e0e0e0;">
+                <h3 style="font-size: 1.3rem; margin: 0 0 1.5rem 0; display: flex; align-items: center; gap: 1rem;">
+                    <span style="font-size: 1.8rem;">1️⃣</span> 이마 중앙
                 </h3>
-                <div class="input-grid">
-                    <div class="input-wrapper">
-                        <label class="input-label">L (명도)</label>
-                        <input type="number" class="premium-input" id="forehead_l" min="0" max="100" step="0.1" placeholder="0" oninput="updateData()">
-                        <p class="input-hint">0-100</p>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1rem;">
+                    <div>
+                        <label style="font-weight: 500; margin-bottom: 0.5rem; display: block;">L (명도)</label>
+                        <input type="number" id="forehead_l" min="0" max="100" step="0.1" placeholder="0" oninput="update()" style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                        <p style="font-size: 0.75rem; color: #666; margin: 0.3rem 0 0 0;">0-100</p>
                     </div>
-                    <div class="input-wrapper">
-                        <label class="input-label">A (초록↔빨강)</label>
-                        <input type="number" class="premium-input" id="forehead_a" min="-128" max="127" step="0.1" placeholder="0" oninput="updateData()">
-                        <p class="input-hint">-128 ~ 127</p>
+                    <div>
+                        <label style="font-weight: 500; margin-bottom: 0.5rem; display: block;">A (초록↔빨강)</label>
+                        <input type="number" id="forehead_a" min="-128" max="127" step="0.1" placeholder="0" oninput="update()" style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                        <p style="font-size: 0.75rem; color: #666; margin: 0.3rem 0 0 0;">-128 ~ 127</p>
                     </div>
-                    <div class="input-wrapper">
-                        <label class="input-label">B (파랑↔노랑)</label>
-                        <input type="number" class="premium-input" id="forehead_b" min="-128" max="127" step="0.1" placeholder="0" oninput="updateData()">
-                        <p class="input-hint">-128 ~ 127</p>
+                    <div>
+                        <label style="font-weight: 500; margin-bottom: 0.5rem; display: block;">B (파랑↔노랑)</label>
+                        <input type="number" id="forehead_b" min="-128" max="127" step="0.1" placeholder="0" oninput="update()" style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                        <p style="font-size: 0.75rem; color: #666; margin: 0.3rem 0 0 0;">-128 ~ 127</p>
                     </div>
                 </div>
-                <div class="color-preview" id="preview_forehead">측정 대기 중...</div>
+                <div id="preview_forehead" style="height: 60px; border-radius: 8px; border: 2px solid #e0e0e0; display: flex; align-items: center; justify-content: center; color: #666;">측정 대기 중...</div>
             </div>
 
-            <!-- 2. Cheek -->
-            <div class="measurement-section">
-                <h3 class="measurement-title">
-                    <span class="measurement-icon">2️⃣</span>
-                    볼
+            <!-- Cheek -->
+            <div style="background: white; padding: 2rem; border-radius: 12px; margin-bottom: 2rem; border: 2px solid #e0e0e0;">
+                <h3 style="font-size: 1.3rem; margin: 0 0 1.5rem 0; display: flex; align-items: center; gap: 1rem;">
+                    <span style="font-size: 1.8rem;">2️⃣</span> 볼
                 </h3>
-                <div class="input-grid">
-                    <div class="input-wrapper">
-                        <label class="input-label">L (명도)</label>
-                        <input type="number" class="premium-input" id="cheek_l" min="0" max="100" step="0.1" placeholder="0" oninput="updateData()">
-                        <p class="input-hint">0-100</p>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1rem;">
+                    <div>
+                        <label style="font-weight: 500; margin-bottom: 0.5rem; display: block;">L (명도)</label>
+                        <input type="number" id="cheek_l" min="0" max="100" step="0.1" placeholder="0" oninput="update()" style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                        <p style="font-size: 0.75rem; color: #666; margin: 0.3rem 0 0 0;">0-100</p>
                     </div>
-                    <div class="input-wrapper">
-                        <label class="input-label">A (초록↔빨강)</label>
-                        <input type="number" class="premium-input" id="cheek_a" min="-128" max="127" step="0.1" placeholder="0" oninput="updateData()">
-                        <p class="input-hint">-128 ~ 127</p>
+                    <div>
+                        <label style="font-weight: 500; margin-bottom: 0.5rem; display: block;">A (초록↔빨강)</label>
+                        <input type="number" id="cheek_a" min="-128" max="127" step="0.1" placeholder="0" oninput="update()" style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                        <p style="font-size: 0.75rem; color: #666; margin: 0.3rem 0 0 0;">-128 ~ 127</p>
                     </div>
-                    <div class="input-wrapper">
-                        <label class="input-label">B (파랑↔노랑)</label>
-                        <input type="number" class="premium-input" id="cheek_b" min="-128" max="127" step="0.1" placeholder="0" oninput="updateData()">
-                        <p class="input-hint">-128 ~ 127</p>
+                    <div>
+                        <label style="font-weight: 500; margin-bottom: 0.5rem; display: block;">B (파랑↔노랑)</label>
+                        <input type="number" id="cheek_b" min="-128" max="127" step="0.1" placeholder="0" oninput="update()" style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                        <p style="font-size: 0.75rem; color: #666; margin: 0.3rem 0 0 0;">-128 ~ 127</p>
                     </div>
                 </div>
-                <div class="color-preview" id="preview_cheek">측정 대기 중...</div>
+                <div id="preview_cheek" style="height: 60px; border-radius: 8px; border: 2px solid #e0e0e0; display: flex; align-items: center; justify-content: center; color: #666;">측정 대기 중...</div>
             </div>
 
-            <!-- 3. Jawline -->
-            <div class="measurement-section">
-                <h3 class="measurement-title">
-                    <span class="measurement-icon">3️⃣</span>
-                    턱선
+            <!-- Jawline -->
+            <div style="background: white; padding: 2rem; border-radius: 12px; margin-bottom: 2rem; border: 2px solid #e0e0e0;">
+                <h3 style="font-size: 1.3rem; margin: 0 0 1.5rem 0; display: flex; align-items: center; gap: 1rem;">
+                    <span style="font-size: 1.8rem;">3️⃣</span> 턱선
                 </h3>
-                <div class="input-grid">
-                    <div class="input-wrapper">
-                        <label class="input-label">L (명도)</label>
-                        <input type="number" class="premium-input" id="jawline_l" min="0" max="100" step="0.1" placeholder="0" oninput="updateData()">
-                        <p class="input-hint">0-100</p>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1rem;">
+                    <div>
+                        <label style="font-weight: 500; margin-bottom: 0.5rem; display: block;">L (명도)</label>
+                        <input type="number" id="jawline_l" min="0" max="100" step="0.1" placeholder="0" oninput="update()" style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                        <p style="font-size: 0.75rem; color: #666; margin: 0.3rem 0 0 0;">0-100</p>
                     </div>
-                    <div class="input-wrapper">
-                        <label class="input-label">A (초록↔빨강)</label>
-                        <input type="number" class="premium-input" id="jawline_a" min="-128" max="127" step="0.1" placeholder="0" oninput="updateData()">
-                        <p class="input-hint">-128 ~ 127</p>
+                    <div>
+                        <label style="font-weight: 500; margin-bottom: 0.5rem; display: block;">A (초록↔빨강)</label>
+                        <input type="number" id="jawline_a" min="-128" max="127" step="0.1" placeholder="0" oninput="update()" style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                        <p style="font-size: 0.75rem; color: #666; margin: 0.3rem 0 0 0;">-128 ~ 127</p>
                     </div>
-                    <div class="input-wrapper">
-                        <label class="input-label">B (파랑↔노랑)</label>
-                        <input type="number" class="premium-input" id="jawline_b" min="-128" max="127" step="0.1" placeholder="0" oninput="updateData()">
-                        <p class="input-hint">-128 ~ 127</p>
+                    <div>
+                        <label style="font-weight: 500; margin-bottom: 0.5rem; display: block;">B (파랑↔노랑)</label>
+                        <input type="number" id="jawline_b" min="-128" max="127" step="0.1" placeholder="0" oninput="update()" style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                        <p style="font-size: 0.75rem; color: #666; margin: 0.3rem 0 0 0;">-128 ~ 127</p>
                     </div>
                 </div>
-                <div class="color-preview" id="preview_jawline">측정 대기 중...</div>
+                <div id="preview_jawline" style="height: 60px; border-radius: 8px; border: 2px solid #e0e0e0; display: flex; align-items: center; justify-content: center; color: #666;">측정 대기 중...</div>
             </div>
 
-            <!-- 4. Neck (Premium) -->
-            <div class="measurement-section premium-special">
-                <h3 class="measurement-title">
-                    <span class="measurement-icon">4️⃣</span>
-                    목
-                    <span class="premium-badge">PREMIUM</span>
+            <!-- Neck (Premium) -->
+            <div style="background: linear-gradient(135deg, rgba(255,215,0,0.05) 0%, white 100%); padding: 2rem; border-radius: 12px; margin-bottom: 2rem; border: 3px solid #FFD700;">
+                <h3 style="font-size: 1.3rem; margin: 0 0 1.5rem 0; display: flex; align-items: center; gap: 1rem;">
+                    <span style="font-size: 1.8rem;">4️⃣</span> 목
+                    <span style="background: linear-gradient(135deg, #FFD700, #FFA500); color: white; padding: 0.2rem 0.6rem; border-radius: 8px; font-size: 0.65rem; font-weight: 700;">PREMIUM</span>
                 </h3>
-                <div class="input-grid">
-                    <div class="input-wrapper">
-                        <label class="input-label">L (명도)</label>
-                        <input type="number" class="premium-input" id="neck_l" min="0" max="100" step="0.1" placeholder="0" oninput="updateData()">
-                        <p class="input-hint">0-100</p>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1rem;">
+                    <div>
+                        <label style="font-weight: 500; margin-bottom: 0.5rem; display: block;">L (명도)</label>
+                        <input type="number" id="neck_l" min="0" max="100" step="0.1" placeholder="0" oninput="update()" style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                        <p style="font-size: 0.75rem; color: #666; margin: 0.3rem 0 0 0;">0-100</p>
                     </div>
-                    <div class="input-wrapper">
-                        <label class="input-label">A (초록↔빨강)</label>
-                        <input type="number" class="premium-input" id="neck_a" min="-128" max="127" step="0.1" placeholder="0" oninput="updateData()">
-                        <p class="input-hint">-128 ~ 127</p>
+                    <div>
+                        <label style="font-weight: 500; margin-bottom: 0.5rem; display: block;">A (초록↔빨강)</label>
+                        <input type="number" id="neck_a" min="-128" max="127" step="0.1" placeholder="0" oninput="update()" style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                        <p style="font-size: 0.75rem; color: #666; margin: 0.3rem 0 0 0;">-128 ~ 127</p>
                     </div>
-                    <div class="input-wrapper">
-                        <label class="input-label">B (파랑↔노랑)</label>
-                        <input type="number" class="premium-input" id="neck_b" min="-128" max="127" step="0.1" placeholder="0" oninput="updateData()">
-                        <p class="input-hint">-128 ~ 127</p>
+                    <div>
+                        <label style="font-weight: 500; margin-bottom: 0.5rem; display: block;">B (파랑↔노랑)</label>
+                        <input type="number" id="neck_b" min="-128" max="127" step="0.1" placeholder="0" oninput="update()" style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                        <p style="font-size: 0.75rem; color: #666; margin: 0.3rem 0 0 0;">-128 ~ 127</p>
                     </div>
                 </div>
-                <div class="color-preview" id="preview_neck">측정 대기 중...</div>
+                <div id="preview_neck" style="height: 60px; border-radius: 8px; border: 2px solid #e0e0e0; display: flex; align-items: center; justify-content: center; color: #666;">측정 대기 중...</div>
             </div>
         </div>
 
-        <!-- Average Result -->
-        <div class="average-box">
-            <h3 class="average-title">📊 4부위 평균 피부톤</h3>
-            <div class="average-values" id="avgValues">L: - / A: - / B: -</div>
-            <div class="average-preview" id="avgPreview">
-                4개 부위를 모두 측정하면 평균값이 표시됩니다
-            </div>
+        <!-- Average -->
+        <div style="background: linear-gradient(135deg, rgba(255,215,0,0.1) 0%, white 100%); padding: 2.5rem; border-radius: 16px; border: 3px solid #FFD700; text-align: center; margin-bottom: 3rem;">
+            <h3 style="font-size: 1.5rem; margin: 0 0 1rem 0;">📊 4부위 평균 피부톤</h3>
+            <div id="avgValues" style="font-size: 1.3rem; font-weight: 600; color: #FFA500; margin-bottom: 1.5rem;">L: - / A: - / B: -</div>
+            <div id="avgPreview" style="height: 120px; border-radius: 12px; border: 2px solid #e0e0e0; display: flex; align-items: center; justify-content: center;">4개 부위를 모두 측정하면 평균값이 표시됩니다</div>
         </div>
 
-        <!-- Navigation -->
-        <div class="button-group">
-            <button class="btn btn-back" onclick="goBack()">← 이전</button>
-            <button class="btn btn-next" id="nextBtn" onclick="goNext()" disabled>다음 단계로 →</button>
+        <!-- Buttons -->
+        <div style="display: flex; gap: 1rem; justify-content: center;">
+            <button onclick="goBack()" style="padding: 1rem 2.5rem; font-size: 1rem; border: none; border-radius: 8px; cursor: pointer; background: #e0e0e0; color: #333;">← 이전</button>
+            <button id="nextBtn" onclick="goNext()" disabled style="padding: 1rem 2.5rem; font-size: 1rem; border: none; border-radius: 8px; cursor: pointer; background: linear-gradient(135deg, #FFD700, #FFA500); color: white; font-weight: 600; opacity: 0.5;">다음 단계로 →</button>
         </div>
     </div>
 
     <script>
-        let data = {
-            forehead: {l: null, a: null, b: null},
-            cheek: {l: null, a: null, b: null},
-            jawline: {l: null, a: null, b: null},
-            neck: {l: null, a: null, b: null},
-            average: {l: null, a: null, b: null}
+        const KA={L:62,a:10.5,b:14.2};
+        const types={
+            light_spring:{L:[65,75],a:[8,15],b:[12,20],chroma:[15,25]},
+            bright_spring:{L:[60,70],a:[10,18],b:[15,25],chroma:[25,40]},
+            warm_spring:{L:[58,68],a:[8,14],b:[18,28],chroma:[20,30]},
+            light_summer:{L:[65,75],a:[12,18],b:[8,14],chroma:[12,20]},
+            soft_summer:{L:[58,68],a:[10,16],b:[10,16],chroma:[10,18]},
+            cool_summer:{L:[60,70],a:[12,20],b:[6,12],chroma:[15,25]},
+            soft_autumn:{L:[55,65],a:[8,14],b:[14,22],chroma:[12,20]},
+            warm_autumn:{L:[52,62],a:[10,16],b:[18,28],chroma:[20,30]},
+            deep_autumn:{L:[45,55],a:[10,18],b:[16,26],chroma:[25,35]},
+            cool_winter:{L:[55,65],a:[14,22],b:[4,10],chroma:[20,30]},
+            bright_winter:{L:[58,68],a:[12,20],b:[6,12],chroma:[28,40]},
+            deep_winter:{L:[45,55],a:[12,20],b:[4,12],chroma:[25,35]}
         };
+        const names={
+            light_spring:'라이트 봄',bright_spring:'브라이트 봄',warm_spring:'웜 봄',
+            light_summer:'라이트 여름',soft_summer:'소프트 여름',cool_summer:'쿨 여름',
+            soft_autumn:'소프트 가을',warm_autumn:'웜 가을',deep_autumn:'딥 가을',
+            cool_winter:'쿨 겨울',bright_winter:'브라이트 겨울',deep_winter:'딥 겨울'
+        };
+        let data={forehead:{},cheek:{},jawline:{},neck:{},average:{}};
 
-        function labToRgb(l, a, b) {
-            let y = (l + 16) / 116;
-            let x = a / 500 + y;
-            let z = y - b / 200;
-
-            x = 0.95047 * ((x * x * x > 0.008856) ? x * x * x : (x - 16/116) / 7.787);
-            y = 1.00000 * ((y * y * y > 0.008856) ? y * y * y : (y - 16/116) / 7.787);
-            z = 1.08883 * ((z * z * z > 0.008856) ? z * z * z : (z - 16/116) / 7.787);
-
-            let r = x *  3.2406 + y * -1.5372 + z * -0.4986;
-            let g = x * -0.9689 + y *  1.8758 + z *  0.0415;
-            let bl = x *  0.0557 + y * -0.2040 + z *  1.0570;
-
-            r = (r > 0.0031308) ? (1.055 * Math.pow(r, 1/2.4) - 0.055) : 12.92 * r;
-            g = (g > 0.0031308) ? (1.055 * Math.pow(g, 1/2.4) - 0.055) : 12.92 * g;
-            bl = (bl > 0.0031308) ? (1.055 * Math.pow(bl, 1/2.4) - 0.055) : 12.92 * bl;
-
-            return {
-                r: Math.max(0, Math.min(255, Math.round(r * 255))),
-                g: Math.max(0, Math.min(255, Math.round(g * 255))),
-                b: Math.max(0, Math.min(255, Math.round(bl * 255)))
-            };
+        function rgb(l,a,b){
+            let y=(l+16)/116,x=a/500+y,z=y-b/200;
+            x=0.95047*((x**3>0.008856)?x**3:(x-16/116)/7.787);
+            y=1.00000*((y**3>0.008856)?y**3:(y-16/116)/7.787);
+            z=1.08883*((z**3>0.008856)?z**3:(z-16/116)/7.787);
+            let r=x*3.2406+y*-1.5372+z*-0.4986,g=x*-0.9689+y*1.8758+z*0.0415,bl=x*0.0557+y*-0.2040+z*1.0570;
+            r=(r>0.0031308)?(1.055*r**(1/2.4)-0.055):12.92*r;
+            g=(g>0.0031308)?(1.055*g**(1/2.4)-0.055):12.92*g;
+            bl=(bl>0.0031308)?(1.055*bl**(1/2.4)-0.055):12.92*bl;
+            return{r:Math.max(0,Math.min(255,Math.round(r*255))),g:Math.max(0,Math.min(255,Math.round(g*255))),b:Math.max(0,Math.min(255,Math.round(bl*255)))};
         }
 
-        function updatePreview(area, l, a, b) {
-            const preview = document.getElementById(`preview_${area}`);
-            if (l > 0) {
-                const rgb = labToRgb(l, a, b);
-                preview.style.backgroundColor = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
-                preview.textContent = `LAB(${l.toFixed(1)}, ${a.toFixed(1)}, ${b.toFixed(1)})`;
-                preview.style.color = l > 50 ? '#333' : '#fff';
-                preview.style.fontWeight = '600';
+        function sc(lab,type){
+            const t=types[type];let s=100,c=Math.sqrt(lab.a**2+lab.b**2);
+            if(lab.l<t.L[0]||lab.l>t.L[1])s-=Math.min(30,Math.min(Math.abs(lab.l-t.L[0]),Math.abs(lab.l-t.L[1]))*3);
+            if(lab.a<t.a[0]||lab.a>t.a[1])s-=Math.min(25,Math.min(Math.abs(lab.a-t.a[0]),Math.abs(lab.a-t.a[1]))*2.5);
+            if(lab.b<t.b[0]||lab.b>t.b[1])s-=Math.min(25,Math.min(Math.abs(lab.b-t.b[0]),Math.abs(lab.b-t.b[1]))*2.5);
+            if(c<t.chroma[0]||c>t.chroma[1])s-=Math.min(20,Math.min(Math.abs(c-t.chroma[0]),Math.abs(c-t.chroma[1]))*2);
+            return Math.max(0,s);
+        }
+
+        function top3(lab){
+            return Object.keys(types).map(k=>({type:k,name:names[k],score:sc(lab,k)}))
+                .sort((a,b)=>b.score-a.score).slice(0,3)
+                .map((x,i)=>{
+                    const t=types[x.type],r=[],c=Math.sqrt(lab.a**2+lab.b**2);
+                    if(lab.l>=t.L[0]&&lab.l<=t.L[1])r.push(`명도(L:${lab.l.toFixed(1)}) 범위 내`);
+                    if((t.b[0]+t.b[1])/2>14&&lab.b>12)r.push('웜톤 일치');
+                    else if((t.b[0]+t.b[1])/2<12&&lab.b<10)r.push('쿨톤 일치');
+                    if(c>=t.chroma[0]&&c<=t.chroma[1])r.push(`채도(${c.toFixed(1)}) 적합`);
+                    return{rank:i+1,name:x.name,score:x.score,conf:Math.round(x.score)+'%',reasons:r.join(', ')||'종합 분석'};
+                });
+        }
+
+        function prev(area,l,a,b){
+            const p=document.getElementById('preview_'+area);
+            if(l>0){
+                const c=rgb(l,a,b);
+                p.style.backgroundColor=`rgb(${c.r},${c.g},${c.b})`;
+                p.textContent=`LAB(${l.toFixed(1)}, ${a.toFixed(1)}, ${b.toFixed(1)})`;
+                p.style.color=l>50?'#333':'#fff';p.style.fontWeight='600';
             }
         }
 
-        function updateData() {
-            // Get values
-            const fl = parseFloat(document.getElementById('forehead_l').value) || 0;
-            const fa = parseFloat(document.getElementById('forehead_a').value) || 0;
-            const fb = parseFloat(document.getElementById('forehead_b').value) || 0;
-
-            const cl = parseFloat(document.getElementById('cheek_l').value) || 0;
-            const ca = parseFloat(document.getElementById('cheek_a').value) || 0;
-            const cb = parseFloat(document.getElementById('cheek_b').value) || 0;
-
-            const jl = parseFloat(document.getElementById('jawline_l').value) || 0;
-            const ja = parseFloat(document.getElementById('jawline_a').value) || 0;
-            const jb = parseFloat(document.getElementById('jawline_b').value) || 0;
-
-            const nl = parseFloat(document.getElementById('neck_l').value) || 0;
-            const na = parseFloat(document.getElementById('neck_a').value) || 0;
-            const nb = parseFloat(document.getElementById('neck_b').value) || 0;
-
-            // Update previews
-            updatePreview('forehead', fl, fa, fb);
-            updatePreview('cheek', cl, ca, cb);
-            updatePreview('jawline', jl, ja, jb);
-            updatePreview('neck', nl, na, nb);
-
-            // Save data
-            data.forehead = {l: fl, a: fa, b: fb};
-            data.cheek = {l: cl, a: ca, b: cb};
-            data.jawline = {l: jl, a: ja, b: jb};
-            data.neck = {l: nl, a: na, b: nb};
-
-            // Check completion
-            const complete = 
-                document.getElementById('forehead_l').value !== '' &&
-                document.getElementById('cheek_l').value !== '' &&
-                document.getElementById('jawline_l').value !== '' &&
-                document.getElementById('neck_l').value !== '';
-
-            if (complete) {
-                // Calculate average
-                const avgL = ((fl + cl + jl + nl) / 4).toFixed(2);
-                const avgA = ((fa + ca + ja + na) / 4).toFixed(2);
-                const avgB = ((fb + cb + jb + nb) / 4).toFixed(2);
-
-                data.average = {
-                    l: parseFloat(avgL),
-                    a: parseFloat(avgA),
-                    b: parseFloat(avgB)
-                };
-
-                // Display average
-                document.getElementById('avgValues').textContent = 
-                    `L: ${avgL} / A: ${avgA} / B: ${avgB}`;
-
-                const rgb = labToRgb(parseFloat(avgL), parseFloat(avgA), parseFloat(avgB));
-                const preview = document.getElementById('avgPreview');
-                preview.style.backgroundColor = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
-                preview.textContent = `평균 피부톤`;
-                preview.style.color = parseFloat(avgL) > 50 ? '#333' : '#fff';
-                preview.style.fontWeight = '600';
-                preview.style.fontSize = '1.2rem';
-
-                // Show and update dashboard
-                showDashboard(parseFloat(avgL), parseFloat(avgA), parseFloat(avgB));
-
-                // Enable next button
-                document.getElementById('nextBtn').disabled = false;
-            } else {
-                document.getElementById('nextBtn').disabled = true;
-                document.getElementById('dashboard').style.display = 'none';
+        function update(){
+            const fl=parseFloat(document.getElementById('forehead_l').value)||0,fa=parseFloat(document.getElementById('forehead_a').value)||0,fb=parseFloat(document.getElementById('forehead_b').value)||0;
+            const cl=parseFloat(document.getElementById('cheek_l').value)||0,ca=parseFloat(document.getElementById('cheek_a').value)||0,cb=parseFloat(document.getElementById('cheek_b').value)||0;
+            const jl=parseFloat(document.getElementById('jawline_l').value)||0,ja=parseFloat(document.getElementById('jawline_a').value)||0,jb=parseFloat(document.getElementById('jawline_b').value)||0;
+            const nl=parseFloat(document.getElementById('neck_l').value)||0,na=parseFloat(document.getElementById('neck_a').value)||0,nb=parseFloat(document.getElementById('neck_b').value)||0;
+            
+            prev('forehead',fl,fa,fb);prev('cheek',cl,ca,cb);prev('jawline',jl,ja,jb);prev('neck',nl,na,nb);
+            data={forehead:{l:fl,a:fa,b:fb},cheek:{l:cl,a:ca,b:cb},jawline:{l:jl,a:ja,b:jb},neck:{l:nl,a:na,b:nb}};
+            
+            if(document.getElementById('forehead_l').value&&document.getElementById('cheek_l').value&&document.getElementById('jawline_l').value&&document.getElementById('neck_l').value){
+                const al=((fl+cl+jl+nl)/4).toFixed(2),aa=((fa+ca+ja+na)/4).toFixed(2),ab=((fb+cb+jb+nb)/4).toFixed(2);
+                data.average={l:parseFloat(al),a:parseFloat(aa),b:parseFloat(ab)};
+                
+                document.getElementById('avgValues').textContent=`L: ${al} / A: ${aa} / B: ${ab}`;
+                const c=rgb(parseFloat(al),parseFloat(aa),parseFloat(ab)),p=document.getElementById('avgPreview');
+                p.style.backgroundColor=`rgb(${c.r},${c.g},${c.b})`;p.textContent='평균 피부톤';
+                p.style.color=parseFloat(al)>50?'#333':'#fff';p.style.fontWeight='600';p.style.fontSize='1.2rem';
+                
+                dash(parseFloat(al),parseFloat(aa),parseFloat(ab));
+                document.getElementById('nextBtn').disabled=false;
+                document.getElementById('nextBtn').style.opacity='1';
+            }else{
+                document.getElementById('nextBtn').disabled=true;
+                document.getElementById('nextBtn').style.opacity='0.5';
+                document.getElementById('dashboard').style.display='none';
             }
         }
 
-        function showDashboard(l, a, b) {
-            const dashboard = document.getElementById('dashboard');
-            dashboard.style.display = 'block';
-
-            // Update L bar
-            const lPercent = (l / 100) * 100;
-            document.getElementById('lBar').style.width = lPercent + '%';
-            document.getElementById('lValue').textContent = l.toFixed(1);
-
-            // L comment (한국인 평균 대비)
-            const koreanAvg = 62;
-            let lComment = '';
-            if (l > 70) {
-                lComment = `한국인 평균(L:${koreanAvg}) 대비 상위 10%로 매우 밝은 피부입니다.`;
-            } else if (l > 65) {
-                lComment = `한국인 평균 대비 밝은 편입니다 (상위 20%).`;
-            } else if (l > 55) {
-                lComment = `한국인 평균에 가까운 명도입니다.`;
-            } else {
-                lComment = `한국인 평균 대비 어두운 편입니다.`;
-            }
-            document.getElementById('lComment').textContent = lComment;
-
-            // Update A bar
-            const aPercent = ((a + 128) / 255) * 100;
-            document.getElementById('aBar').style.width = aPercent + '%';
-            document.getElementById('aValue').textContent = a > 0 ? `+${a.toFixed(1)}` : a.toFixed(1);
-
-            // A comment
-            let aComment = '';
-            if (a > 10) {
-                aComment = '강한 핑크 언더톤 (붉은기 많음)';
-            } else if (a > 5) {
-                aComment = '핑크 언더톤';
-            } else if (a > -2) {
-                aComment = '중성 언더톤';
-            } else {
-                aComment = '올리브 언더톤 (초록기 있음)';
-            }
-            document.getElementById('aComment').textContent = aComment;
-
-            // Update B bar
-            const bPercent = ((b + 128) / 255) * 100;
-            document.getElementById('bBar').style.width = bPercent + '%';
-            document.getElementById('bValue').textContent = b > 0 ? `+${b.toFixed(1)}` : b.toFixed(1);
-
-            // B comment
-            let bComment = '';
-            if (b > 15) {
-                bComment = '강한 웜톤 (노란기 많음)';
-            } else if (b > 8) {
-                bComment = '웜톤 (노란기 있음)';
-            } else if (b > 5) {
-                bComment = '중성 온도';
-            } else {
-                bComment = '쿨톤 (푸른기 있음)';
-            }
-            document.getElementById('bComment').textContent = bComment;
-
-            // Overall analysis
-            let analysisText = '';
-            if (a > b) {
-                analysisText = `붉은기(A:${a.toFixed(1)})가 노란기(B:${b.toFixed(1)})보다 높아 핑크 베이스 피부입니다. `;
-            } else {
-                analysisText = `노란기(B:${b.toFixed(1)})가 붉은기(A:${a.toFixed(1)})보다 높아 옐로우 베이스 피부입니다. `;
-            }
-            analysisText += `명도는 ${l > 65 ? '밝은' : l > 55 ? '중간' : '어두운'} 편입니다.`;
-            document.getElementById('analysisText').textContent = analysisText;
-
-            // Prediction
-            predictSeason(l, a, b);
+        function dash(l,a,b){
+            document.getElementById('dashboard').style.display='block';
+            document.getElementById('lBar').style.width=(l/100*100)+'%';
+            document.getElementById('lValue').textContent=l.toFixed(1);
+            const lz=(l-KA.L)/5.5;
+            document.getElementById('lComment').textContent=lz>1.5?'한국인 평균 대비 상위 7% (매우 밝음)':lz>0.5?'한국인 평균 대비 밝은 편 (상위 30%)':lz>-0.5?'한국인 평균 범위':'한국인 평균보다 어두운 편';
+            
+            document.getElementById('aBar').style.width=((a+128)/255*100)+'%';
+            document.getElementById('aValue').textContent=(a>0?'+':'')+a.toFixed(1);
+            const ad=a-KA.a;
+            document.getElementById('aComment').textContent=ad>5?'강한 핑크 언더톤':ad>0?'핑크 언더톤':ad>-5?'중성~올리브':'강한 올리브 언더톤';
+            
+            document.getElementById('bBar').style.width=((b+128)/255*100)+'%';
+            document.getElementById('bValue').textContent=(b>0?'+':'')+b.toFixed(1);
+            const bd=b-KA.b;
+            document.getElementById('bComment').textContent=bd>5?'강한 웜톤':bd>0?'웜톤':bd>-5?'중성':'쿨톤';
+            
+            document.getElementById('analysisText').textContent=`한국인 평균(L:${KA.L}, A:${KA.a}, B:${KA.b}) 대비 분석 결과입니다.`;
+            
+            const t3=top3({l,a,b});data.top3=t3;
+            const list=document.getElementById('candidatesList');list.innerHTML='';
+            t3.forEach(x=>{
+                const d=document.createElement('div');
+                d.style='background:'+(x.rank===1?'linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,215,0,0.05))':'#f5f5f5')+'; padding:1.5rem; border-radius:12px; margin-bottom:1rem; border-left:'+(x.rank===1?'8px':'5px')+' solid #FFD700;';
+                d.innerHTML=`
+                    <div style="display:flex; align-items:center; margin-bottom:0.5rem;">
+                        <span style="background:linear-gradient(135deg,#FFD700,#FFA500); color:white; padding:0.3rem 0.8rem; border-radius:8px; font-weight:700; font-size:0.9rem; margin-right:1rem;">${x.rank}위</span>
+                        <span style="font-size:1.3rem; font-weight:600;">${x.name}</span>
+                    </div>
+                    <div style="color:#FFA500; font-weight:700; font-size:1.1rem; margin-bottom:0.5rem;">신뢰도: ${x.conf}</div>
+                    <div style="color:#666; font-size:0.95rem;">📌 이유: ${x.reasons}</div>
+                `;
+                list.appendChild(d);
+            });
         }
 
-        function predictSeason(l, a, b) {
-            const isWarm = b > 8;
-            const isCool = b < 5;
-            const isLight = l > 65;
-            const chroma = Math.sqrt(a * a + b * b);
-            const isMuted = chroma < 20;
-
-            let prediction = '';
-            let confidence = 0;
-
-            if (isLight && isCool && isMuted) {
-                prediction = '여름 쿨톤 (라이트 또는 소프트)';
-                confidence = 82;
-            } else if (isLight && isCool) {
-                prediction = '여름 쿨톤 (라이트 또는 쿨)';
-                confidence = 85;
-            } else if (isLight && isWarm) {
-                prediction = '봄 웜톤 (라이트 또는 브라이트)';
-                confidence = 83;
-            } else if (!isLight && isCool) {
-                prediction = '겨울 쿨톤 (쿨 또는 딥)';
-                confidence = 78;
-            } else if (!isLight && isWarm) {
-                prediction = '가을 웜톤 (웜 또는 딥)';
-                confidence = 76;
-            } else {
-                prediction = '중성 톤 (추가 분석 필요)';
-                confidence = 70;
-            }
-
-            // Save prediction
-            data.analysis = {
-                prediction: prediction,
-                confidence: confidence,
-                l: l,
-                a: a,
-                b: b
-            };
-
-            // Show prediction box
-            const predictionBox = document.getElementById('predictionBox');
-            predictionBox.style.display = 'block';
-
-            document.getElementById('predictionText').textContent = 
-                `데이터 분석 결과, 귀하의 피부는 ${prediction}일 확률이 높습니다.`;
-            document.getElementById('confidenceValue').textContent = `${confidence}%`;
+        function goNext(){
+            localStorage.setItem('personalColorData_premium',JSON.stringify({step1:data}));
+            window.location.href='pcolor_pre1_5.html';
         }
 
-        function goNext() {
-            localStorage.setItem('personalColorData_premium', JSON.stringify({step1: data}));
-            window.location.href = 'pcolor_pre2.html';
+        function goBack(){
+            window.location.href='./';
         }
 
-        function goBack() {
-            window.location.href = './';
-        }
-
-        // Load saved data
-        window.onload = function() {
-            const saved = JSON.parse(localStorage.getItem('personalColorData_premium') || '{}');
-            if (saved.step1) {
-                const d = saved.step1;
-                if (d.forehead.l) {
-                    document.getElementById('forehead_l').value = d.forehead.l;
-                    document.getElementById('forehead_a').value = d.forehead.a;
-                    document.getElementById('forehead_b').value = d.forehead.b;
-                }
-                if (d.cheek.l) {
-                    document.getElementById('cheek_l').value = d.cheek.l;
-                    document.getElementById('cheek_a').value = d.cheek.a;
-                    document.getElementById('cheek_b').value = d.cheek.b;
-                }
-                if (d.jawline.l) {
-                    document.getElementById('jawline_l').value = d.jawline.l;
-                    document.getElementById('jawline_a').value = d.jawline.a;
-                    document.getElementById('jawline_b').value = d.jawline.b;
-                }
-                if (d.neck.l) {
-                    document.getElementById('neck_l').value = d.neck.l;
-                    document.getElementById('neck_a').value = d.neck.a;
-                    document.getElementById('neck_b').value = d.neck.b;
-                }
-                updateData();
+        window.onload=function(){
+            const s=JSON.parse(localStorage.getItem('personalColorData_premium')||'{}');
+            if(s.step1){
+                const d=s.step1;
+                if(d.forehead.l){document.getElementById('forehead_l').value=d.forehead.l;document.getElementById('forehead_a').value=d.forehead.a;document.getElementById('forehead_b').value=d.forehead.b;}
+                if(d.cheek.l){document.getElementById('cheek_l').value=d.cheek.l;document.getElementById('cheek_a').value=d.cheek.a;document.getElementById('cheek_b').value=d.cheek.b;}
+                if(d.jawline.l){document.getElementById('jawline_l').value=d.jawline.l;document.getElementById('jawline_a').value=d.jawline.a;document.getElementById('jawline_b').value=d.jawline.b;}
+                if(d.neck.l){document.getElementById('neck_l').value=d.neck.l;document.getElementById('neck_a').value=d.neck.a;document.getElementById('neck_b').value=d.neck.b;}
+                update();
             }
         }
     </script>
