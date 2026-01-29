@@ -1,1 +1,526 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE COVE PREMIUM - 초정밀 측색 분석</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .premium-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
 
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 215, 0, 0.2);
+            border-radius: 3px;
+            margin-bottom: 3rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FFD700, #FFA500);
+            width: 25%;
+            transition: width 0.5s ease;
+        }
+
+        .premium-badge {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .step-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .step-number {
+            font-size: 0.875rem;
+            letter-spacing: 0.3em;
+            color: #FFA500;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+        }
+
+        .step-title {
+            font-size: 2.5rem;
+            color: var(--color-black);
+            margin-bottom: 1rem;
+        }
+
+        .step-description {
+            font-size: 1.1rem;
+            color: var(--color-slate);
+            line-height: 1.7;
+        }
+
+        .measurement-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 2px solid var(--color-sand);
+            transition: all 0.3s ease;
+        }
+
+        .measurement-section:hover {
+            border-color: #FFD700;
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.2);
+        }
+
+        .measurement-section.premium-special {
+            border: 3px solid #FFD700;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, white 100%);
+        }
+
+        .measurement-title {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .measurement-icon {
+            font-size: 1.8rem;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .input-wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .premium-input {
+            padding: 0.8rem;
+            border: 2px solid var(--color-sand);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .premium-input:focus {
+            outline: none;
+            border-color: #FFD700;
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+        }
+
+        .input-hint {
+            font-size: 0.75rem;
+            color: var(--color-slate);
+            margin-top: 0.3rem;
+        }
+
+        .color-preview {
+            height: 60px;
+            border-radius: 8px;
+            border: 2px solid var(--color-sand);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-slate);
+            font-size: 0.9rem;
+        }
+
+        .average-box {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, white 100%);
+            border: 3px solid #FFD700;
+            padding: 2.5rem;
+            border-radius: 16px;
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .average-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .average-values {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #FFA500;
+            margin-bottom: 1.5rem;
+        }
+
+        .average-preview {
+            height: 120px;
+            border-radius: 12px;
+            border: 2px solid var(--color-sand);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 3rem;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-back {
+            background: var(--color-sand);
+            color: var(--color-charcoal);
+        }
+
+        .btn-back:hover {
+            background: var(--color-accent);
+            color: white;
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .btn-next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .btn-next:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @media (max-width: 768px) {
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="premium-container">
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- Header -->
+        <div class="step-header">
+            <div class="step-number">
+                <span class="premium-badge">PREMIUM</span>
+                Step 1 of 4
+            </div>
+            <h1 class="step-title">초정밀 측색 및 데이터 시각화</h1>
+            <p class="step-description">
+                프리미엄 진단에서는 4부위를 측정하여 더욱 정확한 피부 바탕색을 분석합니다.
+            </p>
+        </div>
+
+        <!-- Measurements -->
+        <div class="measurements">
+            <!-- 1. Forehead -->
+            <div class="measurement-section">
+                <h3 class="measurement-title">
+                    <span class="measurement-icon">1️⃣</span>
+                    이마 중앙
+                </h3>
+                <div class="input-grid">
+                    <div class="input-wrapper">
+                        <label class="input-label">L (명도)</label>
+                        <input type="number" class="premium-input" id="forehead_l" min="0" max="100" step="0.1" placeholder="0" oninput="updateData()">
+                        <p class="input-hint">0-100</p>
+                    </div>
+                    <div class="input-wrapper">
+                        <label class="input-label">A (초록↔빨강)</label>
+                        <input type="number" class="premium-input" id="forehead_a" min="-128" max="127" step="0.1" placeholder="0" oninput="updateData()">
+                        <p class="input-hint">-128 ~ 127</p>
+                    </div>
+                    <div class="input-wrapper">
+                        <label class="input-label">B (파랑↔노랑)</label>
+                        <input type="number" class="premium-input" id="forehead_b" min="-128" max="127" step="0.1" placeholder="0" oninput="updateData()">
+                        <p class="input-hint">-128 ~ 127</p>
+                    </div>
+                </div>
+                <div class="color-preview" id="preview_forehead">측정 대기 중...</div>
+            </div>
+
+            <!-- 2. Cheek -->
+            <div class="measurement-section">
+                <h3 class="measurement-title">
+                    <span class="measurement-icon">2️⃣</span>
+                    볼
+                </h3>
+                <div class="input-grid">
+                    <div class="input-wrapper">
+                        <label class="input-label">L (명도)</label>
+                        <input type="number" class="premium-input" id="cheek_l" min="0" max="100" step="0.1" placeholder="0" oninput="updateData()">
+                        <p class="input-hint">0-100</p>
+                    </div>
+                    <div class="input-wrapper">
+                        <label class="input-label">A (초록↔빨강)</label>
+                        <input type="number" class="premium-input" id="cheek_a" min="-128" max="127" step="0.1" placeholder="0" oninput="updateData()">
+                        <p class="input-hint">-128 ~ 127</p>
+                    </div>
+                    <div class="input-wrapper">
+                        <label class="input-label">B (파랑↔노랑)</label>
+                        <input type="number" class="premium-input" id="cheek_b" min="-128" max="127" step="0.1" placeholder="0" oninput="updateData()">
+                        <p class="input-hint">-128 ~ 127</p>
+                    </div>
+                </div>
+                <div class="color-preview" id="preview_cheek">측정 대기 중...</div>
+            </div>
+
+            <!-- 3. Jawline -->
+            <div class="measurement-section">
+                <h3 class="measurement-title">
+                    <span class="measurement-icon">3️⃣</span>
+                    턱선
+                </h3>
+                <div class="input-grid">
+                    <div class="input-wrapper">
+                        <label class="input-label">L (명도)</label>
+                        <input type="number" class="premium-input" id="jawline_l" min="0" max="100" step="0.1" placeholder="0" oninput="updateData()">
+                        <p class="input-hint">0-100</p>
+                    </div>
+                    <div class="input-wrapper">
+                        <label class="input-label">A (초록↔빨강)</label>
+                        <input type="number" class="premium-input" id="jawline_a" min="-128" max="127" step="0.1" placeholder="0" oninput="updateData()">
+                        <p class="input-hint">-128 ~ 127</p>
+                    </div>
+                    <div class="input-wrapper">
+                        <label class="input-label">B (파랑↔노랑)</label>
+                        <input type="number" class="premium-input" id="jawline_b" min="-128" max="127" step="0.1" placeholder="0" oninput="updateData()">
+                        <p class="input-hint">-128 ~ 127</p>
+                    </div>
+                </div>
+                <div class="color-preview" id="preview_jawline">측정 대기 중...</div>
+            </div>
+
+            <!-- 4. Neck (Premium) -->
+            <div class="measurement-section premium-special">
+                <h3 class="measurement-title">
+                    <span class="measurement-icon">4️⃣</span>
+                    목
+                    <span class="premium-badge">PREMIUM</span>
+                </h3>
+                <div class="input-grid">
+                    <div class="input-wrapper">
+                        <label class="input-label">L (명도)</label>
+                        <input type="number" class="premium-input" id="neck_l" min="0" max="100" step="0.1" placeholder="0" oninput="updateData()">
+                        <p class="input-hint">0-100</p>
+                    </div>
+                    <div class="input-wrapper">
+                        <label class="input-label">A (초록↔빨강)</label>
+                        <input type="number" class="premium-input" id="neck_a" min="-128" max="127" step="0.1" placeholder="0" oninput="updateData()">
+                        <p class="input-hint">-128 ~ 127</p>
+                    </div>
+                    <div class="input-wrapper">
+                        <label class="input-label">B (파랑↔노랑)</label>
+                        <input type="number" class="premium-input" id="neck_b" min="-128" max="127" step="0.1" placeholder="0" oninput="updateData()">
+                        <p class="input-hint">-128 ~ 127</p>
+                    </div>
+                </div>
+                <div class="color-preview" id="preview_neck">측정 대기 중...</div>
+            </div>
+        </div>
+
+        <!-- Average Result -->
+        <div class="average-box">
+            <h3 class="average-title">📊 4부위 평균 피부톤</h3>
+            <div class="average-values" id="avgValues">L: - / A: - / B: -</div>
+            <div class="average-preview" id="avgPreview">
+                4개 부위를 모두 측정하면 평균값이 표시됩니다
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="button-group">
+            <button class="btn btn-back" onclick="goBack()">← 이전</button>
+            <button class="btn btn-next" id="nextBtn" onclick="goNext()" disabled>다음 단계로 →</button>
+        </div>
+    </div>
+
+    <script>
+        let data = {
+            forehead: {l: null, a: null, b: null},
+            cheek: {l: null, a: null, b: null},
+            jawline: {l: null, a: null, b: null},
+            neck: {l: null, a: null, b: null},
+            average: {l: null, a: null, b: null}
+        };
+
+        function labToRgb(l, a, b) {
+            let y = (l + 16) / 116;
+            let x = a / 500 + y;
+            let z = y - b / 200;
+
+            x = 0.95047 * ((x * x * x > 0.008856) ? x * x * x : (x - 16/116) / 7.787);
+            y = 1.00000 * ((y * y * y > 0.008856) ? y * y * y : (y - 16/116) / 7.787);
+            z = 1.08883 * ((z * z * z > 0.008856) ? z * z * z : (z - 16/116) / 7.787);
+
+            let r = x *  3.2406 + y * -1.5372 + z * -0.4986;
+            let g = x * -0.9689 + y *  1.8758 + z *  0.0415;
+            let bl = x *  0.0557 + y * -0.2040 + z *  1.0570;
+
+            r = (r > 0.0031308) ? (1.055 * Math.pow(r, 1/2.4) - 0.055) : 12.92 * r;
+            g = (g > 0.0031308) ? (1.055 * Math.pow(g, 1/2.4) - 0.055) : 12.92 * g;
+            bl = (bl > 0.0031308) ? (1.055 * Math.pow(bl, 1/2.4) - 0.055) : 12.92 * bl;
+
+            return {
+                r: Math.max(0, Math.min(255, Math.round(r * 255))),
+                g: Math.max(0, Math.min(255, Math.round(g * 255))),
+                b: Math.max(0, Math.min(255, Math.round(bl * 255)))
+            };
+        }
+
+        function updatePreview(area, l, a, b) {
+            const preview = document.getElementById(`preview_${area}`);
+            if (l > 0) {
+                const rgb = labToRgb(l, a, b);
+                preview.style.backgroundColor = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+                preview.textContent = `LAB(${l.toFixed(1)}, ${a.toFixed(1)}, ${b.toFixed(1)})`;
+                preview.style.color = l > 50 ? '#333' : '#fff';
+                preview.style.fontWeight = '600';
+            }
+        }
+
+        function updateData() {
+            // Get values
+            const fl = parseFloat(document.getElementById('forehead_l').value) || 0;
+            const fa = parseFloat(document.getElementById('forehead_a').value) || 0;
+            const fb = parseFloat(document.getElementById('forehead_b').value) || 0;
+
+            const cl = parseFloat(document.getElementById('cheek_l').value) || 0;
+            const ca = parseFloat(document.getElementById('cheek_a').value) || 0;
+            const cb = parseFloat(document.getElementById('cheek_b').value) || 0;
+
+            const jl = parseFloat(document.getElementById('jawline_l').value) || 0;
+            const ja = parseFloat(document.getElementById('jawline_a').value) || 0;
+            const jb = parseFloat(document.getElementById('jawline_b').value) || 0;
+
+            const nl = parseFloat(document.getElementById('neck_l').value) || 0;
+            const na = parseFloat(document.getElementById('neck_a').value) || 0;
+            const nb = parseFloat(document.getElementById('neck_b').value) || 0;
+
+            // Update previews
+            updatePreview('forehead', fl, fa, fb);
+            updatePreview('cheek', cl, ca, cb);
+            updatePreview('jawline', jl, ja, jb);
+            updatePreview('neck', nl, na, nb);
+
+            // Save data
+            data.forehead = {l: fl, a: fa, b: fb};
+            data.cheek = {l: cl, a: ca, b: cb};
+            data.jawline = {l: jl, a: ja, b: jb};
+            data.neck = {l: nl, a: na, b: nb};
+
+            // Check completion
+            const complete = 
+                document.getElementById('forehead_l').value !== '' &&
+                document.getElementById('cheek_l').value !== '' &&
+                document.getElementById('jawline_l').value !== '' &&
+                document.getElementById('neck_l').value !== '';
+
+            if (complete) {
+                // Calculate average
+                const avgL = ((fl + cl + jl + nl) / 4).toFixed(2);
+                const avgA = ((fa + ca + ja + na) / 4).toFixed(2);
+                const avgB = ((fb + cb + jb + nb) / 4).toFixed(2);
+
+                data.average = {
+                    l: parseFloat(avgL),
+                    a: parseFloat(avgA),
+                    b: parseFloat(avgB)
+                };
+
+                // Display average
+                document.getElementById('avgValues').textContent = 
+                    `L: ${avgL} / A: ${avgA} / B: ${avgB}`;
+
+                const rgb = labToRgb(parseFloat(avgL), parseFloat(avgA), parseFloat(avgB));
+                const preview = document.getElementById('avgPreview');
+                preview.style.backgroundColor = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+                preview.textContent = `평균 피부톤`;
+                preview.style.color = parseFloat(avgL) > 50 ? '#333' : '#fff';
+                preview.style.fontWeight = '600';
+                preview.style.fontSize = '1.2rem';
+
+                // Enable next button
+                document.getElementById('nextBtn').disabled = false;
+            } else {
+                document.getElementById('nextBtn').disabled = true;
+            }
+        }
+
+        function goNext() {
+            localStorage.setItem('personalColorData_premium', JSON.stringify({step1: data}));
+            window.location.href = 'pcolor_pre2.html';
+        }
+
+        function goBack() {
+            window.location.href = './';
+        }
+
+        // Load saved data
+        window.onload = function() {
+            const saved = JSON.parse(localStorage.getItem('personalColorData_premium') || '{}');
+            if (saved.step1) {
+                const d = saved.step1;
+                if (d.forehead.l) {
+                    document.getElementById('forehead_l').value = d.forehead.l;
+                    document.getElementById('forehead_a').value = d.forehead.a;
+                    document.getElementById('forehead_b').value = d.forehead.b;
+                }
+                if (d.cheek.l) {
+                    document.getElementById('cheek_l').value = d.cheek.l;
+                    document.getElementById('cheek_a').value = d.cheek.a;
+                    document.getElementById('cheek_b').value = d.cheek.b;
+                }
+                if (d.jawline.l) {
+                    document.getElementById('jawline_l').value = d.jawline.l;
+                    document.getElementById('jawline_a').value = d.jawline.a;
+                    document.getElementById('jawline_b').value = d.jawline.b;
+                }
+                if (d.neck.l) {
+                    document.getElementById('neck_l').value = d.neck.l;
+                    document.getElementById('neck_a').value = d.neck.a;
+                    document.getElementById('neck_b').value = d.neck.b;
+                }
+                updateData();
+            }
+        }
+    </script>
+</body>
+</html>
