@@ -248,6 +248,72 @@
             </p>
         </div>
 
+        <!-- Real-time Analysis Dashboard -->
+        <div id="dashboard" style="display: none; background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, white 100%); border: 3px solid #FFD700; border-radius: 16px; padding: 2.5rem; margin-bottom: 3rem; animation: slideIn 0.5s ease;">
+            <h3 style="font-size: 1.8rem; text-align: center; margin-bottom: 2rem; color: var(--color-black);">📊 실시간 데이터 분석</h3>
+            
+            <!-- Metric Cards -->
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 2rem;">
+                <!-- L Metric -->
+                <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                    <div style="font-weight: 600; margin-bottom: 1rem;">명도 (L)</div>
+                    <div style="height: 30px; background: var(--color-sand); border-radius: 15px; overflow: hidden; margin-bottom: 0.8rem;">
+                        <div id="lBar" style="height: 100%; background: linear-gradient(90deg, #4A90E5, #6FB3E0); width: 0%; transition: width 1s ease;"></div>
+                    </div>
+                    <div style="text-align: right; font-weight: 700; color: #FFA500; font-size: 1.2rem;" id="lValue">-</div>
+                    <p style="font-size: 0.85rem; color: var(--color-slate); margin-top: 0.5rem;" id="lComment"></p>
+                </div>
+
+                <!-- A Metric -->
+                <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                    <div style="font-weight: 600; margin-bottom: 1rem;">붉은기 (A)</div>
+                    <div style="height: 30px; background: var(--color-sand); border-radius: 15px; overflow: hidden; margin-bottom: 0.8rem;">
+                        <div id="aBar" style="height: 100%; background: linear-gradient(90deg, #E85D75, #FF8FA3); width: 0%; transition: width 1s ease;"></div>
+                    </div>
+                    <div style="text-align: right; font-weight: 700; color: #FFA500; font-size: 1.2rem;" id="aValue">-</div>
+                    <p style="font-size: 0.85rem; color: var(--color-slate); margin-top: 0.5rem;" id="aComment"></p>
+                </div>
+
+                <!-- B Metric -->
+                <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                    <div style="font-weight: 600; margin-bottom: 1rem;">노란기 (B)</div>
+                    <div style="height: 30px; background: var(--color-sand); border-radius: 15px; overflow: hidden; margin-bottom: 0.8rem;">
+                        <div id="bBar" style="height: 100%; background: linear-gradient(90deg, #FFD700, #FFA500); width: 0%; transition: width 1s ease;"></div>
+                    </div>
+                    <div style="text-align: right; font-weight: 700; color: #FFA500; font-size: 1.2rem;" id="bValue">-</div>
+                    <p style="font-size: 0.85rem; color: var(--color-slate); margin-top: 0.5rem;" id="bComment"></p>
+                </div>
+            </div>
+
+            <!-- Analysis Comment -->
+            <div style="background: white; padding: 2rem; border-radius: 12px; border-left: 4px solid #FFD700; margin-bottom: 2rem; display: flex; gap: 1rem;">
+                <div style="font-size: 2rem;">💡</div>
+                <p id="analysisText" style="color: var(--color-slate); line-height: 1.8; margin: 0; font-size: 1.05rem;"></p>
+            </div>
+
+            <!-- Prediction Box -->
+            <div id="predictionBox" style="display: none; background: linear-gradient(135deg, #FFD700, #FFA500); color: white; padding: 2rem; border-radius: 16px; box-shadow: 0 8px 30px rgba(255, 215, 0, 0.3); text-align: center;">
+                <h4 style="font-size: 1.5rem; margin-bottom: 1rem;">🎯 후보군 자동 예측</h4>
+                <p id="predictionText" style="font-size: 1.2rem; line-height: 1.7; margin-bottom: 1rem;"></p>
+                <div style="font-size: 1.1rem;">
+                    <span>예측 신뢰도: </span>
+                    <span id="confidenceValue" style="font-weight: 700; font-size: 1.5rem;">-</span>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            @keyframes slideIn {
+                from { opacity: 0; transform: translateY(-20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            @media (max-width: 768px) {
+                #dashboard > div:first-of-type {
+                    grid-template-columns: 1fr !important;
+                }
+            }
+        </style>
+
         <!-- Measurements -->
         <div class="measurements">
             <!-- 1. Forehead -->
@@ -477,11 +543,136 @@
                 preview.style.fontWeight = '600';
                 preview.style.fontSize = '1.2rem';
 
+                // Show and update dashboard
+                showDashboard(parseFloat(avgL), parseFloat(avgA), parseFloat(avgB));
+
                 // Enable next button
                 document.getElementById('nextBtn').disabled = false;
             } else {
                 document.getElementById('nextBtn').disabled = true;
+                document.getElementById('dashboard').style.display = 'none';
             }
+        }
+
+        function showDashboard(l, a, b) {
+            const dashboard = document.getElementById('dashboard');
+            dashboard.style.display = 'block';
+
+            // Update L bar
+            const lPercent = (l / 100) * 100;
+            document.getElementById('lBar').style.width = lPercent + '%';
+            document.getElementById('lValue').textContent = l.toFixed(1);
+
+            // L comment (한국인 평균 대비)
+            const koreanAvg = 62;
+            let lComment = '';
+            if (l > 70) {
+                lComment = `한국인 평균(L:${koreanAvg}) 대비 상위 10%로 매우 밝은 피부입니다.`;
+            } else if (l > 65) {
+                lComment = `한국인 평균 대비 밝은 편입니다 (상위 20%).`;
+            } else if (l > 55) {
+                lComment = `한국인 평균에 가까운 명도입니다.`;
+            } else {
+                lComment = `한국인 평균 대비 어두운 편입니다.`;
+            }
+            document.getElementById('lComment').textContent = lComment;
+
+            // Update A bar
+            const aPercent = ((a + 128) / 255) * 100;
+            document.getElementById('aBar').style.width = aPercent + '%';
+            document.getElementById('aValue').textContent = a > 0 ? `+${a.toFixed(1)}` : a.toFixed(1);
+
+            // A comment
+            let aComment = '';
+            if (a > 10) {
+                aComment = '강한 핑크 언더톤 (붉은기 많음)';
+            } else if (a > 5) {
+                aComment = '핑크 언더톤';
+            } else if (a > -2) {
+                aComment = '중성 언더톤';
+            } else {
+                aComment = '올리브 언더톤 (초록기 있음)';
+            }
+            document.getElementById('aComment').textContent = aComment;
+
+            // Update B bar
+            const bPercent = ((b + 128) / 255) * 100;
+            document.getElementById('bBar').style.width = bPercent + '%';
+            document.getElementById('bValue').textContent = b > 0 ? `+${b.toFixed(1)}` : b.toFixed(1);
+
+            // B comment
+            let bComment = '';
+            if (b > 15) {
+                bComment = '강한 웜톤 (노란기 많음)';
+            } else if (b > 8) {
+                bComment = '웜톤 (노란기 있음)';
+            } else if (b > 5) {
+                bComment = '중성 온도';
+            } else {
+                bComment = '쿨톤 (푸른기 있음)';
+            }
+            document.getElementById('bComment').textContent = bComment;
+
+            // Overall analysis
+            let analysisText = '';
+            if (a > b) {
+                analysisText = `붉은기(A:${a.toFixed(1)})가 노란기(B:${b.toFixed(1)})보다 높아 핑크 베이스 피부입니다. `;
+            } else {
+                analysisText = `노란기(B:${b.toFixed(1)})가 붉은기(A:${a.toFixed(1)})보다 높아 옐로우 베이스 피부입니다. `;
+            }
+            analysisText += `명도는 ${l > 65 ? '밝은' : l > 55 ? '중간' : '어두운'} 편입니다.`;
+            document.getElementById('analysisText').textContent = analysisText;
+
+            // Prediction
+            predictSeason(l, a, b);
+        }
+
+        function predictSeason(l, a, b) {
+            const isWarm = b > 8;
+            const isCool = b < 5;
+            const isLight = l > 65;
+            const chroma = Math.sqrt(a * a + b * b);
+            const isMuted = chroma < 20;
+
+            let prediction = '';
+            let confidence = 0;
+
+            if (isLight && isCool && isMuted) {
+                prediction = '여름 쿨톤 (라이트 또는 소프트)';
+                confidence = 82;
+            } else if (isLight && isCool) {
+                prediction = '여름 쿨톤 (라이트 또는 쿨)';
+                confidence = 85;
+            } else if (isLight && isWarm) {
+                prediction = '봄 웜톤 (라이트 또는 브라이트)';
+                confidence = 83;
+            } else if (!isLight && isCool) {
+                prediction = '겨울 쿨톤 (쿨 또는 딥)';
+                confidence = 78;
+            } else if (!isLight && isWarm) {
+                prediction = '가을 웜톤 (웜 또는 딥)';
+                confidence = 76;
+            } else {
+                prediction = '중성 톤 (추가 분석 필요)';
+                confidence = 70;
+            }
+
+            // Save prediction
+            data.analysis = {
+                prediction: prediction,
+                confidence: confidence,
+                l: l,
+                a: a,
+                b: b
+            };
+
+            // Show prediction box
+            const predictionBox = document.getElementById('predictionBox');
+            predictionBox.style.display = 'block';
+
+            document.getElementById('predictionText').textContent = 
+                `데이터 분석 결과, 귀하의 피부는 ${prediction}일 확률이 높습니다.`;
+            document.getElementById('confidenceValue').textContent = `${confidence}%`;
         }
 
         function goNext() {
