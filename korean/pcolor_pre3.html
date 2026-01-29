@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE COVE PREMIUM - 생체 정밀 분석</title>
+</head>
+<body style="margin:0;font-family:-apple-system,sans-serif;background:#fafafa;">
+<div style="max-width:1400px;margin:0 auto;padding:3rem 2rem;">
+<div style="width:100%;height:6px;background:rgba(255,215,0,0.2);border-radius:3px;margin-bottom:3rem;"><div style="height:100%;background:linear-gradient(90deg,#FFD700,#FFA500);width:75%;"></div></div>
+<div style="text-align:center;margin-bottom:3rem;"><div style="font-size:0.875rem;letter-spacing:0.3em;color:#FFA500;margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:0.8rem;"><span style="background:linear-gradient(135deg,#FFD700,#FFA500);color:white;padding:0.3rem 0.8rem;border-radius:12px;font-size:0.7rem;font-weight:700;">PREMIUM</span>STEP 3 OF 4</div><h1 style="font-size:2.5rem;margin:0 0 1rem 0;">🔬 생체 데이터 정밀 분석</h1><p style="font-size:1.1rem;color:#666;">모발 3-Layer + 홍채 Golden Circle 분석</p></div>
+<div style="background:linear-gradient(135deg,rgba(255,215,0,0.15),rgba(255,215,0,0.03));border:3px solid #FFD700;border-radius:16px;padding:2.5rem;margin-bottom:3rem;"><div style="display:flex;gap:1.5rem;align-items:flex-start;"><div style="font-size:3rem;">💎</div><div><h3 style="font-size:1.5rem;margin:0 0 1rem 0;color:#333;">측색기급 정밀 분석</h3><p style="font-size:1.05rem;color:#666;line-height:1.8;margin:0;">단순 밝기 측정을 넘어 <strong>멜라닌 타입, 광택감, 홍채 무늬, 경계 대비</strong>까지 총 <strong>7가지 생체 지표</strong>를 분석합니다.</p></div></div></div>
+
+<!-- Skin Reference -->
+<div style="background:white;border-radius:16px;padding:2.5rem;margin-bottom:3rem;box-shadow:0 4px 20px rgba(0,0,0,0.08);"><h2 style="font-size:1.8rem;margin:0 0 1.5rem 0;color:#333;border-bottom:3px solid #FFD700;padding-bottom:1rem;">📊 기준점: 피부 데이터</h2><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;"><div style="text-align:center;"><div id="skinPreview" style="width:120px;height:120px;margin:0 auto 1rem;border-radius:16px;border:3px solid #FFD700;"></div><div style="font-size:0.9rem;color:#666;margin-bottom:0.3rem;">피부 명도</div><div id="skinL" style="font-size:2rem;font-weight:700;color:#FFA500;">-</div></div><div style="background:#f9f9f9;padding:1.5rem;border-radius:12px;"><div style="font-weight:600;margin-bottom:1rem;color:#333;">색조 데이터</div><div id="skinChroma" style="font-family:monospace;font-size:0.95rem;color:#666;line-height:1.7;"></div></div></div></div>
+
+<!-- HAIR -->
+<div style="background:white;border-radius:16px;padding:3rem;margin-bottom:3rem;box-shadow:0 4px 20px rgba(0,0,0,0.08);border:3px solid #FFD700;"><h2 style="font-size:2rem;margin:0 0 0.5rem 0;color:#333;">💇 모발 3-Layer 분석</h2><p style="color:#666;margin:0 0 2rem 0;font-size:0.95rem;">모발 = <strong>명도 + 색조 + 광택</strong> 3차원 분석</p>
+
+<!-- Hair Layer 1: Depth -->
+<div style="background:#f9f9f9;padding:2.5rem;border-radius:12px;margin-bottom:2rem;"><h3 style="font-size:1.5rem;margin:0 0 1rem 0;color:#333;display:flex;align-items:center;gap:0.8rem;"><span style="background:#FFD700;color:white;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;">1</span>Depth (명도)</h3><p style="color:#666;margin-bottom:1.5rem;font-size:0.95rem;">모발의 밝기 (측색기 L값과 동일 개념)</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;"><div class="hair-depth" onclick="selectHairDepth(10,'블랙')" style="background:#000;color:white;padding:1rem;border-radius:8px;cursor:pointer;text-align:center;border:3px solid transparent;"><div style="font-weight:600;">블랙</div><div style="font-size:0.85rem;opacity:0.8;">L:10</div></div><div class="hair-depth" onclick="selectHairDepth(20,'다크 브라운')" style="background:#3C2415;color:white;padding:1rem;border-radius:8px;cursor:pointer;text-align:center;border:3px solid transparent;"><div style="font-weight:600;">다크 브라운</div><div style="font-size:0.85rem;opacity:0.8;">L:20</div></div><div class="hair-depth" onclick="selectHairDepth(30,'미디엄 브라운')" style="background:#6F4E37;color:white;padding:1rem;border-radius:8px;cursor:pointer;text-align:center;border:3px solid transparent;"><div style="font-weight:600;">미디엄 브라운</div><div style="font-size:0.85rem;opacity:0.8;">L:30</div></div><div class="hair-depth" onclick="selectHairDepth(40,'라이트 브라운')" style="background:#8B6F47;color:white;padding:1rem;border-radius:8px;cursor:pointer;text-align:center;border:3px solid transparent;"><div style="font-weight:600;">라이트 브라운</div><div style="font-size:0.85rem;opacity:0.8;">L:40</div></div><div class="hair-depth" onclick="selectHairDepth(55,'블론드')" style="background:#C4A661;color:#333;padding:1rem;border-radius:8px;cursor:pointer;text-align:center;border:3px solid transparent;"><div style="font-weight:600;">블론드</div><div style="font-size:0.85rem;">L:55</div></div><div class="hair-depth" onclick="selectHairDepth(70,'그레이')" style="background:#A8A8A8;color:#333;padding:1rem;border-radius:8px;cursor:pointer;text-align:center;border:3px solid transparent;"><div style="font-weight:600;">그레이</div><div style="font-size:0.85rem;">L:70</div></div></div></div>
+
+<!-- Hair Layer 2: Melanin -->
+<div style="background:#f9f9f9;padding:2.5rem;border-radius:12px;margin-bottom:2rem;"><h3 style="font-size:1.5rem;margin:0 0 1rem 0;color:#333;display:flex;align-items:center;gap:0.8rem;"><span style="background:#FFD700;color:white;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;">2</span>Melanin Type (색조)</h3><p style="color:#666;margin-bottom:1.5rem;font-size:0.95rem;">모발의 붉은기/노란기 → 피부 A, B값과 직접 비교</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;"><div class="hair-melanin" onclick="selectHairMelanin('red','레드 베이스',15,5)" style="background:linear-gradient(135deg,#8B4513,#A0522D);color:white;padding:1.5rem;border-radius:12px;cursor:pointer;text-align:center;border:3px solid transparent;"><div style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">🔴 레드 베이스</div><div style="font-size:0.85rem;opacity:0.9;">체스넛, 마호가니</div><div style="font-size:0.8rem;margin-top:0.5rem;opacity:0.8;">높은 A값 (붉은기)</div></div><div class="hair-melanin" onclick="selectHairMelanin('neutral','뉴트럴',8,8)" style="background:linear-gradient(135deg,#6F4E37,#8B6F47);color:white;padding:1.5rem;border-radius:12px;cursor:pointer;text-align:center;border:3px solid transparent;"><div style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">⚪ 뉴트럴</div><div style="font-size:0.85rem;opacity:0.9;">내추럴 브라운</div><div style="font-size:0.8rem;margin-top:0.5rem;opacity:0.8;">중간 A, B값</div></div><div class="hair-melanin" onclick="selectHairMelanin('golden','골든 베이스',5,15)" style="background:linear-gradient(135deg,#DAA520,#FFD700);color:#333;padding:1.5rem;border-radius:12px;cursor:pointer;text-align:center;border:3px solid transparent;"><div style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">🟡 골든 베이스</div><div style="font-size:0.85rem;opacity:0.9;">허니, 블론드</div><div style="font-size:0.8rem;margin-top:0.5rem;opacity:0.8;">높은 B값 (노란기)</div></div><div class="hair-melanin" onclick="selectHairMelanin('ash','애쉬 베이스',2,2)" style="background:linear-gradient(135deg,#696969,#A8A8A8);color:white;padding:1.5rem;border-radius:12px;cursor:pointer;text-align:center;border:3px solid transparent;"><div style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">⚫ 애쉬 베이스</div><div style="font-size:0.85rem;opacity:0.9;">애쉬 그레이</div><div style="font-size:0.8rem;margin-top:0.5rem;opacity:0.8;">낮은 A, B값</div></div></div></div>
+
+<!-- Hair Layer 3: Gloss -->
+<div style="background:#f9f9f9;padding:2.5rem;border-radius:12px;"><h3 style="font-size:1.5rem;margin:0 0 1rem 0;color:#333;display:flex;align-items:center;gap:0.8rem;"><span style="background:#FFD700;color:white;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;">3</span>Glossiness (광택감)</h3><p style="color:#666;margin-bottom:1.5rem;font-size:0.95rem;">윤기 → 옷감 질감 추천 연결</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;"><div class="hair-gloss" onclick="selectHairGloss('high','높은 광택')" style="background:linear-gradient(135deg,#FFD700,#FFA500);color:white;padding:2rem;border-radius:12px;cursor:pointer;text-align:center;border:3px solid transparent;box-shadow:0 4px 15px rgba(255,215,0,0.3);"><div style="font-size:2rem;margin-bottom:0.5rem;">✨</div><div style="font-size:1.2rem;font-weight:600;margin-bottom:0.5rem;">높은 광택</div><div style="font-size:0.9rem;opacity:0.9;">윤기 나는 모발</div><div style="font-size:0.85rem;margin-top:1rem;opacity:0.85;">→ 실크, 새틴</div></div><div class="hair-gloss" onclick="selectHairGloss('medium','중간 광택')" style="background:linear-gradient(135deg,#B8860B,#DAA520);color:white;padding:2rem;border-radius:12px;cursor:pointer;text-align:center;border:3px solid transparent;"><div style="font-size:2rem;margin-bottom:0.5rem;">💫</div><div style="font-size:1.2rem;font-weight:600;margin-bottom:0.5rem;">중간 광택</div><div style="font-size:0.9rem;opacity:0.9;">자연스러운 윤기</div><div style="font-size:0.85rem;margin-top:1rem;opacity:0.85;">→ 면, 린넨</div></div><div class="hair-gloss" onclick="selectHairGloss('low','무광')" style="background:linear-gradient(135deg,#696969,#808080);color:white;padding:2rem;border-radius:12px;cursor:pointer;text-align:center;border:3px solid transparent;"><div style="font-size:2rem;margin-bottom:0.5rem;">◽</div><div style="font-size:1.2rem;font-weight:600;margin-bottom:0.5rem;">무광/푸석</div><div style="font-size:0.9rem;opacity:0.9;">매트한 질감</div><div style="font-size:0.85rem;margin-top:1rem;opacity:0.85;">→ 울, 트위드</div></div></div></div></div>
+
+<!-- EYES -->
+<div style="background:white;border-radius:16px;padding:3rem;margin-bottom:3rem;box-shadow:0 4px 20px rgba(0,0,0,0.08);border:3px solid #FFD700;"><h2 style="font-size:2rem;margin:0 0 0.5rem 0;color:#333;">👁️ 홍채 Golden Circle 분석</h2><p style="color:#666;margin:0 0 2rem 0;font-size:0.95rem;">눈동자 = <strong>명도 + 경계 + 무늬 + 흰자</strong> 4차원 분석</p>
+
+<!-- Eye Layer 1: Depth -->
+<div style="background:#f9f9f9;padding:2.5rem;border-radius:12px;margin-bottom:2rem;"><h3 style="font-size:1.5rem;margin:0 0 1rem 0;color:#333;display:flex;align-items:center;gap:0.8rem;"><span style="background:#4A90E5;color:white;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;">1</span>Iris Depth (홍채 명도)</h3><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;"><div class="eye-depth" onclick="selectEyeDepth(8,'진한 흑색')" style="background:#000;color:white;padding:1rem;border-radius:8px;cursor:pointer;text-align:center;border:3px solid transparent;"><div style="font-weight:600;">진한 흑색</div><div style="font-size:0.85rem;opacity:0.8;">L:8</div></div><div class="eye-depth" onclick="selectEyeDepth(15,'흑갈색')" style="background:#1a1a1a;color:white;padding:1rem;border-radius:8px;cursor:pointer;text-align:center;border:3px solid transparent;"><div style="font-weight:600;">흑갈색</div><div style="font-size:0.85rem;opacity:0.8;">L:15</div></div><div class="eye-depth" onclick="selectEyeDepth(22,'다크 브라운')" style="background:#3C2415;color:white;padding:1rem;border-radius:8px;cursor:pointer;text-align:center;border:3px solid transparent;"><div style="font-weight:600;">다크 브라운</div><div style="font-size:0.85rem;opacity:0.8;">L:22</div></div><div class="eye-depth" onclick="selectEyeDepth(32,'브라운')" style="background:#6F4E37;color:white;padding:1rem;border-radius:8px;cursor:pointer;text-align:center;border:3px solid transparent;"><div style="font-weight:600;">브라운</div><div style="font-size:0.85rem;opacity:0.8;">L:32</div></div><div class="eye-depth" onclick="selectEyeDepth(42,'연한 브라운')" style="background:#8B6F47;color:white;padding:1rem;border-radius:8px;cursor:pointer;text-align:center;border:3px solid transparent;"><div style="font-weight:600;">연한 브라운</div><div style="font-size:0.85rem;opacity:0.8;">L:42</div></div></div></div>
+
+<!-- Eye Layer 2: Contrast -->
+<div style="background:#f9f9f9;padding:2.5rem;border-radius:12px;margin-bottom:2rem;"><h3 style="font-size:1.5rem;margin:0 0 1rem 0;color:#333;display:flex;align-items:center;gap:0.8rem;"><span style="background:#4A90E5;color:white;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;">2</span>Iris Contrast (경계 대비)</h3><p style="color:#666;margin-bottom:1.5rem;font-size:0.95rem;">눈동자-흰자 경계 → 브라이트 타입 핵심 지표</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;"><div class="eye-contrast" onclick="selectEyeContrast('high','뚜렷한 경계',15)" style="background:white;padding:2rem;border-radius:12px;cursor:pointer;text-align:center;border:3px solid transparent;box-shadow:0 4px 15px rgba(0,0,0,0.1);"><div style="font-size:2.5rem;margin-bottom:0.5rem;">⚫⚪</div><div style="font-size:1.2rem;font-weight:600;margin-bottom:0.5rem;color:#333;">뚜렷한 경계</div><div style="font-size:0.9rem;color:#666;">흑백 선명</div><div style="font-size:0.85rem;margin-top:1rem;color:#FFA500;font-weight:600;">→ 브라이트 +15점</div></div><div class="eye-contrast" onclick="selectEyeContrast('medium','중간 경계',0)" style="background:white;padding:2rem;border-radius:12px;cursor:pointer;text-align:center;border:3px solid transparent;box-shadow:0 4px 15px rgba(0,0,0,0.1);"><div style="font-size:2.5rem;margin-bottom:0.5rem;">◐◑</div><div style="font-size:1.2rem;font-weight:600;margin-bottom:0.5rem;color:#333;">중간 경계</div><div style="font-size:0.9rem;color:#666;">자연스러운</div><div style="font-size:0.85rem;margin-top:1rem;color:#666;">→ 중립</div></div><div class="eye-contrast" onclick="selectEyeContrast('low','부드러운 경계',-15)" style="background:white;padding:2rem;border-radius:12px;cursor:pointer;text-align:center;border:3px solid transparent;box-shadow:0 4px 15px rgba(0,0,0,0.1);"><div style="font-size:2.5rem;margin-bottom:0.5rem;">◯◯</div><div style="font-size:1.2rem;font-weight:600;margin-bottom:0.5rem;color:#333;">부드러운 경계</div><div style="font-size:0.9rem;color:#666;">흐릿함</div><div style="font-size:0.85rem;margin-top:1rem;color:#D8BFD8;font-weight:600;">→ 소프트 +15점</div></div></div></div>
+
+<!-- Eye Layer 3: Pattern -->
+<div style="background:#f9f9f9;padding:2.5rem;border-radius:12px;margin-bottom:2rem;"><h3 style="font-size:1.5rem;margin:0 0 1rem 0;color:#333;display:flex;align-items:center;gap:0.8rem;"><span style="background:#4A90E5;color:white;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;">3</span>Iris Pattern (홍채 무늬)</h3><p style="color:#666;margin-bottom:1.5rem;font-size:0.95rem;">무늬 → 청탁 계절 판정 결정적 증거</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;"><div class="eye-pattern" onclick="selectEyePattern('radial','햇살 무늬','spring_winter')" style="background:linear-gradient(135deg,#FFD700,#FFA500);color:white;padding:2rem;border-radius:12px;cursor:pointer;text-align:center;border:3px solid transparent;"><div style="font-size:2.5rem;margin-bottom:0.5rem;">☀️</div><div style="font-size:1.2rem;font-weight:600;margin-bottom:0.5rem;">햇살 무늬</div><div style="font-size:0.9rem;opacity:0.9;">방사형 선명 라인</div><div style="font-size:0.85rem;margin-top:1rem;opacity:0.9;">→ 봄/겨울 (청색)</div></div><div class="eye-pattern" onclick="selectEyePattern('cloudy','구름 무늬','summer_autumn')" style="background:linear-gradient(135deg,#B0C4DE,#9370DB);color:white;padding:2rem;border-radius:12px;cursor:pointer;text-align:center;border:3px solid transparent;"><div style="font-size:2.5rem;margin-bottom:0.5rem;">☁️</div><div style="font-size:1.2rem;font-weight:600;margin-bottom:0.5rem;">구름 무늬</div><div style="font-size:0.9rem;opacity:0.9;">부드러운 점무늬</div><div style="font-size:0.85rem;margin-top:1rem;opacity:0.9;">→ 여름/가을 (탁색)</div></div></div></div>
+
+<!-- Eye Layer 4: Sclera -->
+<div style="background:#f9f9f9;padding:2.5rem;border-radius:12px;"><h3 style="font-size:1.5rem;margin:0 0 1rem 0;color:#333;display:flex;align-items:center;gap:0.8rem;"><span style="background:#4A90E5;color:white;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;">4</span>Sclera Tone (흰자 색조)</h3><p style="color:#666;margin-bottom:1.5rem;font-size:0.95rem;">흰자위 → 쿨/웜 톤 보조 지표</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;"><div class="eye-sclera" onclick="selectEyeSclera('blue','블루 화이트',10)" style="background:linear-gradient(135deg,#E0FFFF,#B0E0E6);color:#333;padding:2rem;border-radius:12px;cursor:pointer;text-align:center;border:3px solid transparent;"><div style="font-size:2rem;margin-bottom:0.5rem;">🔵</div><div style="font-size:1.2rem;font-weight:600;margin-bottom:0.5rem;">블루 화이트</div><div style="font-size:0.9rem;">푸른빛 흰자</div><div style="font-size:0.85rem;margin-top:1rem;font-weight:600;color:#4A90E5;">→ 쿨톤 +10점</div></div><div class="eye-sclera" onclick="selectEyeSclera('ivory','아이보리',10)" style="background:linear-gradient(135deg,#FFFAF0,#FAEBD7);color:#333;padding:2rem;border-radius:12px;cursor:pointer;text-align:center;border:3px solid transparent;"><div style="font-size:2rem;margin-bottom:0.5rem;">🟡</div><div style="font-size:1.2rem;font-weight:600;margin-bottom:0.5rem;">아이보리</div><div style="font-size:0.9rem;">우유빛 흰자</div><div style="font-size:0.85rem;margin-top:1rem;font-weight:600;color:#FFA500;">→ 웜톤 +10점</div></div><div class="eye-sclera" onclick="selectEyeSclera('neutral','퓨어 화이트',0)" style="background:linear-gradient(135deg,#FFFFFF,#F5F5F5);color:#333;padding:2rem;border-radius:12px;cursor:pointer;text-align:center;border:3px solid transparent;box-shadow:0 4px 15px rgba(0,0,0,0.1);"><div style="font-size:2rem;margin-bottom:0.5rem;">⚪</div><div style="font-size:1.2rem;font-weight:600;margin-bottom:0.5rem;">퓨어 화이트</div><div style="font-size:0.9rem;">순백색</div><div style="font-size:0.85rem;margin-top:1rem;color:#666;">→ 중성</div></div></div></div></div>
+
+<!-- Result -->
+<div id="result" style="display:none;background:linear-gradient(135deg,rgba(255,215,0,0.15),white);border:3px solid #FFD700;border-radius:20px;padding:3rem;margin-bottom:3rem;"><h2 style="font-size:2.5rem;margin:0 0 2rem 0;text-align:center;color:#333;">🔬 생체 데이터 분석 완료</h2><div id="resultContent"></div></div>
+
+<div style="display:flex;gap:1rem;justify-content:center;"><button onclick="goBack()" style="padding:1rem 2.5rem;font-size:1rem;border:none;border-radius:8px;cursor:pointer;background:#e0e0e0;color:#333;">← 이전</button><button id="nextBtn" onclick="goNext()" disabled style="padding:1rem 2.5rem;font-size:1rem;border:none;border-radius:8px;cursor:pointer;background:linear-gradient(135deg,#FFD700,#FFA500);color:white;font-weight:600;opacity:0.5;">최종 결과 보기 →</button></div>
+</div>
+
+<style>
+.hair-depth:hover,.hair-melanin:hover,.hair-gloss:hover,.eye-depth:hover,.eye-contrast:hover,.eye-pattern:hover,.eye-sclera:hover{transform:translateY(-5px);box-shadow:0 8px 25px rgba(0,0,0,0.2);}
+.hair-depth.selected,.hair-melanin.selected,.hair-gloss.selected,.eye-depth.selected,.eye-contrast.selected,.eye-pattern.selected,.eye-sclera.selected{border-color:#FFD700!important;box-shadow:0 0 0 4px rgba(255,215,0,0.3);transform:scale(1.05);}
+</style>
+
+<script>
+let data={skinL:null,skinA:null,skinB:null,hairDepth:null,hairMelanin:null,hairGloss:null,eyeDepth:null,eyeContrast:null,eyePattern:null,eyeSclera:null};
+
+function rgb(l,a,b){let y=(l+16)/116,x=a/500+y,z=y-b/200;x=0.95047*((x**3>0.008856)?x**3:(x-16/116)/7.787);y=1.00000*((y**3>0.008856)?y**3:(y-16/116)/7.787);z=1.08883*((z**3>0.008856)?z**3:(z-16/116)/7.787);let r=x*3.2406+y*-1.5372+z*-0.4986,g=x*-0.9689+y*1.8758+z*0.0415,bl=x*0.0557+y*-0.2040+z*1.0570;r=(r>0.0031308)?(1.055*r**(1/2.4)-0.055):12.92*r;g=(g>0.0031308)?(1.055*g**(1/2.4)-0.055):12.92*g;bl=(bl>0.0031308)?(1.055*bl**(1/2.4)-0.055):12.92*bl;return{r:Math.max(0,Math.min(255,Math.round(r*255))),g:Math.max(0,Math.min(255,Math.round(g*255))),b:Math.max(0,Math.min(255,Math.round(bl*255)))};}
+
+function selectHairDepth(l,name){document.querySelectorAll('.hair-depth').forEach(el=>el.classList.remove('selected'));event.currentTarget.classList.add('selected');data.hairDepth={l,name};check();}
+function selectHairMelanin(type,name,hairA,hairB){document.querySelectorAll('.hair-melanin').forEach(el=>el.classList.remove('selected'));event.currentTarget.classList.add('selected');data.hairMelanin={type,name,a:hairA,b:hairB};check();}
+function selectHairGloss(level,name){document.querySelectorAll('.hair-gloss').forEach(el=>el.classList.remove('selected'));event.currentTarget.classList.add('selected');data.hairGloss={level,name};check();}
+function selectEyeDepth(l,name){document.querySelectorAll('.eye-depth').forEach(el=>el.classList.remove('selected'));event.currentTarget.classList.add('selected');data.eyeDepth={l,name};check();}
+function selectEyeContrast(level,name,score){document.querySelectorAll('.eye-contrast').forEach(el=>el.classList.remove('selected'));event.currentTarget.classList.add('selected');data.eyeContrast={level,name,score};check();}
+function selectEyePattern(type,name,season){document.querySelectorAll('.eye-pattern').forEach(el=>el.classList.remove('selected'));event.currentTarget.classList.add('selected');data.eyePattern={type,name,season};check();}
+function selectEyeSclera(type,name,score){document.querySelectorAll('.eye-sclera').forEach(el=>el.classList.remove('selected'));event.currentTarget.classList.add('selected');data.eyeSclera={type,name,score};check();}
+
+function check(){
+    if(data.hairDepth&&data.hairMelanin&&data.hairGloss&&data.eyeDepth&&data.eyeContrast&&data.eyePattern&&data.eyeSclera){
+        analyze();
+    }
+}
+
+function analyze(){
+    const contrast=Math.abs(data.skinL-data.hairDepth.l)+Math.abs(data.skinL-data.eyeDepth.l);
+    
+    // Hair-Skin Melanin Harmony
+    const hairSkinA=Math.abs(data.skinA-data.hairMelanin.a);
+    const hairSkinB=Math.abs(data.skinB-data.hairMelanin.b);
+    const melaninHarmony=(hairSkinA<5&&hairSkinB<5)?'조화로움':'약간 불일치';
+    
+    // Fabric recommendation
+    let fabric='';
+    if(data.hairGloss.level==='high')fabric='실크, 새틴, 시폰 등 광택 있는 소재';
+    else if(data.hairGloss.level==='medium')fabric='면, 린넨, 저지 등 자연스러운 소재';
+    else fabric='울, 트위드, 벨벳 등 매트한 소재';
+    
+    // Type boost from eyes
+    let typeBoost='';
+    if(data.eyeContrast.level==='high')typeBoost+='브라이트 타입 가능성 ↑<br>';
+    if(data.eyeContrast.level==='low')typeBoost+='소프트 타입 가능성 ↑<br>';
+    if(data.eyePattern.season==='spring_winter')typeBoost+='봄/겨울 (청색 계절) 가능성 ↑<br>';
+    if(data.eyePattern.season==='summer_autumn')typeBoost+='여름/가을 (탁색 계절) 가능성 ↑<br>';
+    if(data.eyeSclera.type==='blue')typeBoost+='쿨톤 보정 +10점<br>';
+    if(data.eyeSclera.type==='ivory')typeBoost+='웜톤 보정 +10점<br>';
+    
+    let level='';
+    if(contrast>90)level='HIGH CONTRAST';
+    else if(contrast>60)level='MEDIUM CONTRAST';
+    else level='LOW CONTRAST';
+    
+    data.contrast={score:contrast,level};
+    
+    const content=`
+        <div style="background:white;padding:2rem;border-radius:12px;margin-bottom:2rem;">
+            <h3 style="font-size:1.5rem;margin:0 0 1rem 0;">💇 모발 3-Layer 분석</h3>
+            <div style="color:#666;line-height:1.8;">
+                • <strong>명도:</strong> ${data.hairDepth.name} (L:${data.hairDepth.l})<br>
+                • <strong>색조:</strong> ${data.hairMelanin.name} (A:${data.hairMelanin.a}, B:${data.hairMelanin.b})<br>
+                • <strong>피부 색조와의 조화:</strong> ${melaninHarmony}<br>
+                • <strong>광택감:</strong> ${data.hairGloss.name}<br>
+                • <strong>추천 소재:</strong> ${fabric}
+            </div>
+        </div>
+        <div style="background:white;padding:2rem;border-radius:12px;margin-bottom:2rem;">
+            <h3 style="font-size:1.5rem;margin:0 0 1rem 0;">👁️ 홍채 Golden Circle 분석</h3>
+            <div style="color:#666;line-height:1.8;">
+                • <strong>홍채 명도:</strong> ${data.eyeDepth.name} (L:${data.eyeDepth.l})<br>
+                • <strong>경계 대비:</strong> ${data.eyeContrast.name}<br>
+                • <strong>홍채 무늬:</strong> ${data.eyePattern.name}<br>
+                • <strong>흰자위:</strong> ${data.eyeSclera.name}<br><br>
+                <strong style="color:#FFA500;">타입 보정:</strong><br>${typeBoost}
+            </div>
+        </div>
+        <div style="background:linear-gradient(135deg,#FFD700,#FFA500);color:white;padding:2rem;border-radius:12px;text-align:center;">
+            <h3 style="font-size:1.8rem;margin:0 0 1rem 0;">종합 대비감</h3>
+            <div style="font-size:3rem;font-weight:700;margin-bottom:1rem;">${Math.round(contrast)}</div>
+            <div style="font-size:1.3rem;font-weight:600;">${level}</div>
+        </div>
+    `;
+    
+    document.getElementById('resultContent').innerHTML=content;
+    document.getElementById('result').style.display='block';
+    document.getElementById('result').scrollIntoView({behavior:'smooth'});
+    document.getElementById('nextBtn').disabled=false;
+    document.getElementById('nextBtn').style.opacity='1';
+}
+
+function goNext(){
+    const saved=JSON.parse(localStorage.getItem('personalColorData_premium')||'{}');
+    saved.step3=data;
+    localStorage.setItem('personalColorData_premium',JSON.stringify(saved));
+    window.location.href='result_pre.html';
+}
+
+function goBack(){window.location.href='pcolor_pre2.html';}
+
+window.onload=function(){
+    const saved=JSON.parse(localStorage.getItem('personalColorData_premium')||'{}');
+    if(saved.step1&&saved.step1.average){
+        data.skinL=saved.step1.average.l;
+        data.skinA=saved.step1.average.a;
+        data.skinB=saved.step1.average.b;
+        const c=rgb(data.skinL,data.skinA,data.skinB);
+        document.getElementById('skinPreview').style.backgroundColor=`rgb(${c.r},${c.g},${c.b})`;
+        document.getElementById('skinL').textContent=data.skinL.toFixed(1);
+        const chroma=Math.sqrt(data.skinA**2+data.skinB**2);
+        document.getElementById('skinChroma').innerHTML=`A: ${data.skinA.toFixed(1)}<br>B: ${data.skinB.toFixed(1)}<br>Chroma: ${chroma.toFixed(1)}`;
+    }
+}
+</script>
+</body>
+</html>
